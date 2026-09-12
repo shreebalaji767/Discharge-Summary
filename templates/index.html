@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -15,6 +16,7 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='style.css') }}"
     >
+
 </head>
 
 
@@ -23,9 +25,9 @@
 <div class="app">
 
 
-    <!-- =====================================================
+    <!-- =========================================================
          TOP BAR
-    ====================================================== -->
+    ========================================================== -->
 
     <header class="topbar no-print">
 
@@ -89,9 +91,9 @@
 
 
 
-    <!-- =====================================================
-         MAIN PAPER
-    ====================================================== -->
+    <!-- =========================================================
+         MAIN
+    ========================================================== -->
 
     <main>
 
@@ -99,10 +101,9 @@
 
 
             <!-- =================================================
-                 PRINT HEADER
+                 SCREEN-ONLY HEADER
 
-                 Hidden during printing.
-                 @page provides blank header space.
+                 Hidden when printing.
             ================================================== -->
 
             <div class="print-header no-print">
@@ -129,7 +130,6 @@
                     Patient / Admission Details
                 </h2>
 
-
                 <div
                     id="patientFields"
                     class="grid"
@@ -151,13 +151,12 @@
                         Type of Discharge
                     </span>
 
-
                     <input
                         type="text"
                         id="typeOfDischarge"
                         autocomplete="off"
+                        value=""
                     >
-
 
                     <div
                         id="printTypeOfDischarge"
@@ -197,7 +196,7 @@
 
 
 
-                <!-- ADD SECTION AT TOP -->
+                <!-- ADD SECTION - TOP -->
 
                 <div class="no-print add-section-area">
 
@@ -214,14 +213,14 @@
 
 
                 <!-- =================================================
-                     JAVASCRIPT CREATES SECTIONS HERE
+                     SECTIONS CREATED BY JAVASCRIPT
                 ================================================== -->
 
                 <div id="sections"></div>
 
 
 
-                <!-- ADD SECTION AT BOTTOM -->
+                <!-- ADD SECTION - BOTTOM -->
 
                 <div class="no-print add-section-area">
 
@@ -275,7 +274,7 @@
 
 
 
-            <!-- PRINT FOOTER SPACE -->
+            <!-- PRINT FOOTER -->
 
             <div class="print-footer"></div>
 
@@ -424,7 +423,7 @@ const defaultClinicalSections = [
 
 
 /* ============================================================
-   GET FRESH COPY OF DEFAULT SECTIONS
+   CREATE FRESH DEFAULT SECTIONS
 ============================================================ */
 
 function getDefaultSections() {
@@ -448,12 +447,40 @@ function getDefaultSections() {
 
 
 /* ============================================================
-   STATE
+   CREATE COMPLETELY BLANK PATIENT OBJECT
 ============================================================ */
+
+function getBlankPatient() {
+
+    const patient = {};
+
+    patientFields.forEach(function(field) {
+
+        patient[field.key] = "";
+
+    });
+
+    return patient;
+
+}
+
+
+
+/* ============================================================
+   APPLICATION STATE
+============================================================ */
+
+/*
+ * IMPORTANT:
+ *
+ * The application starts BLANK.
+ *
+ * No saved patient data is loaded here.
+ */
 
 let state = {
 
-    patient: {},
+    patient: getBlankPatient(),
 
     type_of_discharge: "",
 
@@ -469,6 +496,10 @@ let state = {
 
 function normalizeState(data) {
 
+    const blankPatient =
+        getBlankPatient();
+
+
     if (
         !data ||
         typeof data !== "object"
@@ -476,28 +507,52 @@ function normalizeState(data) {
 
         return {
 
-            patient: {},
+            patient: blankPatient,
 
             type_of_discharge: "",
 
-            sections: []
+            sections: getDefaultSections()
 
         };
 
     }
 
 
-    let patient = {};
+    /*
+     * Patient
+     *
+     * Even when data comes from the server,
+     * missing fields remain blank.
+     */
 
-    if (
-        data.patient &&
-        typeof data.patient === "object"
-    ) {
+    const patient = {};
 
-        patient = data.patient;
 
-    }
+    patientFields.forEach(function(field) {
 
+        if (
+            data.patient &&
+            typeof data.patient === "object" &&
+            typeof data.patient[field.key] === "string"
+        ) {
+
+            patient[field.key] =
+                data.patient[field.key];
+
+        }
+
+        else {
+
+            patient[field.key] = "";
+
+        }
+
+    });
+
+
+    /*
+     * Type of discharge
+     */
 
     let typeOfDischarge = "";
 
@@ -511,7 +566,12 @@ function normalizeState(data) {
     }
 
 
+    /*
+     * Sections
+     */
+
     let sections = [];
+
 
     if (
         Array.isArray(data.sections)
@@ -519,7 +579,6 @@ function normalizeState(data) {
 
         sections =
             data.sections
-
                 .filter(function(section) {
 
                     return (
@@ -528,7 +587,6 @@ function normalizeState(data) {
                     );
 
                 })
-
                 .map(function(section, index) {
 
                     return {
@@ -559,6 +617,19 @@ function normalizeState(data) {
     }
 
 
+    /*
+     * If no sections exist,
+     * restore the 9 standard sections.
+     */
+
+    if (sections.length === 0) {
+
+        sections =
+            getDefaultSections();
+
+    }
+
+
     return {
 
         patient: patient,
@@ -575,7 +646,7 @@ function normalizeState(data) {
 
 
 /* ============================================================
-   RENDER PATIENT
+   RENDER PATIENT FIELDS
 ============================================================ */
 
 function renderPatient() {
@@ -601,36 +672,62 @@ function renderPatient() {
         const wrapper =
             document.createElement("div");
 
+
         wrapper.className =
             "field";
 
 
+        /*
+         * LABEL
+         */
+
         const label =
             document.createElement("span");
+
 
         label.textContent =
             field.label;
 
 
+
+        /*
+         * INPUT
+         */
+
         const input =
             document.createElement("input");
+
 
         input.type =
             "text";
 
+
         input.autocomplete =
             "off";
+
 
         input.dataset.patientKey =
             field.key;
 
 
+        /*
+         * ALWAYS use current state.
+         *
+         * On first page load this is "".
+         */
+
         input.value =
             state.patient[field.key] || "";
 
 
+
+        /*
+         * PRINT VALUE
+         */
+
         const printValue =
             document.createElement("div");
+
 
         printValue.className =
             "print-only-text print-field-value";
@@ -643,6 +740,11 @@ function renderPatient() {
         printValue.textContent =
             input.value;
 
+
+
+        /*
+         * INPUT EVENT
+         */
 
         input.addEventListener(
             "input",
@@ -657,6 +759,7 @@ function renderPatient() {
 
             }
         );
+
 
 
         wrapper.appendChild(
@@ -740,7 +843,7 @@ function renderDischargeType() {
 
 
 /* ============================================================
-   CREATE SECTION
+   CREATE CLINICAL SECTION
 ============================================================ */
 
 function createSection(
@@ -773,7 +876,10 @@ function createSection(
         "section-controls no-print";
 
 
-    /* UP */
+
+    /*
+     * UP
+     */
 
     const upButton =
         document.createElement("button");
@@ -782,8 +888,10 @@ function createSection(
     upButton.type =
         "button";
 
+
     upButton.textContent =
         "↑";
+
 
     upButton.title =
         "Move section up";
@@ -803,7 +911,9 @@ function createSection(
 
 
 
-    /* DOWN */
+    /*
+     * DOWN
+     */
 
     const downButton =
         document.createElement("button");
@@ -812,8 +922,10 @@ function createSection(
     downButton.type =
         "button";
 
+
     downButton.textContent =
         "↓";
+
 
     downButton.title =
         "Move section down";
@@ -833,7 +945,9 @@ function createSection(
 
 
 
-    /* DELETE */
+    /*
+     * DELETE
+     */
 
     const deleteButton =
         document.createElement("button");
@@ -842,8 +956,10 @@ function createSection(
     deleteButton.type =
         "button";
 
+
     deleteButton.className =
         "danger";
+
 
     deleteButton.textContent =
         "Delete";
@@ -874,7 +990,7 @@ function createSection(
 
 
     /* ========================================================
-       TITLE
+       SECTION TITLE
     ======================================================== */
 
     const titleInput =
@@ -897,6 +1013,11 @@ function createSection(
         "Section title";
 
 
+
+    /*
+     * PRINT TITLE
+     */
+
     const printTitle =
         document.createElement("div");
 
@@ -909,11 +1030,18 @@ function createSection(
         titleInput.value;
 
 
+
+    /*
+     * TITLE EVENT
+     */
+
     titleInput.addEventListener(
         "input",
         function() {
 
-            if (state.sections[index]) {
+            if (
+                state.sections[index]
+            ) {
 
                 state.sections[index].title =
                     titleInput.value;
@@ -930,7 +1058,7 @@ function createSection(
 
 
     /* ========================================================
-       CONTENT
+       SECTION CONTENT
     ======================================================== */
 
     const contentTextarea =
@@ -949,6 +1077,11 @@ function createSection(
         "Enter details...";
 
 
+
+    /*
+     * PRINT CONTENT
+     */
+
     const printContent =
         document.createElement("div");
 
@@ -961,11 +1094,18 @@ function createSection(
         contentTextarea.value;
 
 
+
+    /*
+     * CONTENT EVENT
+     */
+
     contentTextarea.addEventListener(
         "input",
         function() {
 
-            if (state.sections[index]) {
+            if (
+                state.sections[index]
+            ) {
 
                 state.sections[index].content =
                     contentTextarea.value;
@@ -982,24 +1122,28 @@ function createSection(
 
 
     /* ========================================================
-       APPEND ELEMENTS
+       APPEND
     ======================================================== */
 
     article.appendChild(
         controls
     );
 
+
     article.appendChild(
         titleInput
     );
+
 
     article.appendChild(
         printTitle
     );
 
+
     article.appendChild(
         contentTextarea
     );
+
 
     article.appendChild(
         printContent
@@ -1013,7 +1157,7 @@ function createSection(
 
 
 /* ============================================================
-   RENDER SECTIONS
+   RENDER ALL SECTIONS
 ============================================================ */
 
 function renderSections() {
@@ -1026,25 +1170,13 @@ function renderSections() {
 
     if (!container) {
 
-        console.error(
-            "Sections container not found."
-        );
-
         return;
 
     }
 
 
-    /*
-     * Completely clear the old DOM.
-     */
-
     container.innerHTML = "";
 
-
-    /*
-     * Make sure sections is an array.
-     */
 
     if (
         !Array.isArray(
@@ -1052,14 +1184,11 @@ function renderSections() {
         )
     ) {
 
-        state.sections = [];
+        state.sections =
+            getDefaultSections();
 
     }
 
-
-    /*
-     * Render ONLY the current state.
-     */
 
     state.sections.forEach(
         function(section, index) {
@@ -1249,7 +1378,9 @@ function addSection(
 
             else {
 
-                if (titles[position]) {
+                if (
+                    titles[position]
+                ) {
 
                     titles[position].focus();
 
@@ -1266,13 +1397,17 @@ function addSection(
 
 
 /* ============================================================
-   COLLECT CURRENT FORM DATA
+   COLLECT CURRENT FORM
 ============================================================ */
 
 function collectState() {
 
     const patient = {};
 
+
+    /*
+     * Patient fields
+     */
 
     document
         .querySelectorAll(
@@ -1290,11 +1425,21 @@ function collectState() {
         );
 
 
+
+    /*
+     * Type of discharge
+     */
+
     const dischargeInput =
         document.getElementById(
             "typeOfDischarge"
         );
 
+
+
+    /*
+     * Sections
+     */
 
     const sections = [];
 
@@ -1453,24 +1598,22 @@ async function newBlankSummary() {
 
 
     /*
-     * Completely replace the current state.
+     * Completely blank everything.
      */
 
     state = {
 
-        patient: {},
+        patient:
+            getBlankPatient(),
 
-        type_of_discharge: "",
+        type_of_discharge:
+            "",
 
         sections:
             getDefaultSections()
 
     };
 
-
-    /*
-     * Render fresh blank summary.
-     */
 
     renderPatient();
 
@@ -1480,94 +1623,67 @@ async function newBlankSummary() {
 
 
     /*
-     * Save blank state to session.
+     * Do NOT load anything from server.
+     *
+     * Save the blank state only if desired.
      */
 
     try {
 
-        const response =
-            await fetch(
-                "/api/state",
-                {
-                    method: "POST",
+        await fetch(
+            "/api/state",
+            {
+                method: "POST",
 
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
 
-                    body:
-                        JSON.stringify(
-                            state
-                        )
-                }
-            );
-
-
-        if (!response.ok) {
-
-            console.error(
-                "Blank state could not be saved."
-            );
-
-        }
+                body:
+                    JSON.stringify(
+                        state
+                    )
+            }
+        );
 
     }
 
     catch (error) {
 
         console.error(
-            "Could not save blank state:",
             error
         );
 
     }
 
 
-    /*
-     * Scroll to clinical summary.
-     */
+    window.scrollTo({
 
-    const clinical =
-        document.getElementById(
-            "clinical-summary"
-        );
+        top: 0,
 
+        behavior: "smooth"
 
-    if (clinical) {
+    });
 
-        clinical.scrollIntoView({
-
-            behavior: "smooth",
-
-            block: "start"
-
-        });
-
-    }
-
-
-    /*
-     * Focus first section.
-     */
 
     setTimeout(
         function() {
 
-            const first =
+            const firstField =
                 document.querySelector(
-                    "#sections .section-content"
+                    "#patientFields input"
                 );
 
 
-            if (first) {
+            if (firstField) {
 
-                first.focus();
+                firstField.focus();
 
             }
 
         },
-        150
+        100
     );
 
 }
@@ -1608,24 +1724,6 @@ async function randomize() {
             normalizeState(data);
 
 
-        /*
-         * If random API returns no sections,
-         * use the standard 9 sections.
-         */
-
-        if (
-            !Array.isArray(
-                state.sections
-            ) ||
-            state.sections.length === 0
-        ) {
-
-            state.sections =
-                getDefaultSections();
-
-        }
-
-
         renderPatient();
 
         renderDischargeType();
@@ -1652,83 +1750,14 @@ async function randomize() {
 
 
 /* ============================================================
-   INITIAL PAGE LOAD
-============================================================ */
-
-/*
- * IMPORTANT
- *
- * We DO NOT call:
- *
- *     /api/state
- *
- * here.
- *
- * Every page load starts completely blank.
- *
- * Exactly 9 default clinical sections are created.
- */
-
-function loadState() {
-
-    /*
-     * ALWAYS CREATE A NEW BLANK SUMMARY.
-     */
-
-    state = {
-
-        patient: {},
-
-        type_of_discharge: "",
-
-        sections:
-            getDefaultSections()
-
-    };
-
-
-    /*
-     * Render blank patient fields.
-     */
-
-    renderPatient();
-
-
-    /*
-     * Render blank discharge type.
-     */
-
-    renderDischargeType();
-
-
-    /*
-     * Render exactly 9 default sections.
-     */
-
-    renderSections();
-
-
-    /*
-     * Start at top of page.
-     */
-
-    window.scrollTo({
-        top: 0,
-        behavior: "instant"
-    });
-
-}
-
-
-
-/* ============================================================
    UPDATE PRINT VALUES
 ============================================================ */
 
 function updatePrintValues() {
 
+
     /*
-     * PATIENT VALUES
+     * Patient
      */
 
     document
@@ -1763,7 +1792,7 @@ function updatePrintValues() {
 
 
     /*
-     * TYPE OF DISCHARGE
+     * Type of discharge
      */
 
     const dischargeInput =
@@ -1791,7 +1820,7 @@ function updatePrintValues() {
 
 
     /*
-     * CLINICAL SECTIONS
+     * Sections
      */
 
     document
@@ -1860,7 +1889,7 @@ function updatePrintValues() {
 function printSummary() {
 
     /*
-     * Collect latest values first.
+     * Collect the latest form values.
      */
 
     state =
@@ -1870,14 +1899,14 @@ function printSummary() {
 
 
     /*
-     * Update print-only elements.
+     * Update print elements.
      */
 
     updatePrintValues();
 
 
     /*
-     * Wait briefly for DOM update.
+     * Open browser print dialog.
      */
 
     setTimeout(
@@ -1898,7 +1927,9 @@ function printSummary() {
 ============================================================ */
 
 
-/* TOP NEW BLANK */
+/*
+ * TOP NEW BLANK
+ */
 
 document
     .getElementById(
@@ -1910,7 +1941,10 @@ document
     );
 
 
-/* BOTTOM NEW BLANK */
+
+/*
+ * BOTTOM NEW BLANK
+ */
 
 document
     .getElementById(
@@ -1922,7 +1956,10 @@ document
     );
 
 
-/* RANDOM DATA */
+
+/*
+ * RANDOM
+ */
 
 document
     .getElementById(
@@ -1934,7 +1971,10 @@ document
     );
 
 
-/* TOP SAVE */
+
+/*
+ * TOP SAVE
+ */
 
 document
     .getElementById(
@@ -1950,7 +1990,10 @@ document
     );
 
 
-/* BOTTOM SAVE */
+
+/*
+ * BOTTOM SAVE
+ */
 
 document
     .getElementById(
@@ -1966,7 +2009,10 @@ document
     );
 
 
-/* TOP PRINT */
+
+/*
+ * TOP PRINT
+ */
 
 document
     .getElementById(
@@ -1978,7 +2024,10 @@ document
     );
 
 
-/* BOTTOM PRINT */
+
+/*
+ * BOTTOM PRINT
+ */
 
 document
     .getElementById(
@@ -1990,7 +2039,10 @@ document
     );
 
 
-/* ADD SECTION AT TOP */
+
+/*
+ * ADD SECTION TOP
+ */
 
 document
     .getElementById(
@@ -2006,7 +2058,10 @@ document
     );
 
 
-/* ADD SECTION AT BOTTOM */
+
+/*
+ * ADD SECTION BOTTOM
+ */
 
 document
     .getElementById(
@@ -2024,14 +2079,134 @@ document
 
 
 /* ============================================================
-   START APPLICATION
+   INITIAL PAGE LOAD
 ============================================================ */
 
 /*
- * Every page load starts with a fresh blank summary.
+ * IMPORTANT:
+ *
+ * DO NOT fetch /api/state here.
+ *
+ * Always start with:
+ *
+ *   Patient details = BLANK
+ *   Type of discharge = BLANK
+ *   Clinical section contents = BLANK
+ *
+ * The 9 section TITLES remain visible.
  */
 
-loadState();
+function loadBlankSummary() {
+
+    state = {
+
+        patient:
+            getBlankPatient(),
+
+        type_of_discharge:
+            "",
+
+        sections:
+            getDefaultSections()
+
+    };
+
+
+    /*
+     * Render blank patient fields.
+     */
+
+    renderPatient();
+
+
+    /*
+     * Render blank discharge type.
+     */
+
+    renderDischargeType();
+
+
+    /*
+     * Render 9 blank clinical sections.
+     */
+
+    renderSections();
+
+
+    /*
+     * Force patient inputs blank.
+     *
+     * This is an extra safeguard against
+     * browser autofill / old DOM values.
+     */
+
+    document
+        .querySelectorAll(
+            "#patientFields input"
+        )
+        .forEach(
+            function(input) {
+
+                input.value = "";
+
+            }
+        );
+
+
+    /*
+     * Force type of discharge blank.
+     */
+
+    const dischargeInput =
+        document.getElementById(
+            "typeOfDischarge"
+        );
+
+
+    if (dischargeInput) {
+
+        dischargeInput.value = "";
+
+    }
+
+
+    /*
+     * Clear print values.
+     */
+
+    document
+        .querySelectorAll(
+            ".print-field-value"
+        )
+        .forEach(
+            function(element) {
+
+                element.textContent = "";
+
+            }
+        );
+
+
+    /*
+     * Start at top.
+     */
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "instant"
+
+    });
+
+}
+
+
+/*
+ * START
+ */
+
+loadBlankSummary();
 
 </script>
 
