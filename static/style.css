@@ -761,3 +761,94 @@ main {
   }
 
 }
+/* =========================
+   TYPE OF DISCHARGE
+   ========================= */
+
+.discharge-type-section {
+  margin: 0 0 18px;
+  padding: 0;
+}
+
+.discharge-type-field {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.discharge-type-field span {
+  font-size: 11px;
+  font-weight: 700;
+  color: #596775;
+  text-transform: uppercase;
+}
+
+.discharge-type-field input {
+  width: 180px;
+  height: 36px;
+
+  border: 1px solid #cbd4dc;
+  border-radius: 6px;
+
+  padding: 8px 9px;
+
+  background: #fff;
+  color: #17212b;
+
+  font: inherit;
+}
+
+
+/* =========================
+   PRINT
+   ========================= */
+
+@media print {
+
+  .discharge-type-section {
+    margin: 0 0 10px;
+    padding: 0;
+  }
+
+  .discharge-type-field {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .discharge-type-field span {
+    font-size: 8px;
+    font-weight: 700;
+    color: #333;
+  }
+
+  /*
+     IMPORTANT:
+     Remove the box completely during printing.
+     Only entered text is printed.
+  */
+
+  .discharge-type-field input {
+    width: auto !important;
+    height: auto !important;
+
+    min-width: 0 !important;
+    max-width: 180px;
+
+    border: 0 !important;
+    outline: 0 !important;
+    border-radius: 0 !important;
+
+    padding: 1px 0 !important;
+    margin: 0;
+
+    background: transparent !important;
+    color: #000 !important;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    box-shadow: none !important;
+  }
+
+}
