@@ -1,126 +1,128 @@
-/* =========================================================
+/* ============================================================
+   SHREE BALAJI HOSPITAL
    DISCHARGE SUMMARY EDITOR
    COMPLETE STYLE.CSS
-========================================================= */
+============================================================ */
 
 
-/* =========================================================
-   GLOBAL
-========================================================= */
+/* ============================================================
+   GLOBAL RESET
+============================================================ */
 
 * {
     box-sizing: border-box;
 }
+
 
 html {
     margin: 0;
     padding: 0;
 }
 
+
 body {
     margin: 0;
     padding: 0;
 
     background: #eef2f6;
+
     color: #17212b;
 
-    font-family: Arial, Helvetica, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: 14px;
 
     line-height: 1.4;
 }
 
+
 button,
 input,
 textarea {
-    font-family: inherit;
-}
-
-button {
-    border: 0;
-    border-radius: 7px;
-
-    padding: 10px 14px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-}
-
-button:focus,
-input:focus,
-textarea:focus {
-    outline: 2px solid #1261a0;
-    outline-offset: 1px;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 }
 
 
-/* =========================================================
-   APPLICATION
-========================================================= */
+/* ============================================================
+   MAIN APP
+============================================================ */
 
 .app {
     width: 100%;
     max-width: 1250px;
 
     margin: 0 auto;
+
+    padding-bottom: 40px;
 }
 
 
-/* =========================================================
+/* ============================================================
    TOP BAR
-========================================================= */
+============================================================ */
 
 .topbar {
-    width: 100%;
-
-    background: #ffffff;
-
-    border-bottom: 1px solid #d9e0e7;
-
-    padding: 20px 24px;
-
     display: flex;
 
     justify-content: space-between;
 
     align-items: center;
 
-    gap: 20px;
+    gap: 25px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid #d8dee5;
+
+    padding: 20px 24px;
+
+    margin-bottom: 18px;
 }
 
-.eyebrow {
-    font-size: 11px;
-
-    letter-spacing: 1.3px;
-
-    color: #687684;
-
-    font-weight: 700;
-
-    margin-bottom: 4px;
-}
 
 .brand {
     min-width: 0;
 }
 
-.topbar h1 {
-    margin: 0 0 5px;
 
-    font-size: 27px;
+.eyebrow {
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    color: #66727e;
+
+    margin-bottom: 4px;
+}
+
+
+.brand h1 {
+    margin: 0;
+
+    font-size: 25px;
 
     line-height: 1.2;
 
     color: #17212b;
 }
 
-.topbar p {
-    margin: 0;
 
-    color: #66737f;
+.brand p {
+    margin: 6px 0 0;
 
-    font-size: 14px;
+    color: #687581;
+
+    font-size: 13px;
 }
+
 
 .top-actions {
     display: flex;
@@ -129,469 +131,464 @@ textarea:focus {
 
     justify-content: flex-end;
 
-    align-items: center;
-
     gap: 8px;
 }
 
 
-/* =========================================================
+/* ============================================================
    BUTTONS
-========================================================= */
+============================================================ */
 
-.primary {
-    background: #1261a0;
+button {
+    border: 1px solid #cbd4dd;
 
-    color: #ffffff;
+    background: #ffffff;
+
+    color: #17212b;
+
+    border-radius: 5px;
+
+    padding: 9px 13px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.05s ease;
 }
 
-.secondary {
-    background: #e8eef4;
-
-    color: #173047;
-}
-
-.pdf {
-    background: #176b43;
-
-    color: #ffffff;
-}
-
-.danger {
-    background: #b42318;
-
-    color: #ffffff;
-}
 
 button:hover {
-    opacity: 0.9;
+    background: #f3f6f9;
+
+    border-color: #aeb9c4;
 }
+
 
 button:active {
     transform: translateY(1px);
 }
 
 
-/* =========================================================
-   MAIN AREA
-========================================================= */
+button.primary {
+    background: #1f6feb;
 
-main {
-    width: 100%;
+    border-color: #1f6feb;
 
-    padding: 24px;
+    color: #ffffff;
 }
 
 
-/* =========================================================
+button.primary:hover {
+    background: #185fcf;
+
+    border-color: #185fcf;
+}
+
+
+button.pdf {
+    background: #198754;
+
+    border-color: #198754;
+
+    color: #ffffff;
+}
+
+
+button.pdf:hover {
+    background: #157347;
+
+    border-color: #157347;
+}
+
+
+button.secondary {
+    background: #ffffff;
+
+    color: #273746;
+}
+
+
+button.danger {
+    background: #ffffff;
+
+    color: #b42318;
+
+    border-color: #e2b4b0;
+}
+
+
+button.danger:hover {
+    background: #fff4f2;
+
+    border-color: #d98c85;
+}
+
+
+/* ============================================================
    PAPER
-========================================================= */
+============================================================ */
 
 .paper {
     width: 100%;
 
-    min-height: 1000px;
-
     background: #ffffff;
 
-    padding: 34px 42px;
+    border: 1px solid #d8dee5;
 
     box-shadow:
-        0 2px 10px rgba(0, 0, 0, 0.07);
+        0 2px 8px rgba(0, 0, 0, 0.05);
+
+    padding: 25px 28px 35px;
+
+    min-height: 1100px;
 }
 
 
-/* =========================================================
-   PRINT HEADER / HEADER SPACE
-========================================================= */
+/* ============================================================
+   PRINT HEADER
+============================================================ */
 
 .print-header {
-    width: 100%;
+    text-align: center;
 
-    margin: 0 0 20px;
+    padding-bottom: 20px;
 
-    padding: 0;
+    margin-bottom: 20px;
 
-    min-height: 0;
-}
-
-.hospital-header-space {
-    width: 100%;
-
-    min-height: 0;
+    border-bottom: 1px solid #d9dfe5;
 }
 
 
-/* =========================================================
-   PATIENT SECTION
-========================================================= */
-
-.patient-section {
-    width: 100%;
-
-    border-bottom: 1px solid #d8dee5;
-
-    padding-bottom: 18px;
-
-    margin-bottom: 18px;
-}
-
-.paper h2 {
-    margin: 0 0 12px;
-
-    font-size: 16px;
-
-    line-height: 1.3;
-
-    color: #17212b;
-}
-
-
-/* =========================================================
-   PATIENT GRID
-========================================================= */
-
-.grid {
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-
-    gap: 12px;
-}
-
-
-/* =========================================================
-   PATIENT FIELD
-========================================================= */
-
-.field {
-    min-width: 0;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 5px;
-}
-
-.field span {
-    font-size: 11px;
+.hospital-name {
+    font-size: 20px;
 
     font-weight: 700;
 
-    color: #596775;
-
-    text-transform: uppercase;
+    letter-spacing: 0.4px;
 }
 
-.field input {
+
+.document-title {
+    margin-top: 5px;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+/* ============================================================
+   SECTION HEADINGS
+============================================================ */
+
+.patient-section,
+.discharge-type-section,
+.clinical-summary {
+    margin-bottom: 24px;
+}
+
+
+.patient-section h2,
+.clinical-summary h2 {
+    margin: 0 0 14px;
+
+    font-size: 17px;
+
+    line-height: 1.25;
+
+    color: #17212b;
+}
+
+
+.section-heading {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: flex-start;
+
+    gap: 20px;
+
+    margin-bottom: 12px;
+}
+
+
+.section-heading h2 {
+    margin-bottom: 3px;
+}
+
+
+.section-heading p {
+    margin: 0;
+
+    color: #75818c;
+
+    font-size: 12px;
+}
+
+
+/* ============================================================
+   PATIENT GRID
+============================================================ */
+
+.grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px 18px;
+}
+
+
+.field {
+    min-width: 0;
+}
+
+
+.field > span,
+.discharge-type-field > span {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #43515d;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.field input,
+.discharge-type-field input {
+    display: block;
+
     width: 100%;
 
-    min-width: 0;
+    min-height: 38px;
 
-    height: 38px;
+    padding: 8px 10px;
 
-    border: 1px solid #cbd4dc;
+    border: 1px solid #cbd4dd;
 
-    border-radius: 6px;
-
-    padding: 9px;
+    border-radius: 5px;
 
     background: #ffffff;
 
     color: #17212b;
+
+    outline: none;
 
     font-size: 14px;
 }
 
 
-/* =========================================================
+.field input:focus,
+.discharge-type-field input:focus,
+.section-title:focus,
+.section-content:focus {
+    border-color: #6da4ed;
+
+    box-shadow:
+        0 0 0 2px rgba(31, 111, 235, 0.10);
+}
+
+
+/* ============================================================
    TYPE OF DISCHARGE
-   SEPARATE FROM CLINICAL SUMMARY
-========================================================= */
+============================================================ */
 
 .discharge-type-section {
-    width: 100%;
+    margin-top: 5px;
 
-    margin: 0 0 22px;
-
-    padding: 0;
+    margin-bottom: 25px;
 }
+
 
 .discharge-type-field {
-    display: inline-flex;
-
-    flex-direction: column;
-
-    align-items: flex-start;
-
-    gap: 5px;
+    width: 100%;
 }
 
-.discharge-type-field span {
-    font-size: 11px;
-
-    font-weight: 700;
-
-    color: #596775;
-
-    text-transform: uppercase;
-}
 
 .discharge-type-field input {
-    width: 180px;
-
-    height: 36px;
-
-    border: 1px solid #cbd4dc;
-
-    border-radius: 6px;
-
-    padding: 8px 9px;
-
-    background: #ffffff;
-
-    color: #17212b;
-
-    font: inherit;
+    max-width: 100%;
 }
 
 
-/* =========================================================
-   CLINICAL SUMMARY
-========================================================= */
-
-.clinical-summary {
-    width: 100%;
-
-    display: block;
-
-    margin: 0;
-
-    padding: 0;
-}
-
-
-/* =========================================================
-   CLINICAL SECTION HEADING
-========================================================= */
-
-.section-heading {
-    width: 100%;
-
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    gap: 15px;
-
-    margin-bottom: 14px;
-}
-
-.section-heading > div {
-    min-width: 0;
-}
-
-.section-heading h2 {
-    margin: 0;
-
-    font-size: 16px;
-
-    line-height: 1.3;
-}
-
-.section-heading p {
-    margin: 3px 0 0;
-
-    color: #71808d;
-
-    font-size: 13px;
-}
-
-
-/* =========================================================
-   CLINICAL SECTIONS CONTAINER
-========================================================= */
+/* ============================================================
+   CLINICAL SECTIONS
+============================================================ */
 
 #sections {
     width: 100%;
-
-    min-height: 0;
-
-    display: block;
-
-    visibility: visible;
-
-    opacity: 1;
-
-    margin: 0;
-
-    padding: 0;
 }
 
-
-/* =========================================================
-   INDIVIDUAL CLINICAL SECTION
-========================================================= */
 
 .summary-section {
     position: relative;
 
-    display: block;
-
-    visibility: visible;
-
-    opacity: 1;
-
     width: 100%;
 
-    min-height: 150px;
+    margin: 0 0 16px;
 
-    margin: 0 0 14px;
+    padding: 14px 16px 16px;
 
-    padding: 15px;
+    border: 1px solid #d6dde4;
 
-    border: 1px solid #d8e0e7;
-
-    border-radius: 8px;
+    border-radius: 6px;
 
     background: #ffffff;
-
-    page-break-inside: avoid;
-
-    break-inside: avoid;
 }
 
 
-/* =========================================================
+.summary-section:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ============================================================
    SECTION CONTROLS
-========================================================= */
+============================================================ */
 
 .section-controls {
-    position: absolute;
-
-    top: 10px;
-
-    right: 10px;
-
-    z-index: 5;
-
     display: flex;
+
+    justify-content: flex-end;
 
     align-items: center;
 
     gap: 5px;
+
+    margin-bottom: 8px;
 }
+
 
 .section-controls button {
-    padding: 6px 9px;
+    min-width: 32px;
+
+    height: 30px;
+
+    padding: 4px 8px;
 
     font-size: 12px;
-
-    border-radius: 5px;
-}
-
-.section-controls .move-up,
-.section-controls .move-down {
-    background: #edf2f6;
-
-    color: #263746;
 }
 
 
-/* =========================================================
+.section-controls .danger {
+    min-width: auto;
+
+    padding-left: 10px;
+
+    padding-right: 10px;
+}
+
+
+/* ============================================================
    SECTION TITLE
-========================================================= */
+============================================================ */
 
 .section-title {
     display: block;
 
     width: 100%;
 
-    min-height: 40px;
+    margin: 0 0 7px;
 
-    margin: 0 0 8px;
+    padding: 8px 10px;
 
-    padding: 9px;
+    border: 1px solid #cbd4dd;
 
-    padding-right: 220px;
-
-    border: 1px solid #cbd4dc;
-
-    border-radius: 6px;
+    border-radius: 5px;
 
     background: #ffffff;
 
     color: #17212b;
 
-    font-size: 16px;
+    font-size: 15px;
 
-    font-weight: 800;
+    font-weight: 700;
 
     line-height: 1.3;
+
+    outline: none;
 }
 
 
-/* =========================================================
-   SECTION CONTENT
-========================================================= */
+/* ============================================================
+   SECTION CONTENT TEXTAREA
+============================================================ */
 
 .section-content {
     display: block;
 
     width: 100%;
 
-    min-height: 82px;
+    min-height: 110px;
+
+    height: 110px;
+
+    resize: vertical;
 
     margin: 0;
 
-    padding: 9px;
+    padding: 10px;
 
-    border: 1px solid #cbd4dc;
+    border: 1px solid #cbd4dd;
 
-    border-radius: 6px;
+    border-radius: 5px;
 
     background: #ffffff;
 
     color: #17212b;
 
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     font-size: 14px;
 
-    line-height: 1.5;
+    line-height: 1.45;
 
-    resize: vertical;
+    outline: none;
 }
 
 
-/* =========================================================
+.section-content::placeholder {
+    color: #9aa5af;
+}
+
+
+/* ============================================================
    ADD SECTION AREA
-========================================================= */
+============================================================ */
 
 .add-section-area {
-    width: 100%;
-
-    margin: 0 0 12px;
-
     display: flex;
 
     justify-content: flex-start;
 
-    align-items: center;
+    margin: 10px 0 15px;
 }
 
 
-/* =========================================================
+.add-section-area button {
+    min-width: 130px;
+}
+
+
+/* ============================================================
    BOTTOM ACTIONS
-========================================================= */
+============================================================ */
 
 .bottom-actions {
-    width: 100%;
-
     display: flex;
 
     justify-content: flex-end;
@@ -602,216 +599,200 @@ main {
 
     gap: 8px;
 
-    margin-top: 20px;
+    margin-top: 28px;
 
-    padding-top: 15px;
+    padding-top: 18px;
 
     border-top: 1px solid #dce2e8;
 }
 
 
-/* =========================================================
-   PRINT FOOTER SCREEN
-========================================================= */
+/* ============================================================
+   PRINT-ONLY ELEMENTS
+
+   These contain the actual values from inputs/textareas.
+
+   They are invisible while editing.
+============================================================ */
+
+.print-only-text {
+    display: none;
+}
+
+
+/* ============================================================
+   PRINT FIELD VALUES
+============================================================ */
+
+.print-field-value {
+    display: none;
+}
+
+
+/* ============================================================
+   PRINT FOOTER
+
+   Normally hidden because @page bottom margin reserves
+   blank footer space.
+============================================================ */
 
 .print-footer {
-    width: 100%;
-
-    margin-top: 30px;
-
-    padding-top: 10px;
-
-    border-top: 1px solid #d9e0e7;
-
-    text-align: center;
-
-    color: #788692;
-
-    font-size: 10px;
+    display: none;
 }
 
 
-/* =========================================================
-   NO PRINT
-========================================================= */
+/* ============================================================
+   RESPONSIVE
+============================================================ */
 
-.no-print {
-}
-
-
-/* =========================================================
-   TABLET
-========================================================= */
-
-@media (max-width: 850px) {
+@media screen and (max-width: 900px) {
 
     .topbar {
-        flex-direction: column;
-
-        align-items: flex-start;
-    }
-
-    .top-actions {
-        width: 100%;
-
-        justify-content: flex-start;
-    }
-
-    .grid {
-        grid-template-columns:
-            repeat(2, minmax(0, 1fr));
-    }
-
-    .paper {
-        padding: 24px;
-    }
-
-    .section-title {
-        padding-right: 9px;
-    }
-
-    .section-controls {
-        position: static;
-
-        margin-bottom: 8px;
-
-        justify-content: flex-start;
-    }
-
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 560px) {
-
-    .topbar {
-        padding: 16px;
-    }
-
-    .topbar h1 {
-        font-size: 22px;
-    }
-
-    .top-actions {
-        width: 100%;
-
-        display: grid;
-
-        grid-template-columns: 1fr 1fr;
-    }
-
-    .top-actions button {
-        width: 100%;
-    }
-
-    main {
-        padding: 10px;
-    }
-
-    .paper {
-        min-height: 0;
-
-        padding: 15px;
-    }
-
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .section-heading {
-        flex-direction: column;
-
-        align-items: flex-start;
-    }
-
-    .summary-section {
-        padding: 12px;
-
-        min-height: 150px;
-    }
-
-    .section-controls {
-        width: 100%;
-
-        display: flex;
-
-        flex-wrap: wrap;
-
-        margin-bottom: 8px;
-    }
-
-    .section-title {
-        padding-right: 9px;
-    }
-
-    .discharge-type-field input {
-        width: 180px;
-    }
-
-    .bottom-actions {
         flex-direction: column;
 
         align-items: stretch;
     }
 
-    .bottom-actions button {
-        width: 100%;
+
+    .top-actions {
+        justify-content: flex-start;
+    }
+
+
+    .grid {
+        grid-template-columns: 1fr;
     }
 
 }
 
 
-/* =========================================================
-   PRINT / SAVE PDF
-========================================================= */
+@media screen and (max-width: 600px) {
 
-@media print {
-
-
-    /* =====================================================
-       A4 PAGE
-
-       35mm blank header area
-       30mm blank footer area
-    ====================================================== */
-
-    @page {
-
-        size: A4 portrait;
-
-        margin-top: 35mm;
-
-        margin-bottom: 30mm;
-
-        margin-left: 12mm;
-
-        margin-right: 12mm;
-
+    .app {
+        padding-bottom: 20px;
     }
 
 
-    /* =====================================================
-       PRINT RESET
-    ====================================================== */
+    .topbar {
+        padding: 16px;
+    }
+
+
+    .paper {
+        padding: 18px 15px 25px;
+
+        border-left: 0;
+
+        border-right: 0;
+
+        box-shadow: none;
+    }
+
+
+    .brand h1 {
+        font-size: 21px;
+    }
+
+
+    .top-actions {
+        display: grid;
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+
+    .top-actions button {
+        width: 100%;
+    }
+
+
+    .summary-section {
+        padding: 12px;
+    }
+
+
+    .bottom-actions {
+        justify-content: stretch;
+    }
+
+
+    .bottom-actions button {
+        flex: 1 1 100%;
+    }
+
+}
+
+
+/* ============================================================
+   PRINT SETTINGS
+============================================================ */
+
+@page {
+
+    size: A4 portrait;
+
+    /*
+     * BLANK HOSPITAL HEADER SPACE
+     */
+    margin-top: 35mm;
+
+
+    /*
+     * BLANK HOSPITAL FOOTER SPACE
+     */
+    margin-bottom: 30mm;
+
+
+    /*
+     * LEFT / RIGHT PRINT MARGINS
+     */
+    margin-left: 15mm;
+
+    margin-right: 15mm;
+}
+
+
+/* ============================================================
+   PRINT MODE
+============================================================ */
+
+@media print {
+
+    /*
+     * IMPORTANT:
+     * Remove screen background.
+     */
 
     html,
     body {
 
-        margin: 0 !important;
-
-        padding: 0 !important;
-
         width: 100%;
 
-        background: #ffffff !important;
+        margin: 0;
 
-        color: #000000 !important;
+        padding: 0;
+
+        background: #ffffff;
+
+        color: #000000;
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
+        font-size: 10pt;
+
+        line-height: 1.35;
 
     }
 
+
+    /*
+     * Do not create another A4-sized box inside
+     * the browser's print page.
+     */
 
     .app {
 
@@ -826,20 +807,32 @@ main {
     }
 
 
-    main {
+    /*
+     * Remove paper screen styling.
+     */
+
+    .paper {
 
         width: 100%;
+
+        min-height: 0;
 
         margin: 0;
 
         padding: 0;
 
+        border: 0;
+
+        box-shadow: none;
+
+        background: #ffffff;
+
     }
 
 
-    /* =====================================================
-       HIDE ALL EDITING CONTROLS
-    ====================================================== */
+    /*
+     * HIDE ALL EDITING CONTROLS.
+     */
 
     .no-print {
 
@@ -848,35 +841,11 @@ main {
     }
 
 
-    /* =====================================================
-       PAPER
-    ====================================================== */
-
-    .paper {
-
-        width: 100%;
-
-        min-height: 0 !important;
-
-        height: auto !important;
-
-        margin: 0;
-
-        padding: 0 !important;
-
-        background: #ffffff !important;
-
-        box-shadow: none !important;
-
-    }
-
-
-    /* =====================================================
-       HOSPITAL HEADER
-
-       @page ALREADY PROVIDES THE HEADER SPACE.
-       Do not add another large header element.
-    ====================================================== */
+    /*
+     * Hide the hospital screen header.
+     *
+     * @page margin-top provides blank header space.
+     */
 
     .print-header {
 
@@ -884,59 +853,56 @@ main {
 
     }
 
-    .hospital-header-space {
+
+    /*
+     * Hide the footer element.
+     *
+     * @page margin-bottom provides blank footer space.
+     */
+
+    .print-footer {
 
         display: none !important;
 
     }
 
 
-    /* =====================================================
-       PATIENT SECTION
-    ====================================================== */
+    /* ========================================================
+       PATIENT DETAILS
+    ======================================================== */
 
     .patient-section {
 
-        width: 100%;
-
-        border-bottom: 1px solid #999999;
-
-        padding-bottom: 7px;
-
-        margin-bottom: 9px;
-
-        page-break-inside: avoid;
-
-        break-inside: avoid;
+        margin: 0 0 12px;
 
     }
 
 
-    .paper h2 {
+    .patient-section h2 {
 
-        margin: 0 0 5px;
+        margin: 0 0 7px;
 
-        font-size: 12px;
+        padding: 0;
 
-        line-height: 1.15;
+        font-size: 12pt;
+
+        font-weight: 700;
 
         color: #000000;
 
     }
 
 
-    /* =====================================================
-       PATIENT GRID
-    ====================================================== */
-
     .grid {
 
         display: grid;
 
         grid-template-columns:
-            repeat(3, minmax(0, 1fr));
+            repeat(2, minmax(0, 1fr));
 
-        gap: 2px 10px;
+        gap: 5px 18px;
+
+        width: 100%;
 
     }
 
@@ -945,158 +911,101 @@ main {
 
         min-width: 0;
 
-        display: flex;
-
-        flex-direction: column;
-
-        gap: 0;
-
-    }
-
-
-    .field span {
-
-        font-size: 7px;
-
-        line-height: 1;
-
-        font-weight: 700;
-
-        color: #333333;
-
-    }
-
-
-    /* =====================================================
-       PATIENT INPUTS
-
-       REMOVE BOX COMPLETELY
-    ====================================================== */
-
-    .field input {
-
-        display: block;
-
-        width: 100% !important;
-
-        height: auto !important;
-
-        min-height: 0 !important;
-
-        max-height: none !important;
-
-        margin: 0 !important;
-
-        padding: 0 !important;
-
-        border: 0 !important;
-
-        outline: 0 !important;
-
-        border-radius: 0 !important;
-
-        background: transparent !important;
-
-        color: #000000 !important;
-
-        font-size: 9px;
-
-        line-height: 1.15;
-
-        box-shadow: none !important;
-
-    }
-
-
-    /* =====================================================
-       TYPE OF DISCHARGE
-    ====================================================== */
-
-    .discharge-type-section {
-
-        width: 100%;
-
-        margin: 0 0 7px;
+        margin: 0;
 
         padding: 0;
 
-        page-break-inside: avoid;
+    }
 
-        break-inside: avoid;
+
+    .field > span {
+
+        display: inline;
+
+        margin: 0 4px 0 0;
+
+        color: #000000;
+
+        font-size: 9.5pt;
+
+        font-weight: 700;
+
+    }
+
+
+    /*
+     * Original input must disappear.
+     */
+
+    .field input {
+
+        display: none !important;
+
+    }
+
+
+    /*
+     * Actual patient value.
+     */
+
+    .field .print-field-value {
+
+        display: inline !important;
+
+        width: auto;
+
+        margin: 0;
+
+        padding: 0;
+
+        border: 0;
+
+        background: transparent;
+
+        color: #000000;
+
+        font-size: 9.5pt;
+
+        font-weight: 400;
+
+        line-height: 1.25;
+
+        white-space: pre-wrap;
+
+        overflow-wrap: anywhere;
+
+        word-break: break-word;
+
+    }
+
+
+    /*
+     * Empty patient values do not create large areas.
+     */
+
+    .field .print-field-value:empty {
+
+        display: none !important;
+
+    }
+
+
+    /* ========================================================
+       TYPE OF DISCHARGE
+    ======================================================== */
+
+    .discharge-type-section {
+
+        margin: 8px 0 13px;
+
+        padding: 0;
 
     }
 
 
     .discharge-type-field {
 
-        display: inline-flex;
-
-        flex-direction: column;
-
-        gap: 0;
-
-    }
-
-
-    .discharge-type-field span {
-
-        font-size: 7px;
-
-        line-height: 1;
-
-        font-weight: 700;
-
-        color: #333333;
-
-    }
-
-
-    .discharge-type-field input {
-
-        display: block;
-
-        width: auto !important;
-
-        max-width: 180px;
-
-        height: auto !important;
-
-        min-height: 0 !important;
-
-        margin: 0 !important;
-
-        padding: 0 !important;
-
-        border: 0 !important;
-
-        outline: 0 !important;
-
-        border-radius: 0 !important;
-
-        background: transparent !important;
-
-        color: #000000 !important;
-
-        font-size: 9px;
-
-        line-height: 1.15;
-
-        font-weight: 600;
-
-        box-shadow: none !important;
-
-    }
-
-
-    /* =====================================================
-       CLINICAL SUMMARY
-    ====================================================== */
-
-    .clinical-summary {
-
         width: 100%;
-
-        display: block;
 
         margin: 0;
 
@@ -1105,17 +1014,80 @@ main {
     }
 
 
-    /* =====================================================
-       CLINICAL HEADING
-    ====================================================== */
+    .discharge-type-field > span {
 
-    .section-heading {
+        display: inline;
+
+        margin: 0 4px 0 0;
+
+        color: #000000;
+
+        font-size: 9.5pt;
+
+        font-weight: 700;
+
+    }
+
+
+    .discharge-type-field input {
+
+        display: none !important;
+
+    }
+
+
+    #printTypeOfDischarge {
+
+        display: inline !important;
+
+        margin: 0;
+
+        padding: 0;
+
+        border: 0;
+
+        background: transparent;
+
+        color: #000000;
+
+        font-size: 9.5pt;
+
+        line-height: 1.25;
+
+        white-space: pre-wrap;
+
+        overflow-wrap: anywhere;
+
+        word-break: break-word;
+
+    }
+
+
+    #printTypeOfDischarge:empty {
+
+        display: none !important;
+
+    }
+
+
+    /* ========================================================
+       CLINICAL SUMMARY
+    ======================================================== */
+
+    .clinical-summary {
 
         width: 100%;
 
-        display: block;
+        margin: 0;
 
-        margin: 0 0 5px;
+        padding: 0;
+
+    }
+
+
+    .section-heading {
+
+        margin: 0 0 7px;
 
         padding: 0;
 
@@ -1126,9 +1098,11 @@ main {
 
         margin: 0;
 
-        font-size: 12px;
+        padding: 0;
 
-        line-height: 1.15;
+        font-size: 12pt;
+
+        line-height: 1.25;
 
         color: #000000;
 
@@ -1142,309 +1116,283 @@ main {
     }
 
 
-    /* =====================================================
-       SECTION CONTAINER
-    ====================================================== */
+    /* ========================================================
+       EACH SUMMARY SECTION
+    ======================================================== */
 
     #sections {
 
         width: 100%;
 
-        display: block !important;
-
-        min-height: 0 !important;
-
-        height: auto !important;
-
         margin: 0;
 
         padding: 0;
 
-        visibility: visible !important;
-
-        opacity: 1 !important;
-
     }
 
 
-    /* =====================================================
-       INDIVIDUAL SUMMARY SECTION
-
-       IMPORTANT:
-       NO ARTIFICIAL 150px HEIGHT IN PRINT
-    ====================================================== */
-
-    #sections .summary-section {
+    .summary-section {
 
         position: relative;
 
-        display: block !important;
+        display: block;
 
         width: 100%;
 
-        min-height: 0 !important;
+        margin: 0 0 8px;
 
-        height: auto !important;
+        padding: 0;
 
-        max-height: none !important;
+        border: 0;
 
-        margin: 0 0 3px !important;
+        border-radius: 0;
 
-        padding: 3px 0 !important;
+        background: transparent;
 
-        border: 0 !important;
-
-        border-bottom: 1px solid #dddddd !important;
-
-        border-radius: 0 !important;
-
-        background: transparent !important;
-
-        box-shadow: none !important;
+        box-shadow: none;
 
         page-break-inside: auto;
 
         break-inside: auto;
 
-        visibility: visible !important;
-
-        opacity: 1 !important;
-
     }
 
 
-    /* =====================================================
-       SECTION TITLE
+    /*
+     * Do not leave a blank section area.
+     */
 
-       NO INPUT BOX IN PRINT
-    ====================================================== */
-
-    #sections .section-title {
-
-        display: block !important;
-
-        width: 100% !important;
-
-        height: auto !important;
-
-        min-height: 0 !important;
-
-        max-height: none !important;
-
-        margin: 0 0 1px !important;
-
-        padding: 0 !important;
-
-        border: 0 !important;
-
-        outline: 0 !important;
-
-        border-radius: 0 !important;
-
-        background: transparent !important;
-
-        color: #000000 !important;
-
-        font-size: 10.5px;
-
-        font-weight: 800;
-
-        line-height: 1.15;
-
-        box-shadow: none !important;
-
-        resize: none !important;
-
-        overflow: visible !important;
-
-    }
-
-
-    /* =====================================================
-       SECTION CONTENT
-
-       REMOVE TEXTAREA BOX AREA
-    ====================================================== */
-
-    #sections .section-content {
-
-        display: block !important;
-
-        width: 100% !important;
-
-        height: auto !important;
-
-        min-height: 0 !important;
-
-        max-height: none !important;
-
-        margin: 0 !important;
-
-        padding: 0 !important;
-
-        border: 0 !important;
-
-        outline: 0 !important;
-
-        border-radius: 0 !important;
-
-        background: transparent !important;
-
-        color: #000000 !important;
-
-        font-size: 9px;
-
-        font-weight: 400;
-
-        line-height: 1.25;
-
-        box-shadow: none !important;
-
-        resize: none !important;
-
-        overflow: visible !important;
-
-        white-space: pre-wrap;
-
-        overflow-wrap: break-word;
-
-        word-break: normal;
-
-    }
-
-
-    /* =====================================================
-       EMPTY CONTENT
-
-       Empty textarea should not create a large blank area.
-    ====================================================== */
-
-    #sections .section-content:empty {
+    .summary-section:empty {
 
         display: none !important;
 
     }
 
 
-    /* =====================================================
-       EMPTY SECTION
+    /* ========================================================
+       HIDE ACTUAL EDITING FIELDS
+    ======================================================== */
 
-       Do not print an empty section.
-    ====================================================== */
+    #sections .section-title {
 
-    #sections .summary-section:has(
-        .section-title[value=""]
-    ) {
-
-        /* Kept intentionally neutral because :has()
-           cannot reliably inspect input values. */
+        display: none !important;
 
     }
 
 
-    /* =====================================================
-       FOOTER SPACE
-
-       Blank hospital footer area.
-    ====================================================== */
-
-    .print-footer {
-
-        width: 100%;
-
-        height: 30mm;
-
-        min-height: 30mm;
-
-        margin: 15mm 0 0;
-
-        padding: 0;
-
-        border: 0 !important;
-
-        background: transparent !important;
-
-        color: transparent !important;
-
-        font-size: 0;
-
-        line-height: 0;
-
-        text-align: center;
-
-    }
-
-
-    /* =====================================================
-       HEADINGS
-    ====================================================== */
-
-    h1,
-    h2,
-    h3 {
-
-        page-break-after: avoid;
-
-        break-after: avoid;
-
-    }
-
-
-    /* =====================================================
-       KEEP PATIENT INFORMATION TOGETHER
-    ====================================================== */
-
-    .patient-section,
-    .discharge-type-section {
-
-        page-break-inside: avoid;
-
-        break-inside: avoid;
-
-    }
-
-
-    /* =====================================================
-       FORCE PRINT VISIBILITY
-    ====================================================== */
-
-    #sections,
-    #sections .summary-section,
-    #sections .section-title,
     #sections .section-content {
+
+        display: none !important;
+
+    }
+
+
+    /* ========================================================
+       PRINT SECTION TITLE
+    ======================================================== */
+
+    #sections .print-section-title {
+
+        display: block !important;
 
         visibility: visible !important;
 
         opacity: 1 !important;
 
+        width: 100%;
+
+        margin: 0 0 2px;
+
+        padding: 0;
+
+        border: 0;
+
+        border-radius: 0;
+
+        background: transparent;
+
+        color: #000000;
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
+        font-size: 10pt;
+
+        font-weight: 700;
+
+        line-height: 1.25;
+
+        white-space: normal;
+
+        overflow-wrap: anywhere;
+
+        word-break: break-word;
+
     }
 
 
-    /* =====================================================
-       REMOVE FOCUS OUTLINES
-    ====================================================== */
+    /*
+     * Empty title should not create height.
+     */
 
-    input:focus,
-    textarea:focus,
-    button:focus {
+    #sections .print-section-title:empty {
+
+        display: none !important;
+
+    }
+
+
+    /* ========================================================
+       PRINT SECTION CONTENT
+
+       THIS REPLACES THE TEXTAREA WITH NORMAL TEXT.
+    ======================================================== */
+
+    #sections .print-section-content {
+
+        display: block !important;
+
+        visibility: visible !important;
+
+        opacity: 1 !important;
+
+        width: 100%;
+
+        min-width: 0;
+
+        height: auto !important;
+
+        min-height: 0 !important;
+
+        max-height: none !important;
+
+        margin: 0;
+
+        padding: 0;
+
+        border: 0;
+
+        border-radius: 0;
+
+        background: transparent;
+
+        color: #000000;
+
+        font-family:
+            Arial,
+            Helvetica,
+            sans-serif;
+
+        font-size: 9.5pt;
+
+        font-weight: 400;
+
+        line-height: 1.35;
+
+        white-space: pre-wrap;
+
+        overflow: visible;
+
+        overflow-wrap: anywhere;
+
+        word-break: break-word;
+
+        resize: none;
+
+    }
+
+
+    /*
+     * Empty textarea content must NOT leave
+     * a blank textarea-sized area.
+     */
+
+    #sections .print-section-content:empty {
+
+        display: none !important;
+
+    }
+
+
+    /* ========================================================
+       IF A SECTION HAS ONLY A TITLE
+    ======================================================== */
+
+    #sections .print-section-title:only-child {
+
+        margin-bottom: 0;
+
+    }
+
+
+    /* ========================================================
+       REMOVE INPUT/TEXTAREA PRINT ARTIFACTS
+    ======================================================== */
+
+    input,
+    textarea,
+    select {
 
         outline: none !important;
 
+        box-shadow: none !important;
+
     }
 
-}
+
+    /*
+     * Prevent browser from adding form-control
+     * appearance.
+     */
+
+    input,
+    textarea {
+
+        -webkit-appearance: none;
+
+        appearance: none;
+
+    }
 
 
-/* =========================================================
-   PRINT WIDTH SAFETY
-========================================================= */
+    /* ========================================================
+       LINKS
+    ======================================================== */
 
-@media print and (max-width: 850px) {
+    a {
 
-    .grid {
+        color: #000000;
 
-        grid-template-columns:
-            repeat(3, minmax(0, 1fr));
+        text-decoration: none;
+
+    }
+
+
+    /* ========================================================
+       PAGE BREAK CONTROL
+    ======================================================== */
+
+    .summary-section {
+
+        orphans: 3;
+
+        widows: 3;
+
+    }
+
+
+    /*
+     * Avoid splitting very short headings from
+     * their immediately following text where possible.
+     */
+
+    .print-section-title {
+
+        break-after: avoid;
+
+        page-break-after: avoid;
 
     }
 
