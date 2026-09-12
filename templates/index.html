@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -16,12 +15,10 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='style.css') }}"
     >
-
 </head>
 
 
 <body>
-
 
 <div class="app">
 
@@ -93,7 +90,7 @@
 
 
     <!-- =====================================================
-         MAIN
+         MAIN PAPER
     ====================================================== -->
 
     <main>
@@ -104,8 +101,8 @@
             <!-- =================================================
                  PRINT HEADER
 
-                 Hidden during print because @page margin
-                 provides blank hospital header space.
+                 Hidden during printing.
+                 @page provides blank header space.
             ================================================== -->
 
             <div class="print-header no-print">
@@ -133,6 +130,7 @@
                 </h2>
 
 
+                <!-- JavaScript creates patient fields -->
                 <div
                     id="patientFields"
                     class="grid"
@@ -145,7 +143,7 @@
             <!-- =================================================
                  TYPE OF DISCHARGE
 
-                 Separate from Clinical Summary Sections.
+                 This is separate from clinical sections.
             ================================================== -->
 
             <section class="discharge-type-section">
@@ -161,11 +159,9 @@
                         type="text"
                         id="typeOfDischarge"
                         autocomplete="off"
-                        placeholder=""
                     >
 
 
-                    <!-- Printable value -->
                     <div
                         id="printTypeOfDischarge"
                         class="print-only-text print-field-value"
@@ -186,7 +182,6 @@
                 class="clinical-summary"
             >
 
-
                 <div class="section-heading">
 
                     <div>
@@ -206,7 +201,7 @@
 
 
                 <!-- =================================================
-                     ADD SECTION - TOP
+                     ADD SECTION AT TOP
                 ================================================== -->
 
                 <div class="no-print add-section-area">
@@ -226,9 +221,9 @@
                 <!-- =================================================
                      IMPORTANT
 
-                     THIS CONTAINER MUST REMAIN EMPTY.
+                     THIS MUST STAY EMPTY.
 
-                     JavaScript creates all clinical sections.
+                     JavaScript creates the sections.
                 ================================================== -->
 
                 <div id="sections"></div>
@@ -236,7 +231,7 @@
 
 
                 <!-- =================================================
-                     ADD SECTION - BOTTOM
+                     ADD SECTION AT BOTTOM
                 ================================================== -->
 
                 <div class="no-print add-section-area">
@@ -250,7 +245,6 @@
                     </button>
 
                 </div>
-
 
             </section>
 
@@ -292,14 +286,8 @@
 
 
 
-            <!-- =================================================
-                 PRINT FOOTER SPACE
-            ================================================== -->
-
-            <div class="print-footer">
-                .
-            </div>
-
+            <!-- PRINT FOOTER SPACE -->
+            <div class="print-footer"></div>
 
         </div>
 
@@ -382,9 +370,11 @@ const patientFields = [
 
 
 /* ============================================================
-   DEFAULT CLINICAL SECTIONS
+   DEFAULT SECTIONS
 
-   EXACTLY 9 SECTIONS
+   EXACTLY 9.
+   
+   DO NOT ADD ANY SECTION HERE.
 ============================================================ */
 
 const defaultClinicalSections = [
@@ -448,28 +438,14 @@ const defaultClinicalSections = [
 
 
 /* ============================================================
-   APPLICATION STATE
-============================================================ */
+   GET FRESH COPY OF DEFAULT SECTIONS
 
-let state = {
-
-    patient: {},
-
-    type_of_discharge: "",
-
-    sections: []
-
-};
-
-
-
-/* ============================================================
-   GET FRESH DEFAULT SECTIONS
+   A completely new array is created every time.
 ============================================================ */
 
 function getDefaultSections() {
 
-    return defaultClinicalSections.map(section => {
+    return defaultClinicalSections.map(function(section) {
 
         return {
 
@@ -484,6 +460,22 @@ function getDefaultSections() {
     });
 
 }
+
+
+
+/* ============================================================
+   STATE
+============================================================ */
+
+let state = {
+
+    patient: {},
+
+    type_of_discharge: "",
+
+    sections: []
+
+};
 
 
 
@@ -511,68 +503,88 @@ function normalizeState(data) {
     }
 
 
-    const normalized = {
+    let patient = {};
 
-        patient:
-            data.patient &&
-            typeof data.patient === "object"
-                ? data.patient
-                : {},
+    if (
+        data.patient &&
+        typeof data.patient === "object"
+    ) {
+
+        patient = data.patient;
+
+    }
+
+
+    let typeOfDischarge = "";
+
+    if (
+        typeof data.type_of_discharge === "string"
+    ) {
+
+        typeOfDischarge =
+            data.type_of_discharge;
+
+    }
+
+
+    let sections = [];
+
+    if (
+        Array.isArray(data.sections)
+    ) {
+
+        sections =
+            data.sections
+
+                .filter(function(section) {
+
+                    return (
+                        section &&
+                        typeof section === "object"
+                    );
+
+                })
+
+                .map(function(section, index) {
+
+                    return {
+
+                        id:
+                            section.id ||
+                            (
+                                "section_" +
+                                Date.now() +
+                                "_" +
+                                index
+                            ),
+
+                        title:
+                            typeof section.title === "string"
+                                ? section.title
+                                : "",
+
+                        content:
+                            typeof section.content === "string"
+                                ? section.content
+                                : ""
+
+                    };
+
+                });
+
+    }
+
+
+    return {
+
+        patient: patient,
 
         type_of_discharge:
-            typeof data.type_of_discharge === "string"
-                ? data.type_of_discharge
-                : "",
+            typeOfDischarge,
 
-        sections:
-            Array.isArray(data.sections)
-                ? data.sections
-                : []
+        sections: sections
 
     };
-
-
-    normalized.sections =
-        normalized.sections
-
-            .filter(section => {
-
-                return (
-                    section &&
-                    typeof section === "object"
-                );
-
-            })
-
-            .map((section, index) => {
-
-                return {
-
-                    id:
-                        section.id ||
-                        (
-                            "section_" +
-                            Date.now() +
-                            "_" +
-                            index
-                        ),
-
-                    title:
-                        typeof section.title === "string"
-                            ? section.title
-                            : "",
-
-                    content:
-                        typeof section.content === "string"
-                            ? section.content
-                            : ""
-
-                };
-
-            });
-
-
-    return normalized;
 
 }
 
@@ -598,12 +610,13 @@ function renderPatient() {
     container.innerHTML = "";
 
 
-    patientFields.forEach(field => {
+    patientFields.forEach(function(field) {
 
         const wrapper =
             document.createElement("div");
 
-        wrapper.className = "field";
+        wrapper.className =
+            "field";
 
 
         const label =
@@ -623,11 +636,10 @@ function renderPatient() {
         input.dataset.patientKey =
             field.key;
 
+
         input.value =
             state.patient[field.key] || "";
 
-
-        /* Printable value */
 
         const printValue =
             document.createElement("div");
@@ -644,11 +656,9 @@ function renderPatient() {
             input.value;
 
 
-        /* Update */
-
         input.addEventListener(
             "input",
-            () => {
+            function() {
 
                 state.patient[field.key] =
                     input.value;
@@ -666,6 +676,7 @@ function renderPatient() {
         wrapper.appendChild(input);
 
         wrapper.appendChild(printValue);
+
 
         container.appendChild(wrapper);
 
@@ -710,30 +721,36 @@ function renderDischargeType() {
     }
 
 
-    input.oninput = function () {
+    input.oninput =
+        function() {
 
-        state.type_of_discharge =
-            input.value;
-
-
-        if (printValue) {
-
-            printValue.textContent =
+            state.type_of_discharge =
                 input.value;
 
-        }
 
-    };
+            if (printValue) {
+
+                printValue.textContent =
+                    input.value;
+
+            }
+
+        };
 
 }
 
 
 
 /* ============================================================
-   CREATE ONE CLINICAL SECTION
+   CREATE SECTION
+
+   ONLY renderSections() calls this.
 ============================================================ */
 
-function createSection(section, index) {
+function createSection(
+    section,
+    index
+) {
 
     const article =
         document.createElement("article");
@@ -761,25 +778,23 @@ function createSection(section, index) {
 
 
 
-    /* MOVE UP */
+    /* UP */
 
-    const moveUp =
+    const upButton =
         document.createElement("button");
 
 
-    moveUp.type = "button";
+    upButton.type = "button";
 
-    moveUp.className = "move-up";
+    upButton.textContent = "↑";
 
-    moveUp.textContent = "↑";
-
-    moveUp.title =
+    upButton.title =
         "Move section up";
 
 
-    moveUp.addEventListener(
+    upButton.addEventListener(
         "click",
-        () => {
+        function() {
 
             moveSection(
                 index,
@@ -791,26 +806,23 @@ function createSection(section, index) {
 
 
 
-    /* MOVE DOWN */
+    /* DOWN */
 
-    const moveDown =
+    const downButton =
         document.createElement("button");
 
 
-    moveDown.type = "button";
+    downButton.type = "button";
 
-    moveDown.className =
-        "move-down";
+    downButton.textContent = "↓";
 
-    moveDown.textContent = "↓";
-
-    moveDown.title =
+    downButton.title =
         "Move section down";
 
 
-    moveDown.addEventListener(
+    downButton.addEventListener(
         "click",
-        () => {
+        function() {
 
             moveSection(
                 index,
@@ -828,25 +840,18 @@ function createSection(section, index) {
         document.createElement("button");
 
 
-    deleteButton.type =
-        "button";
-
+    deleteButton.type = "button";
 
     deleteButton.className =
         "danger";
-
 
     deleteButton.textContent =
         "Delete";
 
 
-    deleteButton.title =
-        "Delete section";
-
-
     deleteButton.addEventListener(
         "click",
-        () => {
+        function() {
 
             deleteSection(index);
 
@@ -854,16 +859,22 @@ function createSection(section, index) {
     );
 
 
-    controls.appendChild(moveUp);
+    controls.appendChild(
+        upButton
+    );
 
-    controls.appendChild(moveDown);
+    controls.appendChild(
+        downButton
+    );
 
-    controls.appendChild(deleteButton);
+    controls.appendChild(
+        deleteButton
+    );
 
 
 
     /* ========================================================
-       SECTION TITLE
+       TITLE
     ======================================================== */
 
     const titleInput =
@@ -886,9 +897,6 @@ function createSection(section, index) {
         "Section title";
 
 
-
-    /* Printable title */
-
     const printTitle =
         document.createElement("div");
 
@@ -898,13 +906,12 @@ function createSection(section, index) {
 
 
     printTitle.textContent =
-        section.title || "";
-
+        titleInput.value;
 
 
     titleInput.addEventListener(
         "input",
-        () => {
+        function() {
 
             if (state.sections[index]) {
 
@@ -923,7 +930,7 @@ function createSection(section, index) {
 
 
     /* ========================================================
-       SECTION CONTENT
+       CONTENT
     ======================================================== */
 
     const contentTextarea =
@@ -942,9 +949,6 @@ function createSection(section, index) {
         "Enter details...";
 
 
-
-    /* Printable content */
-
     const printContent =
         document.createElement("div");
 
@@ -954,13 +958,12 @@ function createSection(section, index) {
 
 
     printContent.textContent =
-        section.content || "";
-
+        contentTextarea.value;
 
 
     contentTextarea.addEventListener(
         "input",
-        () => {
+        function() {
 
             if (state.sections[index]) {
 
@@ -979,28 +982,24 @@ function createSection(section, index) {
 
 
     /* ========================================================
-       APPEND EVERYTHING
+       ADD TO SECTION
     ======================================================== */
 
     article.appendChild(
         controls
     );
 
-
     article.appendChild(
         titleInput
     );
-
 
     article.appendChild(
         printTitle
     );
 
-
     article.appendChild(
         contentTextarea
     );
-
 
     article.appendChild(
         printContent
@@ -1014,10 +1013,12 @@ function createSection(section, index) {
 
 
 /* ============================================================
-   RENDER ALL SECTIONS
+   RENDER SECTIONS
 
-   CRITICAL:
-   CLEAR CONTAINER FIRST
+   IMPORTANT:
+   1. Clear container.
+   2. Render state.sections ONLY.
+   3. Never append default sections here.
 ============================================================ */
 
 function renderSections() {
@@ -1031,7 +1032,7 @@ function renderSections() {
     if (!container) {
 
         console.error(
-            "Clinical sections container not found."
+            "Sections container not found."
         );
 
         return;
@@ -1042,11 +1043,17 @@ function renderSections() {
     /*
      * REMOVE EVERYTHING FIRST.
      *
-     * This prevents duplicate/blank sections.
+     * This is what prevents duplicate
+     * Final Diagnosis sections.
      */
 
     container.innerHTML = "";
 
+
+    /*
+     * Only render the sections already
+     * present in state.
+     */
 
     if (
         !Array.isArray(
@@ -1059,12 +1066,8 @@ function renderSections() {
     }
 
 
-    /*
-     * Create sections.
-     */
-
     state.sections.forEach(
-        (section, index) => {
+        function(section, index) {
 
             const element =
                 createSection(
@@ -1141,19 +1144,15 @@ function deleteSection(index) {
     }
 
 
-    const section =
-        state.sections[index];
-
-
-    const name =
-        section.title ||
+    const title =
+        state.sections[index].title ||
         "this section";
 
 
     if (
         !confirm(
             'Delete "' +
-            name +
+            title +
             '"?'
         )
     ) {
@@ -1179,7 +1178,9 @@ function deleteSection(index) {
    ADD SECTION
 ============================================================ */
 
-function addSection(position = null) {
+function addSection(
+    position = null
+) {
 
     const newSection = {
 
@@ -1200,16 +1201,25 @@ function addSection(position = null) {
     };
 
 
+    /*
+     * Add at bottom.
+     */
+
     if (
-        position === null ||
-        position >= state.sections.length
+        position === null
     ) {
 
         state.sections.push(
             newSection
         );
 
-    } else {
+    }
+
+    /*
+     * Add at a specific position.
+     */
+
+    else {
 
         state.sections.splice(
             position,
@@ -1223,44 +1233,53 @@ function addSection(position = null) {
     renderSections();
 
 
-    setTimeout(() => {
+    setTimeout(
+        function() {
 
-        const titles =
-            document.querySelectorAll(
-                "#sections .section-title"
-            );
-
-
-        if (position === null) {
-
-            const last =
-                titles[
-                    titles.length - 1
-                ];
+            const titles =
+                document.querySelectorAll(
+                    "#sections .section-title"
+                );
 
 
-            if (last) {
-                last.focus();
+            if (
+                position === null
+            ) {
+
+                const last =
+                    titles[
+                        titles.length - 1
+                    ];
+
+
+                if (last) {
+
+                    last.focus();
+
+                }
+
             }
 
-        } else {
+            else {
 
-            if (titles[position]) {
+                if (titles[position]) {
 
-                titles[position].focus();
+                    titles[position].focus();
+
+                }
 
             }
 
-        }
-
-    }, 50);
+        },
+        50
+    );
 
 }
 
 
 
 /* ============================================================
-   COLLECT STATE
+   COLLECT CURRENT FORM DATA
 ============================================================ */
 
 function collectState() {
@@ -1272,22 +1291,22 @@ function collectState() {
         .querySelectorAll(
             "[data-patient-key]"
         )
-        .forEach(input => {
+        .forEach(
+            function(input) {
 
-            patient[
-                input.dataset.patientKey
-            ] =
-                input.value;
+                patient[
+                    input.dataset.patientKey
+                ] =
+                    input.value;
 
-        });
-
+            }
+        );
 
 
     const dischargeInput =
         document.getElementById(
             "typeOfDischarge"
         );
-
 
 
     const sections = [];
@@ -1298,7 +1317,7 @@ function collectState() {
             "#sections .summary-section"
         )
         .forEach(
-            (article, index) => {
+            function(article, index) {
 
                 const title =
                     article.querySelector(
@@ -1337,7 +1356,6 @@ function collectState() {
 
             }
         );
-
 
 
     return {
@@ -1411,9 +1429,13 @@ async function saveState(
 
         }
 
-    } catch (error) {
+    }
 
-        console.error(error);
+    catch (error) {
+
+        console.error(
+            error
+        );
 
 
         alert(
@@ -1429,7 +1451,15 @@ async function saveState(
 /* ============================================================
    NEW BLANK SUMMARY
 
-   ALWAYS CREATES EXACTLY 9 SECTIONS
+   THIS IS THE IMPORTANT FIX.
+
+   It ALWAYS creates exactly 9 sections.
+
+   It DOES NOT load old sections.
+
+   It DOES NOT append sections.
+
+   It REPLACES the entire state.
 ============================================================ */
 
 async function newBlankSummary() {
@@ -1446,7 +1476,7 @@ async function newBlankSummary() {
 
 
     /* ========================================================
-       COMPLETELY RESET STATE
+       COMPLETELY REPLACE STATE
     ======================================================== */
 
     state = {
@@ -1461,8 +1491,20 @@ async function newBlankSummary() {
     };
 
 
+    /*
+     * At this point state.sections contains
+     * EXACTLY 9 sections.
+     */
+
+
+    console.log(
+        "NEW BLANK SUMMARY:",
+        state.sections
+    );
+
+
     /* ========================================================
-       CLEAR EXISTING HTML SECTIONS
+       CLEAR OLD DOM
     ======================================================== */
 
     const container =
@@ -1479,7 +1521,7 @@ async function newBlankSummary() {
 
 
     /* ========================================================
-       RENDER
+       RENDER NEW STATE ONLY
     ======================================================== */
 
     renderPatient();
@@ -1489,31 +1531,51 @@ async function newBlankSummary() {
     renderSections();
 
 
+    /*
+     * IMPORTANT:
+     * Do NOT call loadState() here.
+     *
+     * Do NOT call renderSections() with default
+     * sections again.
+     */
+
 
     /* ========================================================
-       SAVE BLANK STATE
+       SAVE NEW BLANK STATE
     ======================================================== */
 
     try {
 
-        await fetch(
-            "/api/state",
-            {
-                method: "POST",
+        const response =
+            await fetch(
+                "/api/state",
+                {
+                    method: "POST",
 
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-                body:
-                    JSON.stringify(
-                        state
-                    )
-            }
-        );
+                    body:
+                        JSON.stringify(
+                            state
+                        )
+                }
+            );
 
-    } catch (error) {
+
+        if (!response.ok) {
+
+            console.error(
+                "Blank state could not be saved."
+            );
+
+        }
+
+    }
+
+    catch (error) {
 
         console.error(
             "Could not save blank state:",
@@ -1523,9 +1585,8 @@ async function newBlankSummary() {
     }
 
 
-
     /* ========================================================
-       SCROLL TO CLINICAL SUMMARY
+       SCROLL
     ======================================================== */
 
     const clinical =
@@ -1547,26 +1608,28 @@ async function newBlankSummary() {
     }
 
 
-
     /* ========================================================
-       FOCUS FIRST SECTION
+       FOCUS FIRST CONTENT
     ======================================================== */
 
-    setTimeout(() => {
+    setTimeout(
+        function() {
 
-        const first =
-            document.querySelector(
-                "#sections .section-content"
-            );
+            const first =
+                document.querySelector(
+                    "#sections .section-content"
+                );
 
 
-        if (first) {
+            if (first) {
 
-            first.focus();
+                first.focus();
 
-        }
+            }
 
-    }, 150);
+        },
+        150
+    );
 
 }
 
@@ -1592,73 +1655,7 @@ async function randomize() {
         if (!response.ok) {
 
             throw new Error(
-                "Random data request failed."
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        state =
-            normalizeState(data);
-
-
-        if (
-            !Array.isArray(
-                state.sections
-            ) ||
-            state.sections.length === 0
-        ) {
-
-            state.sections =
-                getDefaultSections();
-
-        }
-
-
-        renderPatient();
-
-        renderDischargeType();
-
-        renderSections();
-
-
-    } catch (error) {
-
-        console.error(error);
-
-
-        alert(
-            "Could not generate random data."
-        );
-
-    }
-
-}
-
-
-
-/* ============================================================
-   LOAD SAVED STATE
-============================================================ */
-
-async function loadState() {
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/state"
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Could not load state."
+                "Random data failed."
             );
 
         }
@@ -1673,8 +1670,8 @@ async function loadState() {
 
 
         /*
-         * No saved sections:
-         * create the 9 standard sections.
+         * Random data should not accidentally
+         * produce zero sections.
          */
 
         if (
@@ -1696,14 +1693,95 @@ async function loadState() {
 
         renderSections();
 
+    }
 
-    } catch (error) {
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+
+        alert(
+            "Could not generate random data."
+        );
+
+    }
+
+}
+
+
+
+/* ============================================================
+   LOAD SAVED STATE
+
+   ONLY USED ON INITIAL PAGE LOAD.
+============================================================ */
+
+async function loadState() {
+
+    try {
+
+        const response =
+            await fetch(
+                "/api/state"
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Could not load saved state."
+            );
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        state =
+            normalizeState(data);
+
+
+        /*
+         * If there is no saved summary,
+         * create exactly the 9 standard sections.
+         */
+
+        if (
+            !Array.isArray(
+                state.sections
+            ) ||
+            state.sections.length === 0
+        ) {
+
+            state.sections =
+                getDefaultSections();
+
+        }
+
+
+        renderPatient();
+
+        renderDischargeType();
+
+        renderSections();
+
+    }
+
+    catch (error) {
 
         console.error(
             "Could not load state:",
             error
         );
 
+
+        /*
+         * First page load with no saved data.
+         */
 
         state = {
 
@@ -1730,46 +1808,48 @@ async function loadState() {
 
 
 /* ============================================================
-   UPDATE PRINT TEXT
+   UPDATE PRINT VALUES
 ============================================================ */
 
 function updatePrintValues() {
 
     /*
-     * Patient fields
+     * PATIENT VALUES
      */
 
     document
         .querySelectorAll(
             "[data-patient-key]"
         )
-        .forEach(input => {
+        .forEach(
+            function(input) {
 
-            const key =
-                input.dataset.patientKey;
-
-
-            const printElement =
-                document.querySelector(
-                    '[data-print-patient="' +
-                    key +
-                    '"]'
-                );
+                const key =
+                    input.dataset.patientKey;
 
 
-            if (printElement) {
+                const printElement =
+                    document.querySelector(
+                        '[data-print-patient="' +
+                        key +
+                        '"]'
+                    );
 
-                printElement.textContent =
-                    input.value;
+
+                if (printElement) {
+
+                    printElement.textContent =
+                        input.value;
+
+                }
 
             }
-
-        });
+        );
 
 
 
     /*
-     * Type of discharge
+     * TYPE OF DISCHARGE
      */
 
     const dischargeInput =
@@ -1797,77 +1877,76 @@ function updatePrintValues() {
 
 
     /*
-     * Clinical sections
+     * CLINICAL SECTIONS
      */
 
     document
         .querySelectorAll(
             "#sections .summary-section"
         )
-        .forEach(section => {
+        .forEach(
+            function(section) {
 
-            const title =
-                section.querySelector(
-                    ".section-title"
-                );
-
-
-            const content =
-                section.querySelector(
-                    ".section-content"
-                );
+                const title =
+                    section.querySelector(
+                        ".section-title"
+                    );
 
 
-            const printTitle =
-                section.querySelector(
-                    ".print-section-title"
-                );
+                const content =
+                    section.querySelector(
+                        ".section-content"
+                    );
 
 
-            const printContent =
-                section.querySelector(
-                    ".print-section-content"
-                );
+                const printTitle =
+                    section.querySelector(
+                        ".print-section-title"
+                    );
 
 
-            if (
-                title &&
-                printTitle
-            ) {
+                const printContent =
+                    section.querySelector(
+                        ".print-section-content"
+                    );
 
-                printTitle.textContent =
-                    title.value;
+
+                if (
+                    title &&
+                    printTitle
+                ) {
+
+                    printTitle.textContent =
+                        title.value;
+
+                }
+
+
+                if (
+                    content &&
+                    printContent
+                ) {
+
+                    printContent.textContent =
+                        content.value;
+
+                }
 
             }
-
-
-            if (
-                content &&
-                printContent
-            ) {
-
-                printContent.textContent =
-                    content.value;
-
-            }
-
-        });
+        );
 
 }
 
 
 
 /* ============================================================
-   PRINT SUMMARY
-
-   THIS IS THE IMPORTANT PRINT FUNCTION.
+   PRINT
 ============================================================ */
 
 function printSummary() {
 
     /*
-     * First collect everything currently visible
-     * in the editor.
+     * Collect latest values first.
      */
 
     state =
@@ -1877,53 +1956,36 @@ function printSummary() {
 
 
     /*
-     * Make absolutely sure the printable elements
-     * contain the current values.
+     * Put values into real HTML text elements.
      */
 
     updatePrintValues();
 
 
     /*
-     * Give browser a moment to update the DOM.
+     * Small delay allows DOM to update before
+     * browser print preview opens.
      */
 
-    setTimeout(() => {
+    setTimeout(
+        function() {
 
-        window.print();
+            window.print();
 
-    }, 50);
+        },
+        50
+    );
 
 }
 
 
 
 /* ============================================================
-   AFTER PRINT
-============================================================ */
-
-window.addEventListener(
-    "afterprint",
-    () => {
-
-        /*
-         * Refresh printable text from editor
-         * after returning from print.
-         */
-
-        updatePrintValues();
-
-    }
-);
-
-
-
-/* ============================================================
-   EVENT LISTENERS
+   BUTTON EVENTS
 ============================================================ */
 
 
-/* New Blank - top */
+/* Top New Blank */
 
 document
     .getElementById(
@@ -1935,8 +1997,7 @@ document
     );
 
 
-
-/* New Blank - bottom */
+/* Bottom New Blank */
 
 document
     .getElementById(
@@ -1946,7 +2007,6 @@ document
         "click",
         newBlankSummary
     );
-
 
 
 /* Random */
@@ -1961,8 +2021,7 @@ document
     );
 
 
-
-/* Save - top */
+/* Top Save */
 
 document
     .getElementById(
@@ -1970,7 +2029,7 @@ document
     )
     .addEventListener(
         "click",
-        () => {
+        function() {
 
             saveState(true);
 
@@ -1978,8 +2037,7 @@ document
     );
 
 
-
-/* Save - bottom */
+/* Bottom Save */
 
 document
     .getElementById(
@@ -1987,7 +2045,7 @@ document
     )
     .addEventListener(
         "click",
-        () => {
+        function() {
 
             saveState(true);
 
@@ -1995,8 +2053,7 @@ document
     );
 
 
-
-/* Print - top */
+/* Top Print */
 
 document
     .getElementById(
@@ -2008,8 +2065,7 @@ document
     );
 
 
-
-/* Print - bottom */
+/* Bottom Print */
 
 document
     .getElementById(
@@ -2021,8 +2077,7 @@ document
     );
 
 
-
-/* Add section - top */
+/* Add at TOP */
 
 document
     .getElementById(
@@ -2030,7 +2085,7 @@ document
     )
     .addEventListener(
         "click",
-        () => {
+        function() {
 
             addSection(0);
 
@@ -2038,8 +2093,7 @@ document
     );
 
 
-
-/* Add section - bottom */
+/* Add at BOTTOM */
 
 document
     .getElementById(
@@ -2047,7 +2101,7 @@ document
     )
     .addEventListener(
         "click",
-        () => {
+        function() {
 
             addSection(null);
 
@@ -2057,7 +2111,9 @@ document
 
 
 /* ============================================================
-   INITIAL LOAD
+   INITIAL PAGE LOAD
+
+   ONLY HERE do we call loadState().
 ============================================================ */
 
 loadState();
