@@ -1,27 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>Discharge Summary Editor</title>
 
-    <link rel="stylesheet" href="/static/style.css">
+    <link
+        rel="stylesheet"
+        href="/static/style.css">
+
 </head>
+
 
 <body>
 
 <div class="app">
 
-    <!-- ==================================================
+
+    <!-- =====================================================
          TOP BAR
-    =================================================== -->
+    ====================================================== -->
+
     <header class="topbar no-print">
 
         <div class="brand">
-            <h1>Discharge Summary Editor</h1>
-            <p>Create, edit and print discharge summaries</p>
+
+            <h1>
+                Discharge Summary Editor
+            </h1>
+
+            <p>
+                Create, edit and print discharge summaries
+            </p>
+
         </div>
+
 
         <div class="top-actions">
 
@@ -29,28 +48,39 @@
                 type="button"
                 class="secondary"
                 id="randomBtn">
+
                 Generate Random
+
             </button>
+
 
             <button
                 type="button"
                 class="secondary"
                 id="resetBtn">
+
                 New Blank Summary
+
             </button>
+
 
             <button
                 type="button"
                 class="secondary"
                 id="saveBtn">
+
                 Save in Session
+
             </button>
+
 
             <button
                 type="button"
                 class="primary"
                 id="printBtn">
+
                 Print PDF
+
             </button>
 
         </div>
@@ -58,52 +88,68 @@
     </header>
 
 
-    <!-- ==================================================
+
+    <!-- =====================================================
          MAIN
-    =================================================== -->
+    ====================================================== -->
+
     <main>
 
         <div class="paper">
 
-            <!-- ==================================================
+
+            <!-- =================================================
                  BLANK HEADER SPACE
-            =================================================== -->
+            ================================================== -->
+
             <div class="print-header">
 
                 <div class="hospital-header-space">
-                    <!-- Reserved for hospital letterhead -->
+                    <!--
+                        Reserved for hospital letterhead.
+                        Keep blank.
+                    -->
                 </div>
 
             </div>
 
 
-            <!-- ==================================================
+
+            <!-- =================================================
                  PATIENT / ADMISSION DETAILS
-            =================================================== -->
+            ================================================== -->
+
             <section class="patient-section">
 
-                <h2>Patient / Admission Details</h2>
+                <h2>
+                    Patient / Admission Details
+                </h2>
+
 
                 <div
                     class="grid"
                     id="patientGrid">
+
                 </div>
 
             </section>
 
 
-            <!-- ==================================================
+
+            <!-- =================================================
                  TYPE OF DISCHARGE
                  
-                 IMPORTANT:
-                 This is completely separate from
-                 Clinical Summary Sections.
-            =================================================== -->
+                 SEPARATE FROM CLINICAL SECTIONS
+            ================================================== -->
+
             <section class="discharge-type-section">
 
                 <label class="discharge-type-field">
 
-                    <span>TYPE OF DISCHARGE</span>
+                    <span>
+                        TYPE OF DISCHARGE
+                    </span>
+
 
                     <input
                         type="text"
@@ -115,72 +161,108 @@
             </section>
 
 
-            <!-- ==================================================
+
+            <!-- =================================================
                  CLINICAL SUMMARY SECTIONS
-            =================================================== -->
+            ================================================== -->
+
             <section class="clinical-section">
+
 
                 <div class="section-heading no-print">
 
+
                     <div>
-                        <h2>Clinical Summary Sections</h2>
+
+                        <h2>
+                            Clinical Summary Sections
+                        </h2>
+
 
                         <p>
                             Add, edit, reorder or delete any section.
                         </p>
+
                     </div>
+
 
                     <button
                         type="button"
                         class="secondary"
                         id="addSectionBtn">
+
                         + Add Section
+
                     </button>
 
                 </div>
 
 
-                <!-- Dynamic clinical sections -->
+
+                <!--
+                    Clinical sections are inserted here.
+                -->
+
                 <div id="sections"></div>
+
 
             </section>
 
 
-            <!-- ==================================================
-                 BOTTOM BUTTONS
-            =================================================== -->
+
+            <!-- =================================================
+                 BOTTOM ACTIONS
+            ================================================== -->
+
             <div class="bottom-actions no-print">
+
 
                 <button
                     type="button"
                     class="secondary"
                     id="addSectionBtn2">
+
                     + Add Section
+
                 </button>
+
 
                 <button
                     type="button"
                     class="primary"
                     id="saveBtn2">
+
                     Save
+
                 </button>
+
 
                 <button
                     type="button"
                     class="pdf"
                     id="printBtn2">
+
                     Print / Save PDF
+
                 </button>
 
+
             </div>
 
 
-            <!-- ==================================================
+
+            <!-- =================================================
                  BLANK FOOTER SPACE
-            =================================================== -->
+            ================================================== -->
+
             <div class="print-footer">
-                <!-- Reserved for hospital footer -->
+
+                <!--
+                    Reserved for hospital footer.
+                -->
+
             </div>
+
 
         </div>
 
@@ -189,38 +271,61 @@
 </div>
 
 
-<!-- ==================================================
+
+<!-- =========================================================
      CLINICAL SECTION TEMPLATE
-=================================================== -->
+========================================================== -->
+
 <template id="sectionTemplate">
+
 
     <article class="summary-section">
 
+
+        <!-- ================================================
+             SECTION CONTROLS
+        ================================================= -->
+
         <div class="section-controls no-print">
+
 
             <button
                 type="button"
                 class="move-up"
                 title="Move section up">
+
                 ↑
+
             </button>
+
 
             <button
                 type="button"
                 class="move-down"
                 title="Move section down">
+
                 ↓
+
             </button>
+
 
             <button
                 type="button"
                 class="delete-section danger"
                 title="Delete section">
+
                 Delete
+
             </button>
+
 
         </div>
 
+
+
+        <!-- ================================================
+             SECTION TITLE
+        ================================================= -->
 
         <input
             class="section-title"
@@ -229,14 +334,21 @@
             placeholder="Section Title">
 
 
+
+        <!-- ================================================
+             SECTION CONTENT
+        ================================================= -->
+
         <textarea
             class="section-content"
             rows="4"
             placeholder="Enter clinical information..."></textarea>
 
+
     </article>
 
 </template>
+
 
 
 <script>
@@ -244,116 +356,187 @@
 "use strict";
 
 
-/* ==================================================
+
+/* =========================================================
    APPLICATION STATE
-================================================== */
+========================================================= */
 
 let state = {
+
     patient: {},
+
     sections: [],
+
     type_of_discharge: ""
+
 };
 
 
-/* ==================================================
+
+/* =========================================================
    PATIENT FIELDS
-================================================== */
+========================================================= */
 
 const patientFields = [
 
-    ["patient_name", "Patient Name"],
+    [
+        "patient_name",
+        "Patient Name"
+    ],
 
-    ["uhid", "UHID / Patient ID"],
+    [
+        "uhid",
+        "UHID / Patient ID"
+    ],
 
-    ["ipd_no", "IPD No."],
+    [
+        "ipd_no",
+        "IPD No."
+    ],
 
-    ["age", "Age"],
+    [
+        "age",
+        "Age"
+    ],
 
-    ["gender", "Gender"],
+    [
+        "gender",
+        "Gender"
+    ],
 
-    ["address", "Address"],
+    [
+        "address",
+        "Address"
+    ],
 
-    ["consultant", "Consultant"],
+    [
+        "consultant",
+        "Consultant"
+    ],
 
-    ["department", "Department"],
+    [
+        "department",
+        "Department"
+    ],
 
-    ["ward", "Ward"],
+    [
+        "ward",
+        "Ward"
+    ],
 
-    ["bed_no", "Bed No."],
+    [
+        "bed_no",
+        "Bed No."
+    ],
 
-    ["admission_date", "Admission Date & Time"],
+    [
+        "admission_date",
+        "Admission Date & Time"
+    ],
 
-    ["discharge_date", "Discharge Date & Time"]
+    [
+        "discharge_date",
+        "Discharge Date & Time"
+    ]
 
 ];
 
 
-/* ==================================================
-   HTML ESCAPE
-================================================== */
+
+/* =========================================================
+   ESCAPE HTML
+========================================================= */
 
 function esc(value) {
 
     return String(value ?? "")
-        .replace(/[&<>"']/g, function(char) {
+        .replace(
+            /[&<>"']/g,
+            function(char) {
 
-            return {
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#039;"
-            }[char];
+                return {
 
-        });
+                    "&": "&amp;",
+
+                    "<": "&lt;",
+
+                    ">": "&gt;",
+
+                    '"': "&quot;",
+
+                    "'": "&#039;"
+
+                }[char];
+
+            }
+        );
 
 }
 
 
-/* ==================================================
+
+/* =========================================================
    RENDER PATIENT DETAILS
-================================================== */
+========================================================= */
 
 function renderPatient() {
 
     const grid =
-        document.getElementById("patientGrid");
+        document.getElementById(
+            "patientGrid"
+        );
 
-    grid.innerHTML = patientFields
-        .map(function([key, label]) {
 
-            return `
-                <label class="field">
+    grid.innerHTML =
+        patientFields
+            .map(
+                function([key, label]) {
 
-                    <span>${esc(label)}</span>
+                    return `
 
-                    <input
-                        type="text"
-                        data-patient="${esc(key)}"
-                        value="${esc(state.patient[key] || "")}"
-                    >
+                        <label class="field">
 
-                </label>
-            `;
+                            <span>
+                                ${esc(label)}
+                            </span>
 
-        })
-        .join("");
+                            <input
+                                type="text"
+                                data-patient="${esc(key)}"
+                                value="${esc(
+                                    state.patient[key] || ""
+                                )}">
+
+                        </label>
+
+                    `;
+
+                }
+            )
+            .join("");
 
 }
 
 
-/* ==================================================
+
+/* =========================================================
    RENDER TYPE OF DISCHARGE
-================================================== */
+========================================================= */
 
 function renderDischargeType() {
 
     const input =
-        document.getElementById("typeOfDischarge");
+        document.getElementById(
+            "typeOfDischarge"
+        );
+
 
     if (!input) {
+
         return;
+
     }
+
 
     input.value =
         state.type_of_discharge || "";
@@ -361,29 +544,35 @@ function renderDischargeType() {
 }
 
 
-/* ==================================================
-   CREATE ONE CLINICAL SECTION
-================================================== */
+
+/* =========================================================
+   CREATE CLINICAL SECTION
+========================================================= */
 
 function createSection(section) {
 
     const template =
-        document.getElementById("sectionTemplate");
+        document.getElementById(
+            "sectionTemplate"
+        );
+
 
     const element =
-        template.content
+        template
+            .content
             .firstElementChild
             .cloneNode(true);
 
 
-    /* -----------------------------------------------
-       Unique ID
-    ------------------------------------------------ */
+
+    /* =====================================================
+       UNIQUE ID
+    ====================================================== */
 
     element.dataset.id =
         section.id ||
         (
-            "custom_" +
+            "section_" +
             Date.now() +
             "_" +
             Math.random()
@@ -392,34 +581,45 @@ function createSection(section) {
         );
 
 
-    /* -----------------------------------------------
-       Title
-    ------------------------------------------------ */
+
+    /* =====================================================
+       TITLE
+    ====================================================== */
 
     const title =
-        element.querySelector(".section-title");
+        element.querySelector(
+            ".section-title"
+        );
+
 
     title.value =
         section.title || "";
 
 
-    /* -----------------------------------------------
-       Content
-    ------------------------------------------------ */
+
+    /* =====================================================
+       CONTENT
+    ====================================================== */
 
     const content =
-        element.querySelector(".section-content");
+        element.querySelector(
+            ".section-content"
+        );
+
 
     content.value =
         section.content || "";
 
 
-    /* -----------------------------------------------
-       Delete
-    ------------------------------------------------ */
+
+    /* =====================================================
+       DELETE
+    ====================================================== */
 
     element
-        .querySelector(".delete-section")
+        .querySelector(
+            ".delete-section"
+        )
         .addEventListener(
             "click",
             function() {
@@ -430,12 +630,15 @@ function createSection(section) {
         );
 
 
-    /* -----------------------------------------------
-       Move UP
-    ------------------------------------------------ */
+
+    /* =====================================================
+       MOVE UP
+    ====================================================== */
 
     element
-        .querySelector(".move-up")
+        .querySelector(
+            ".move-up"
+        )
         .addEventListener(
             "click",
             function() {
@@ -443,12 +646,14 @@ function createSection(section) {
                 const previous =
                     element.previousElementSibling;
 
+
                 if (previous) {
 
-                    element.parentElement.insertBefore(
-                        element,
-                        previous
-                    );
+                    element.parentElement
+                        .insertBefore(
+                            element,
+                            previous
+                        );
 
                 }
 
@@ -456,12 +661,15 @@ function createSection(section) {
         );
 
 
-    /* -----------------------------------------------
-       Move DOWN
-    ------------------------------------------------ */
+
+    /* =====================================================
+       MOVE DOWN
+    ====================================================== */
 
     element
-        .querySelector(".move-down")
+        .querySelector(
+            ".move-down"
+        )
         .addEventListener(
             "click",
             function() {
@@ -469,12 +677,14 @@ function createSection(section) {
                 const next =
                     element.nextElementSibling;
 
+
                 if (next) {
 
-                    element.parentElement.insertBefore(
-                        next,
-                        element
-                    );
+                    element.parentElement
+                        .insertBefore(
+                            next,
+                            element
+                        );
 
                 }
 
@@ -487,14 +697,18 @@ function createSection(section) {
 }
 
 
-/* ==================================================
+
+/* =========================================================
    RENDER ALL CLINICAL SECTIONS
-================================================== */
+========================================================= */
 
 function renderSections() {
 
     const container =
-        document.getElementById("sections");
+        document.getElementById(
+            "sections"
+        );
+
 
     container.innerHTML = "";
 
@@ -506,134 +720,226 @@ function renderSections() {
     }
 
 
-    state.sections.forEach(function(section) {
+    state.sections.forEach(
+        function(section) {
 
-        container.appendChild(
-            createSection(section)
-        );
+            container.appendChild(
+                createSection(section)
+            );
 
-    });
+        }
+    );
 
 }
 
 
-/* ==================================================
+
+/* =========================================================
    ADD NEW CLINICAL SECTION
-================================================== */
+========================================================= */
 
 function addSection() {
 
     const container =
-        document.getElementById("sections");
+        document.getElementById(
+            "sections"
+        );
 
 
     const newSection = {
 
         id:
-            "custom_" +
+            "section_" +
             Date.now() +
             "_" +
             Math.random()
                 .toString(36)
                 .substring(2),
 
-        title:
-            "New Section",
+        title: "",
 
-        content:
-            ""
+        content: ""
 
     };
 
 
     const element =
-        createSection(newSection);
+        createSection(
+            newSection
+        );
 
 
-    container.appendChild(element);
+    container.appendChild(
+        element
+    );
 
 
-    /* Scroll to new section */
 
-    setTimeout(function() {
+    /* Put cursor in title */
 
-        element.scrollIntoView({
-            behavior: "smooth",
-            block: "center"
-        });
+    const title =
+        element.querySelector(
+            ".section-title"
+        );
 
 
-        const title =
-            element.querySelector(".section-title");
+    if (title) {
 
-        if (title) {
+        title.focus();
 
-            title.focus();
+    }
 
-            title.select();
 
-        }
+    /* Scroll */
 
-    }, 50);
+    setTimeout(
+        function() {
+
+            element.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+        },
+        50
+    );
 
 }
 
 
-/* ==================================================
-   COLLECT CURRENT PAGE DATA
-================================================== */
+
+/* =========================================================
+   CREATE ONE BLANK CLINICAL SECTION
+========================================================= */
+
+function createBlankClinicalSection() {
+
+    const container =
+        document.getElementById(
+            "sections"
+        );
+
+
+    container.innerHTML = "";
+
+
+    const blankSection = {
+
+        id: "section_1",
+
+        title: "",
+
+        content: ""
+
+    };
+
+
+    const element =
+        createSection(
+            blankSection
+        );
+
+
+    container.appendChild(
+        element
+    );
+
+
+
+    /* Focus title */
+
+    const title =
+        element.querySelector(
+            ".section-title"
+        );
+
+
+    if (title) {
+
+        title.focus();
+
+    }
+
+}
+
+
+
+/* =========================================================
+   COLLECT CURRENT FORM DATA
+========================================================= */
 
 function collect() {
 
-    /* -----------------------------------------------
-       Patient
-    ------------------------------------------------ */
+    /* -----------------------------------------------------
+       PATIENT
+    ----------------------------------------------------- */
 
     const patient = {};
 
 
     document
-        .querySelectorAll("[data-patient]")
-        .forEach(function(input) {
+        .querySelectorAll(
+            "[data-patient]"
+        )
+        .forEach(
+            function(input) {
 
-            patient[input.dataset.patient] =
-                input.value;
+                patient[
+                    input.dataset.patient
+                ] =
+                    input.value;
 
-        });
+            }
+        );
 
 
-    /* -----------------------------------------------
-       Clinical Sections
-    ------------------------------------------------ */
+
+    /* -----------------------------------------------------
+       CLINICAL SECTIONS
+    ----------------------------------------------------- */
 
     const sections = [
-        ...document.querySelectorAll(".summary-section")
-    ].map(function(element, index) {
 
-        return {
+        ...document.querySelectorAll(
+            ".summary-section"
+        )
 
-            id:
-                element.dataset.id ||
-                ("custom_" + (index + 1)),
+    ].map(
+        function(element, index) {
 
-            title:
-                element
-                    .querySelector(".section-title")
-                    .value,
+            return {
 
-            content:
-                element
-                    .querySelector(".section-content")
-                    .value
+                id:
+                    element.dataset.id ||
+                    (
+                        "section_" +
+                        (index + 1)
+                    ),
 
-        };
+                title:
+                    element
+                        .querySelector(
+                            ".section-title"
+                        )
+                        .value,
 
-    });
+                content:
+                    element
+                        .querySelector(
+                            ".section-content"
+                        )
+                        .value
+
+            };
+
+        }
+    );
 
 
-    /* -----------------------------------------------
-       Type of Discharge
-    ------------------------------------------------ */
+
+    /* -----------------------------------------------------
+       TYPE OF DISCHARGE
+    ----------------------------------------------------- */
 
     const dischargeInput =
         document.getElementById(
@@ -645,6 +951,7 @@ function collect() {
         dischargeInput
             ? dischargeInput.value
             : "";
+
 
 
     return {
@@ -661,14 +968,21 @@ function collect() {
 }
 
 
-/* ==================================================
-   API HELPER
-================================================== */
 
-async function api(url, options = {}) {
+/* =========================================================
+   API HELPER
+========================================================= */
+
+async function api(
+    url,
+    options = {}
+) {
 
     const response =
-        await fetch(url, options);
+        await fetch(
+            url,
+            options
+        );
 
 
     let data;
@@ -679,7 +993,9 @@ async function api(url, options = {}) {
         data =
             await response.json();
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         throw new Error(
             "Server returned an invalid response."
@@ -703,13 +1019,17 @@ async function api(url, options = {}) {
 }
 
 
-/* ==================================================
+
+/* =========================================================
    NORMALIZE STATE
-================================================== */
+========================================================= */
 
 function normalizeState(data) {
 
-    if (!data || typeof data !== "object") {
+    if (
+        !data ||
+        typeof data !== "object"
+    ) {
 
         return {
 
@@ -729,13 +1049,21 @@ function normalizeState(data) {
         patient:
             data.patient &&
             typeof data.patient === "object"
+
                 ? data.patient
+
                 : {},
 
+
         sections:
-            Array.isArray(data.sections)
+            Array.isArray(
+                data.sections
+            )
+
                 ? data.sections
+
                 : [],
+
 
         type_of_discharge:
             data.type_of_discharge || ""
@@ -745,23 +1073,29 @@ function normalizeState(data) {
 }
 
 
-/* ==================================================
-   LOAD EXISTING STATE
-================================================== */
+
+/* =========================================================
+   LOAD
+========================================================= */
 
 async function load() {
 
     try {
 
         const result =
-            await api("/api/state");
+            await api(
+                "/api/state"
+            );
 
 
         state =
-            normalizeState(result.state);
+            normalizeState(
+                result.state
+            );
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
         console.warn(
             "Could not load saved state:",
@@ -782,18 +1116,36 @@ async function load() {
     }
 
 
+
     renderPatient();
 
     renderDischargeType();
 
     renderSections();
 
+
+
+    /*
+     * If there are no sections at all,
+     * automatically create one blank section.
+     */
+
+    if (
+        !state.sections ||
+        state.sections.length === 0
+    ) {
+
+        createBlankClinicalSection();
+
+    }
+
 }
 
 
-/* ==================================================
+
+/* =========================================================
    SAVE
-================================================== */
+========================================================= */
 
 async function save() {
 
@@ -811,12 +1163,16 @@ async function save() {
                     method: "POST",
 
                     headers: {
+
                         "Content-Type":
                             "application/json"
+
                     },
 
                     body:
-                        JSON.stringify(state)
+                        JSON.stringify(
+                            state
+                        )
 
                 }
             );
@@ -824,7 +1180,8 @@ async function save() {
 
         state =
             normalizeState(
-                result.state || state
+                result.state ||
+                state
             );
 
 
@@ -835,14 +1192,18 @@ async function save() {
         renderSections();
 
 
+
         alert(
             "Discharge summary saved in the current session."
         );
 
+    }
 
-    } catch (error) {
+    catch (error) {
 
-        console.error(error);
+        console.error(
+            error
+        );
 
 
         alert(
@@ -855,9 +1216,10 @@ async function save() {
 }
 
 
-/* ==================================================
+
+/* =========================================================
    GENERATE RANDOM SUMMARY
-================================================== */
+========================================================= */
 
 async function randomize() {
 
@@ -872,12 +1234,6 @@ async function randomize() {
             );
 
 
-        /*
-         * Some backends return the state
-         * directly, while others return
-         * { state: ... }.
-         */
-
         if (result.state) {
 
             state =
@@ -885,7 +1241,9 @@ async function randomize() {
                     result.state
                 );
 
-        } else {
+        }
+
+        else {
 
             state =
                 normalizeState(
@@ -902,9 +1260,28 @@ async function randomize() {
         renderSections();
 
 
-    } catch (error) {
 
-        console.error(error);
+        /*
+         * If random API doesn't return sections,
+         * provide one blank section.
+         */
+
+        if (
+            !state.sections ||
+            state.sections.length === 0
+        ) {
+
+            createBlankClinicalSection();
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
 
 
         alert(
@@ -917,16 +1294,17 @@ async function randomize() {
 }
 
 
-/* ==================================================
+
+/* =========================================================
    NEW BLANK SUMMARY
-================================================== */
+========================================================= */
 
 async function reset() {
 
     const confirmed =
         confirm(
             "Create a new blank discharge summary?\n\n" +
-            "All current unsaved information will be cleared."
+            "All current information will be cleared."
         );
 
 
@@ -937,24 +1315,39 @@ async function reset() {
     }
 
 
-    /*
-     * IMPORTANT:
-     *
-     * We do NOT depend on /api/reset.
-     *
-     * The browser is directly reset here.
-     */
 
+    /*
+     * =====================================================
+     * IMPORTANT
+     *
+     * We completely replace the current state.
+     *
+     * ONE blank clinical section is intentionally created.
+     * =====================================================
+     */
 
     state = {
 
         patient: {},
 
-        sections: [],
+        sections: [
+
+            {
+
+                id: "section_1",
+
+                title: "",
+
+                content: ""
+
+            }
+
+        ],
 
         type_of_discharge: ""
 
     };
+
 
 
     /* Clear patient fields */
@@ -962,22 +1355,38 @@ async function reset() {
     renderPatient();
 
 
+
     /* Clear Type of Discharge */
 
     renderDischargeType();
 
 
-    /* Remove all clinical sections */
+
+    /* Render ONE blank clinical section */
 
     renderSections();
 
 
+
     /*
-     * Also try to save the blank state
-     * into the current session.
+     * Scroll to the top.
+     */
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+
+
+    /*
+     * Try to save the blank state to the session.
      *
-     * If the backend does not support it,
-     * the page is still cleared.
+     * The page is already cleared even if this
+     * server request fails.
      */
 
     try {
@@ -989,50 +1398,68 @@ async function reset() {
                 method: "POST",
 
                 headers: {
+
                     "Content-Type":
                         "application/json"
+
                 },
 
                 body:
-                    JSON.stringify(state)
+                    JSON.stringify(
+                        state
+                    )
 
             }
         );
 
-    } catch (error) {
+    }
+
+    catch (error) {
 
         console.warn(
-            "Blank summary created locally. " +
-            "Server sync failed:",
+            "Blank summary created, but server sync failed:",
             error
         );
 
     }
 
 
+
     /*
-     * Scroll to the top of the form
+     * Focus the blank clinical section title.
      */
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+    setTimeout(
+        function() {
+
+            const title =
+                document.querySelector(
+                    ".summary-section .section-title"
+                );
+
+
+            if (title) {
+
+                title.focus();
+
+            }
+
+        },
+        100
+    );
 
 }
 
 
-/* ==================================================
+
+/* =========================================================
    PRINT
-================================================== */
+========================================================= */
 
 function printSummary() {
 
     /*
-     * First collect current visible values.
-     *
-     * This makes sure the latest typing is
-     * represented when printing.
+     * Collect latest changes before printing.
      */
 
     state =
@@ -1044,81 +1471,125 @@ function printSummary() {
 }
 
 
-/* ==================================================
+
+/* =========================================================
    BUTTON EVENTS
-================================================== */
+========================================================= */
+
+
+/* Add section - top */
 
 document
-    .getElementById("addSectionBtn")
+    .getElementById(
+        "addSectionBtn"
+    )
     .addEventListener(
         "click",
         addSection
     );
 
 
+
+/* Add section - bottom */
+
 document
-    .getElementById("addSectionBtn2")
+    .getElementById(
+        "addSectionBtn2"
+    )
     .addEventListener(
         "click",
         addSection
     );
 
 
+
+/* Save - top */
+
 document
-    .getElementById("saveBtn")
+    .getElementById(
+        "saveBtn"
+    )
     .addEventListener(
         "click",
         save
     );
 
 
+
+/* Save - bottom */
+
 document
-    .getElementById("saveBtn2")
+    .getElementById(
+        "saveBtn2"
+    )
     .addEventListener(
         "click",
         save
     );
 
 
+
+/* Random */
+
 document
-    .getElementById("randomBtn")
+    .getElementById(
+        "randomBtn"
+    )
     .addEventListener(
         "click",
         randomize
     );
 
 
+
+/* New Blank Summary */
+
 document
-    .getElementById("resetBtn")
+    .getElementById(
+        "resetBtn"
+    )
     .addEventListener(
         "click",
         reset
     );
 
 
+
+/* Print - top */
+
 document
-    .getElementById("printBtn")
+    .getElementById(
+        "printBtn"
+    )
     .addEventListener(
         "click",
         printSummary
     );
 
 
+
+/* Print - bottom */
+
 document
-    .getElementById("printBtn2")
+    .getElementById(
+        "printBtn2"
+    )
     .addEventListener(
         "click",
         printSummary
     );
 
 
-/* ==================================================
+
+/* =========================================================
    START APPLICATION
-================================================== */
+========================================================= */
 
 load();
 
 </script>
 
+
 </body>
+
 </html>
