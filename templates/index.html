@@ -1,207 +1,235 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Discharge Summary Editor</title>
-<link rel="stylesheet" href="/static/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Discharge Summary Editor</title>
+
+  <link rel="stylesheet" href="/static/style.css">
 </head>
 
 <body>
 
 <div class="app">
 
-<header class="topbar no-print">
+  <!-- =========================
+       TOP BAR
+  ========================== -->
+  <header class="topbar no-print">
 
-  <div>
-    <div class="eyebrow">
-      HOSPITAL MANAGEMENT SYSTEM • TRAINING MODE
+    <div class="brand">
+      <h1>Discharge Summary Editor</h1>
+      <p>Create, edit and print discharge summaries</p>
     </div>
 
-    <h1>Discharge Summary</h1>
-
-    <p>
-      Editable template • No database • Session data only
-    </p>
-  </div>
-
-  <div class="top-actions">
-
-    <button class="secondary" id="randomBtn">
-      Generate Random
-    </button>
-
-    <button class="secondary" id="resetBtn">
-      New Blank Summary
-    </button>
-
-    <button class="primary" id="saveBtn">
-      Save in Session
-    </button>
-
-    <button class="pdf" id="printBtn">
-      Save / Print PDF
-    </button>
-
-  </div>
-
-</header>
-
-
-<main>
-
-<section class="paper" id="summaryPaper">
-
-
-  <!-- PRINT HEADER -->
-
-  <div class="print-header">
-
-    <div class="hospital-name">
-      HOSPITAL DISCHARGE SUMMARY
-    </div>
-
-    <div class="document-title">
-      DISCHARGE SUMMARY
-    </div>
-
-  </div>
-
-
-  <!-- PATIENT DETAILS -->
-
-  <section class="patient-section">
-
-    <h2>
-      Patient / Admission Details
-    </h2>
-
-    <div class="grid" id="patientGrid"></div>
-
-  </section>
-
-
-  <!-- TYPE OF DISCHARGE -->
-
-  <section class="discharge-type-section">
-
-    <label class="discharge-type-field">
-
-      <span>
-        TYPE OF DISCHARGE
-      </span>
-
-      <input
-        type="text"
-        id="typeOfDischarge"
-        placeholder="Discharged"
-      >
-
-    </label>
-
-  </section>
-
-
-  <!-- CLINICAL SUMMARY -->
-
-  <section>
-
-    <div class="section-heading no-print">
-
-      <div>
-
-        <h2>
-          Clinical Summary Sections
-        </h2>
-
-        <p>
-          Add, edit, reorder or delete any section.
-        </p>
-
-      </div>
+    <div class="top-actions">
 
       <button
+        type="button"
         class="secondary"
-        id="addSectionBtn"
-      >
-        + Add Section
+        id="randomBtn">
+        Generate Random
+      </button>
+
+      <button
+        type="button"
+        class="secondary"
+        id="resetBtn">
+        New Blank Summary
+      </button>
+
+      <button
+        type="button"
+        class="secondary"
+        id="saveBtn">
+        Save in Session
+      </button>
+
+      <button
+        type="button"
+        class="primary"
+        id="printBtn">
+        Print PDF
       </button>
 
     </div>
 
-
-    <div id="sections"></div>
-
-  </section>
+  </header>
 
 
-  <!-- BOTTOM ACTIONS -->
+  <!-- =========================
+       MAIN
+  ========================== -->
+  <main>
 
-  <div class="bottom-actions no-print">
+    <div class="paper">
 
-    <button
-      class="secondary"
-      id="addSectionBtn2"
-    >
-      + Add Section
-    </button>
+      <!-- =========================
+           PRINT HEADER SPACE
+           Keep blank for hospital
+           letterhead
+      ========================== -->
+      <div class="print-header">
 
-    <button
-      class="primary"
-      id="saveBtn2"
-    >
-      Save in Session
-    </button>
+        <div class="hospital-header-space">
+          <!--
+            Leave this area blank.
+            Hospital letterhead will appear
+            from the physical/pre-printed page.
+          -->
+        </div>
 
-    <button
-      class="pdf"
-      id="printBtn2"
-    >
-      Save / Print PDF
-    </button>
-
-  </div>
+      </div>
 
 
-  <!-- PRINT FOOTER SPACE -->
+      <!-- =========================
+           PATIENT / ADMISSION DETAILS
+      ========================== -->
+      <section class="patient-section">
 
-  <div class="print-footer">
-    This discharge summary is generated from the information entered in the training simulator.
-  </div>
+        <h2>Patient / Admission Details</h2>
 
-</section>
+        <div
+          class="grid"
+          id="patientGrid">
+        </div>
 
-</main>
+      </section>
+
+
+      <!-- =========================
+           TYPE OF DISCHARGE
+           
+           IMPORTANT:
+           This is independent from
+           Clinical Summary Sections.
+      ========================== -->
+      <section class="discharge-type-section">
+
+        <label class="discharge-type-field">
+
+          <span>TYPE OF DISCHARGE</span>
+
+          <input
+            type="text"
+            id="typeOfDischarge"
+            placeholder="Discharged">
+
+        </label>
+
+      </section>
+
+
+      <!-- =========================
+           CLINICAL SUMMARY SECTIONS
+      ========================== -->
+      <section class="clinical-section">
+
+        <div class="section-heading no-print">
+
+          <div>
+            <h2>Clinical Summary Sections</h2>
+
+            <p>
+              Add, edit, reorder or delete any section.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            class="secondary"
+            id="addSectionBtn">
+            + Add Section
+          </button>
+
+        </div>
+
+
+        <!-- Dynamic sections appear here -->
+        <div id="sections"></div>
+
+      </section>
+
+
+      <!-- =========================
+           BOTTOM ACTIONS
+      ========================== -->
+      <div class="bottom-actions no-print">
+
+        <button
+          type="button"
+          class="secondary"
+          id="addSectionBtn2">
+          + Add Section
+        </button>
+
+        <button
+          type="button"
+          class="primary"
+          id="saveBtn2">
+          Save
+        </button>
+
+        <button
+          type="button"
+          class="pdf"
+          id="printBtn2">
+          Print / Save PDF
+        </button>
+
+      </div>
+
+
+      <!-- =========================
+           PRINT FOOTER SPACE
+      ========================== -->
+      <div class="print-footer">
+
+        <!--
+          Intentionally blank.
+          This space is reserved for
+          hospital footer / stamp / footer
+          letterhead.
+        -->
+
+      </div>
+
+    </div>
+
+  </main>
 
 </div>
 
 
-<!-- SECTION TEMPLATE -->
-
+<!-- =====================================================
+     DYNAMIC SECTION TEMPLATE
+====================================================== -->
 <template id="sectionTemplate">
 
   <article class="summary-section">
 
+    <!-- Controls are hidden while printing -->
     <div class="section-controls no-print">
 
       <button
+        type="button"
         class="move-up"
-        title="Move up"
-      >
+        title="Move section up">
         ↑
       </button>
 
       <button
+        type="button"
         class="move-down"
-        title="Move down"
-      >
+        title="Move section down">
         ↓
       </button>
 
       <button
+        type="button"
         class="delete-section danger"
-        title="Delete section"
-      >
+        title="Delete section">
         Delete
       </button>
 
@@ -212,20 +240,30 @@
       class="section-title"
       type="text"
       value=""
-    >
+      placeholder="Section Title">
 
 
     <textarea
       class="section-content"
       rows="4"
-    ></textarea>
+      placeholder="Enter clinical information..."></textarea>
 
   </article>
 
 </template>
 
 
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
 <script>
+
+"use strict";
+
+
+/* =====================================================
+   APPLICATION STATE
+===================================================== */
 
 let state = {
   patient: {},
@@ -234,126 +272,176 @@ let state = {
 };
 
 
+/* =====================================================
+   PATIENT FIELDS
+===================================================== */
+
 const patientFields = [
 
-  ['patient_name','Patient Name'],
-  ['uhid','UHID / Patient ID'],
-  ['ipd_no','IPD No.'],
-  ['age','Age'],
-  ['gender','Gender'],
-  ['address','Address'],
+  ["patient_name", "Patient Name"],
 
-  ['consultant','Consultant'],
-  ['department','Department'],
-  ['ward','Ward'],
-  ['bed_no','Bed No.'],
-  ['admission_date','Admission Date & Time'],
-  ['discharge_date','Discharge Date & Time']
+  ["uhid", "UHID / Patient ID"],
+
+  ["ipd_no", "IPD No."],
+
+  ["age", "Age"],
+
+  ["gender", "Gender"],
+
+  ["address", "Address"],
+
+  ["consultant", "Consultant"],
+
+  ["department", "Department"],
+
+  ["ward", "Ward"],
+
+  ["bed_no", "Bed No."],
+
+  ["admission_date", "Admission Date & Time"],
+
+  ["discharge_date", "Discharge Date & Time"]
 
 ];
 
 
-function esc(s) {
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
-  return String(s ?? '').replace(
-    /[&<>"']/g,
-    c => ({
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#039;'
-    }[c])
-  );
+function esc(value) {
+
+  return String(value ?? "")
+    .replace(/[&<>"']/g, function(char) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+
+      }[char];
+
+    });
 
 }
 
+
+/* =====================================================
+   RENDER PATIENT DETAILS
+===================================================== */
 
 function renderPatient() {
 
   const grid =
-    document.getElementById('patientGrid');
+    document.getElementById("patientGrid");
 
-  grid.innerHTML =
-    patientFields.map(
-      ([key,label]) => `
+  grid.innerHTML = patientFields
+    .map(function([key, label]) {
 
+      return `
         <label class="field">
 
-          <span>
-            ${esc(label)}
-          </span>
+          <span>${esc(label)}</span>
 
           <input
-            data-patient="${key}"
-            value="${esc(
-              state.patient[key] || ''
-            )}"
+            type="text"
+            data-patient="${esc(key)}"
+            value="${esc(state.patient[key] || "")}"
           >
 
         </label>
+      `;
 
-      `
-    ).join('');
+    })
+    .join("");
 
 }
 
+
+/* =====================================================
+   RENDER TYPE OF DISCHARGE
+===================================================== */
 
 function renderDischargeType() {
 
-  document.getElementById(
-    'typeOfDischarge'
-  ).value =
-    state.type_of_discharge || '';
+  const input =
+    document.getElementById("typeOfDischarge");
+
+  if (!input) {
+    return;
+  }
+
+  input.value =
+    state.type_of_discharge || "";
 
 }
 
 
-function sectionTemplate(s) {
+/* =====================================================
+   CREATE A CLINICAL SECTION
+===================================================== */
 
-  const el =
-    document
-      .getElementById('sectionTemplate')
-      .content
-      .firstElementChild
-      .cloneNode(true);
+function sectionTemplate(section) {
 
+  const template =
+    document.getElementById("sectionTemplate");
 
-  el.dataset.id =
-    s.id || ('custom_' + Date.now());
-
-
-  el.querySelector(
-    '.section-title'
-  ).value =
-    s.title || '';
+  const element =
+    template.content.firstElementChild.cloneNode(true);
 
 
-  el.querySelector(
-    '.section-content'
-  ).value =
-    s.content || '';
+  /* Section ID */
+
+  element.dataset.id =
+    section.id ||
+    ("custom_" + Date.now() + "_" + Math.random().toString(36).slice(2));
 
 
-  el.querySelector(
-    '.delete-section'
-  ).onclick =
-    () => el.remove();
+  /* Section title */
+
+  const title =
+    element.querySelector(".section-title");
+
+  title.value =
+    section.title || "";
 
 
-  el.querySelector(
-    '.move-up'
-  ).onclick =
-    () => {
+  /* Section content */
 
-      const prev =
-        el.previousElementSibling;
+  const content =
+    element.querySelector(".section-content");
 
-      if (prev) {
+  content.value =
+    section.content || "";
 
-        el.parentElement.insertBefore(
-          el,
-          prev
+
+  /* Delete */
+
+  element
+    .querySelector(".delete-section")
+    .onclick = function() {
+
+      element.remove();
+
+    };
+
+
+  /* Move UP */
+
+  element
+    .querySelector(".move-up")
+    .onclick = function() {
+
+      const previous =
+        element.previousElementSibling;
+
+      if (previous) {
+
+        element.parentElement.insertBefore(
+          element,
+          previous
         );
 
       }
@@ -361,19 +449,20 @@ function sectionTemplate(s) {
     };
 
 
-  el.querySelector(
-    '.move-down'
-  ).onclick =
-    () => {
+  /* Move DOWN */
+
+  element
+    .querySelector(".move-down")
+    .onclick = function() {
 
       const next =
-        el.nextElementSibling;
+        element.nextElementSibling;
 
       if (next) {
 
-        el.parentElement.insertBefore(
+        element.parentElement.insertBefore(
           next,
-          el
+          element
         );
 
       }
@@ -381,348 +470,530 @@ function sectionTemplate(s) {
     };
 
 
-  return el;
+  return element;
 
 }
 
+
+/* =====================================================
+   RENDER ALL CLINICAL SECTIONS
+===================================================== */
 
 function renderSections() {
 
   const box =
-    document.getElementById('sections');
+    document.getElementById("sections");
 
-  box.innerHTML = '';
+  box.innerHTML = "";
 
-  state.sections.forEach(
-    s =>
-      box.appendChild(
-        sectionTemplate(s)
-      )
-  );
+
+  state.sections.forEach(function(section) {
+
+    box.appendChild(
+      sectionTemplate(section)
+    );
+
+  });
 
 }
 
 
+/* =====================================================
+   ADD NEW SECTION
+===================================================== */
+
+function addSection() {
+
+  const box =
+    document.getElementById("sections");
+
+
+  const section = {
+
+    id:
+      "custom_" +
+      Date.now() +
+      "_" +
+      Math.random()
+        .toString(36)
+        .slice(2),
+
+    title:
+      "New Section",
+
+    content:
+      ""
+
+  };
+
+
+  box.appendChild(
+    sectionTemplate(section)
+  );
+
+
+  /* Scroll to new section */
+
+  const last =
+    box.lastElementChild;
+
+  if (last) {
+
+    last.scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    const title =
+      last.querySelector(".section-title");
+
+    if (title) {
+      title.focus();
+      title.select();
+    }
+
+  }
+
+}
+
+
+/* =====================================================
+   COLLECT CURRENT FORM DATA
+===================================================== */
+
 function collect() {
+
+  /* -------------------------
+     Patient
+  ------------------------- */
 
   const patient = {};
 
 
   document
-    .querySelectorAll('[data-patient]')
-    .forEach(
-      x =>
-        patient[x.dataset.patient] =
-          x.value
-    );
+    .querySelectorAll("[data-patient]")
+    .forEach(function(input) {
+
+      patient[input.dataset.patient] =
+        input.value;
+
+    });
 
 
-  const sections =
-    [
-      ...document.querySelectorAll(
-        '.summary-section'
-      )
-    ].map(
-      (el,i) => ({
+  /* -------------------------
+     Clinical Sections
+  ------------------------- */
+
+  const sections = [
+    ...document.querySelectorAll(".summary-section")
+  ]
+    .map(function(element, index) {
+
+      return {
 
         id:
-          el.dataset.id ||
-          `custom_${i + 1}`,
+          element.dataset.id ||
+          ("custom_" + (index + 1)),
 
         title:
-          el.querySelector(
-            '.section-title'
-          ).value,
+          element
+            .querySelector(".section-title")
+            .value,
 
         content:
-          el.querySelector(
-            '.section-content'
-          ).value
+          element
+            .querySelector(".section-content")
+            .value
 
-      })
-    );
+      };
+
+    });
+
+
+  /* -------------------------
+     Type of Discharge
+  ------------------------- */
+
+  const typeOfDischarge =
+    document
+      .getElementById("typeOfDischarge")
+      .value;
 
 
   return {
 
-    patient,
+    patient: patient,
 
-    sections,
+    sections: sections,
 
     type_of_discharge:
-      document.getElementById(
-        'typeOfDischarge'
-      ).value
+      typeOfDischarge
 
   };
 
 }
 
 
-async function api(url,opts={}) {
+/* =====================================================
+   API HELPER
+===================================================== */
 
-  const r =
-    await fetch(url,opts);
+async function api(url, options = {}) {
 
-  const data =
-    await r.json();
+  const response =
+    await fetch(url, options);
 
-  if (!r.ok) {
+
+  let data = {};
+
+  try {
+
+    data =
+      await response.json();
+
+  } catch (error) {
 
     throw new Error(
-      data.error ||
-      'Request failed'
+      "Invalid server response."
     );
 
   }
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      data.error ||
+      "Request failed."
+    );
+
+  }
+
 
   return data;
 
 }
 
 
+/* =====================================================
+   LOAD STATE
+===================================================== */
+
 async function load() {
 
-  state =
-    (await api('/api/state')).state;
+  try {
 
-  renderPatient();
+    const result =
+      await api("/api/state");
 
-  renderDischargeType();
 
-  renderSections();
+    state =
+      result.state || {};
+
+
+    /* Ensure properties exist */
+
+    state.patient =
+      state.patient || {};
+
+    state.sections =
+      state.sections || [];
+
+    state.type_of_discharge =
+      state.type_of_discharge || "";
+
+
+    renderPatient();
+
+    renderDischargeType();
+
+    renderSections();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    state = {
+
+      patient: {},
+
+      sections: [],
+
+      type_of_discharge: ""
+
+    };
+
+
+    renderPatient();
+
+    renderDischargeType();
+
+    renderSections();
+
+  }
 
 }
 
+
+/* =====================================================
+   SAVE
+===================================================== */
 
 async function save() {
 
   try {
 
-    state = collect();
+    state =
+      collect();
 
 
     const result =
       await api(
-        '/api/state',
+        "/api/state",
         {
-          method: 'POST',
+
+          method: "POST",
 
           headers: {
-            'Content-Type':
-              'application/json'
+            "Content-Type":
+              "application/json"
           },
 
           body:
             JSON.stringify(state)
+
         }
       );
 
 
-    state = result.state;
+    state =
+      result.state || state;
+
+
+    state.patient =
+      state.patient || {};
+
+    state.sections =
+      state.sections || [];
+
+    state.type_of_discharge =
+      state.type_of_discharge || "";
+
+
+    renderPatient();
+
+    renderDischargeType();
+
+    renderSections();
 
 
     alert(
-      'Saved in current session. No database was used.'
+      "Saved in current session.\n\n" +
+      "No database was used."
     );
 
-  }
 
-  catch(e) {
+  } catch (error) {
+
+    console.error(error);
 
     alert(
-      'Save failed: ' +
-      e.message
+      "Save failed: " +
+      error.message
     );
 
   }
 
 }
 
+
+/* =====================================================
+   GENERATE RANDOM DATA
+===================================================== */
 
 async function randomize() {
 
-  state =
-    await api(
-      '/api/random',
-      {
-        method: 'POST'
-      }
+  try {
+
+    state =
+      await api(
+        "/api/random",
+        {
+          method: "POST"
+        }
+      );
+
+
+    state.patient =
+      state.patient || {};
+
+    state.sections =
+      state.sections || [];
+
+    state.type_of_discharge =
+      state.type_of_discharge || "";
+
+
+    renderPatient();
+
+    renderDischargeType();
+
+    renderSections();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Random generation failed: " +
+      error.message
     );
 
-
-  renderPatient();
-
-  renderDischargeType();
-
-  renderSections();
+  }
 
 }
 
+
+/* =====================================================
+   RESET / NEW BLANK SUMMARY
+===================================================== */
 
 async function reset() {
 
-  state =
-    await api(
-      '/api/reset',
-      {
-        method: 'POST'
-      }
-    );
+  try {
+
+    state =
+      await api(
+        "/api/reset",
+        {
+          method: "POST"
+        }
+      );
 
 
-  state.patient = {};
+    state.patient = {};
 
-  state.sections = [];
+    state.sections = [];
 
-  state.type_of_discharge = '';
-
-
-  renderPatient();
-
-  renderDischargeType();
-
-  renderSections();
-
-}
+    state.type_of_discharge = "";
 
 
-function addSection() {
+    renderPatient();
 
-  const box =
-    document.getElementById(
-      'sections'
-    );
+    renderDischargeType();
 
-
-  const el =
-    document
-      .getElementById(
-        'sectionTemplate'
-      )
-      .content
-      .firstElementChild
-      .cloneNode(true);
+    renderSections();
 
 
-  el.dataset.id =
-    'custom_' + Date.now();
+  } catch (error) {
 
+    console.error(error);
 
-  el.querySelector(
-    '.section-title'
-  ).value =
-    'New Section';
+    /* Local fallback */
 
+    state = {
 
-  el.querySelector(
-    '.section-content'
-  ).value =
-    '';
+      patient: {},
 
+      sections: [],
 
-  el.querySelector(
-    '.delete-section'
-  ).onclick =
-    () => el.remove();
-
-
-  el.querySelector(
-    '.move-up'
-  ).onclick =
-    () => {
-
-      const prev =
-        el.previousElementSibling;
-
-      if (prev) {
-
-        el.parentElement.insertBefore(
-          el,
-          prev
-        );
-
-      }
+      type_of_discharge: ""
 
     };
 
 
-  el.querySelector(
-    '.move-down'
-  ).onclick =
-    () => {
+    renderPatient();
 
-      const next =
-        el.nextElementSibling;
+    renderDischargeType();
 
-      if (next) {
+    renderSections();
 
-        el.parentElement.insertBefore(
-          next,
-          el
-        );
-
-      }
-
-    };
-
-
-  box.appendChild(el);
-
-  el.querySelector(
-    '.section-title'
-  ).focus();
+  }
 
 }
 
 
-/* =========================
-   BUTTONS
-   ========================= */
+/* =====================================================
+   BUTTON EVENTS
+===================================================== */
 
-document.getElementById(
-  'addSectionBtn'
-).onclick = addSection;
-
-
-document.getElementById(
-  'addSectionBtn2'
-).onclick = addSection;
+document
+  .getElementById("addSectionBtn")
+  .addEventListener(
+    "click",
+    addSection
+  );
 
 
-document.getElementById(
-  'saveBtn'
-).onclick = save;
+document
+  .getElementById("addSectionBtn2")
+  .addEventListener(
+    "click",
+    addSection
+  );
 
 
-document.getElementById(
-  'saveBtn2'
-).onclick = save;
+document
+  .getElementById("saveBtn")
+  .addEventListener(
+    "click",
+    save
+  );
 
 
-document.getElementById(
-  'randomBtn'
-).onclick =
-  randomize;
+document
+  .getElementById("saveBtn2")
+  .addEventListener(
+    "click",
+    save
+  );
 
 
-document.getElementById(
-  'resetBtn'
-).onclick =
-  reset;
+document
+  .getElementById("randomBtn")
+  .addEventListener(
+    "click",
+    randomize
+  );
 
 
-document.getElementById(
-  'printBtn'
-).onclick =
-  () => window.print();
+document
+  .getElementById("resetBtn")
+  .addEventListener(
+    "click",
+    reset
+  );
 
 
-document.getElementById(
-  'printBtn2'
-).onclick =
-  () => window.print();
+document
+  .getElementById("printBtn")
+  .addEventListener(
+    "click",
+    function() {
 
+      window.print();
+
+    }
+  );
+
+
+document
+  .getElementById("printBtn2")
+  .addEventListener(
+    "click",
+    function() {
+
+      window.print();
+
+    }
+  );
+
+
+/* =====================================================
+   INITIAL LOAD
+===================================================== */
 
 load();
 
