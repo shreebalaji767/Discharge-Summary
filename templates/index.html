@@ -6,14 +6,18 @@
 <title>Discharge Summary Editor</title>
 <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
+
 <div class="app">
+
 <header class="topbar no-print">
   <div>
     <div class="eyebrow">HOSPITAL MANAGEMENT SYSTEM • TRAINING MODE</div>
     <h1>Discharge Summary</h1>
     <p>Editable template • No database • Session data only</p>
   </div>
+
   <div class="top-actions">
     <button class="secondary" id="randomBtn">Generate Random</button>
     <button class="secondary" id="resetBtn">New Blank Summary</button>
@@ -23,116 +27,529 @@
 </header>
 
 <main>
+
 <section class="paper" id="summaryPaper">
+
+  <!-- PRINT HEADER / RESERVED HOSPITAL LETTERHEAD AREA -->
   <div class="print-header">
     <div class="hospital-name">HOSPITAL DISCHARGE SUMMARY</div>
     <div class="document-title">DISCHARGE SUMMARY</div>
   </div>
 
+  <!-- PATIENT DETAILS -->
   <section class="patient-section">
+
     <h2>Patient / Admission Details</h2>
+
     <div class="grid" id="patientGrid"></div>
+
   </section>
 
-  <section>
-    <div class="section-heading no-print">
-      <div><h2>Clinical Summary Sections</h2><p>Add, edit, reorder or delete any section.</p></div>
-      <button class="secondary" id="addSectionBtn">+ Add Section</button>
+
+  <!-- DISCHARGE INFORMATION -->
+  <section class="discharge-info">
+
+    <div class="discharge-type-row">
+
+      <label class="discharge-type-field">
+        <span>TYPE OF DISCHARGE</span>
+        <input
+          type="text"
+          id="typeOfDischarge"
+          placeholder="e.g. Discharged"
+        >
+      </label>
+
     </div>
-    <div id="sections"></div>
+
+    <div class="final-diagnosis-field">
+
+      <label>
+        <span>FINAL DIAGNOSIS</span>
+
+        <textarea
+          id="finalDiagnosis"
+          rows="2"
+          placeholder="Enter final diagnosis"
+        ></textarea>
+
+      </label>
+
+    </div>
+
   </section>
 
+
+  <!-- CLINICAL SUMMARY SECTIONS -->
+  <section>
+
+    <div class="section-heading no-print">
+
+      <div>
+        <h2>Clinical Summary Sections</h2>
+        <p>Add, edit, reorder or delete any section.</p>
+      </div>
+
+      <button class="secondary" id="addSectionBtn">
+        + Add Section
+      </button>
+
+    </div>
+
+    <div id="sections"></div>
+
+  </section>
+
+
+  <!-- BOTTOM ACTIONS -->
   <div class="bottom-actions no-print">
-    <button class="secondary" id="addSectionBtn2">+ Add Section</button>
-    <button class="primary" id="saveBtn2">Save in Session</button>
-    <button class="pdf" id="printBtn2">Save / Print PDF</button>
+
+    <button class="secondary" id="addSectionBtn2">
+      + Add Section
+    </button>
+
+    <button class="primary" id="saveBtn2">
+      Save in Session
+    </button>
+
+    <button class="pdf" id="printBtn2">
+      Save / Print PDF
+    </button>
+
   </div>
 
-  <div class="print-footer">This discharge summary is generated from the information entered in the training simulator.</div>
+
+  <!-- RESERVED PRINT FOOTER SPACE -->
+  <div class="print-footer">
+    This discharge summary is generated from the information entered in the training simulator.
+  </div>
+
 </section>
+
 </main>
 </div>
 
+
+<!-- SECTION TEMPLATE -->
 <template id="sectionTemplate">
+
   <article class="summary-section">
+
     <div class="section-controls no-print">
+
       <button class="move-up" title="Move up">↑</button>
+
       <button class="move-down" title="Move down">↓</button>
-      <button class="delete-section danger" title="Delete section">Delete</button>
+
+      <button class="delete-section danger" title="Delete section">
+        Delete
+      </button>
+
     </div>
+
     <input class="section-title" type="text" value="">
-    <textarea class="section-content" rows="4"></textarea>
+
+    <textarea
+      class="section-content"
+      rows="4"
+    ></textarea>
+
   </article>
+
 </template>
 
+
 <script>
-let state = {patient:{}, sections:[]};
+
+let state = {
+  patient: {},
+  sections: [],
+  type_of_discharge: "",
+  final_diagnosis: ""
+};
+
+
 const patientFields = [
- ['patient_name','Patient Name'],['uhid','UHID / Patient ID'],['ipd_no','IPD No.'],['age','Age'],['gender','Gender'],['address','Address'],
- ['consultant','Consultant'],['department','Department'],['ward','Ward'],['bed_no','Bed No.'],['admission_date','Admission Date & Time'],['discharge_date','Discharge Date & Time']
+
+  ['patient_name','Patient Name'],
+  ['uhid','UHID / Patient ID'],
+  ['ipd_no','IPD No.'],
+  ['age','Age'],
+  ['gender','Gender'],
+  ['address','Address'],
+
+  ['consultant','Consultant'],
+  ['department','Department'],
+  ['ward','Ward'],
+  ['bed_no','Bed No.'],
+  ['admission_date','Admission Date & Time'],
+  ['discharge_date','Discharge Date & Time']
+
 ];
 
-function esc(s){return String(s ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}
-function renderPatient(){
-  const grid=document.getElementById('patientGrid');
-  grid.innerHTML=patientFields.map(([key,label])=>`<label class="field"><span>${esc(label)}</span><input data-patient="${key}" value="${esc(state.patient[key]||'')}"></label>`).join('');
-}
-function sectionTemplate(s){
-  const el=document.getElementById('sectionTemplate').content.firstElementChild.cloneNode(true);
-  el.dataset.id=s.id||('custom_'+Date.now());
-  el.querySelector('.section-title').value=s.title||'';
-  el.querySelector('.section-content').value=s.content||'';
-  el.querySelector('.delete-section').onclick=()=>{el.remove();};
-  el.querySelector('.move-up').onclick=()=>{const prev=el.previousElementSibling;if(prev)el.parentElement.insertBefore(el,prev);};
-  el.querySelector('.move-down').onclick=()=>{const next=el.nextElementSibling;if(next)el.parentElement.insertBefore(next,el);};
-  return el;
-}
-function renderSections(){
-  const box=document.getElementById('sections'); box.innerHTML='';
-  state.sections.forEach(s=>box.appendChild(sectionTemplate(s)));
-}
-function collect(){
-  const patient={};
-  document.querySelectorAll('[data-patient]').forEach(x=>patient[x.dataset.patient]=x.value);
-  const sections=[...document.querySelectorAll('.summary-section')].map((el,i)=>({
-    id:el.dataset.id || `custom_${i+1}`,
-    title:el.querySelector('.section-title').value,
-    content:el.querySelector('.section-content').value
-  }));
-  return {patient,sections};
-}
-async function api(url,opts={}){
-  const r=await fetch(url,opts); const data=await r.json();
-  if(!r.ok) throw new Error(data.error||'Request failed'); return data;
-}
-function addSection(){
-  const box=document.getElementById('sections');
-  const el=sectionTemplate.content.firstElementChild.cloneNode(true);
-  el.dataset.id='custom_'+Date.now();
-  el.querySelector('.section-title').value='New Section';
-  el.querySelector('.section-content').value='';
-  el.querySelector('.delete-section').onclick=()=>el.remove();
-  el.querySelector('.move-up').onclick=()=>{const prev=el.previousElementSibling;if(prev)el.parentElement.insertBefore(el,prev);};
-  el.querySelector('.move-down').onclick=()=>{const next=el.nextElementSibling;if(next)el.parentElement.insertBefore(next,el);};
-  box.appendChild(el); el.querySelector('.section-title').focus();
-}
-async function load(){state=(await api('/api/state')).state;renderPatient();renderSections();}
-async function save(){
-  try{state=collect();const result=await api('/api/state',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(state)});state=result.state;alert('Saved in current session. No database was used.');}
-  catch(e){alert('Save failed: '+e.message);}
-}
-async function randomize(){state=(await api('/api/random',{method:'POST'}));renderPatient();renderSections();}
-async function reset(){state=(await api('/api/reset',{method:'POST'}));state.patient={};renderPatient();renderSections();}
 
-document.getElementById('addSectionBtn').onclick=addSection;
-document.getElementById('addSectionBtn2').onclick=addSection;
-document.getElementById('saveBtn').onclick=save;
-document.getElementById('saveBtn2').onclick=save;
-document.getElementById('randomBtn').onclick=randomize;
-document.getElementById('resetBtn').onclick=reset;
-document.getElementById('printBtn').onclick=()=>window.print();
-document.getElementById('printBtn2').onclick=()=>window.print();
+function esc(s) {
+
+  return String(s ?? '').replace(
+    /[&<>"']/g,
+    c => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#039;'
+    }[c])
+  );
+
+}
+
+
+function renderPatient() {
+
+  const grid = document.getElementById('patientGrid');
+
+  grid.innerHTML = patientFields.map(
+    ([key,label]) => `
+
+      <label class="field">
+
+        <span>${esc(label)}</span>
+
+        <input
+          data-patient="${key}"
+          value="${esc(state.patient[key] || '')}"
+        >
+
+      </label>
+
+    `
+  ).join('');
+
+}
+
+
+function renderDischargeInfo() {
+
+  document.getElementById('typeOfDischarge').value =
+    state.type_of_discharge || '';
+
+  document.getElementById('finalDiagnosis').value =
+    state.final_diagnosis || '';
+
+}
+
+
+function sectionTemplate(s) {
+
+  const el =
+    document
+      .getElementById('sectionTemplate')
+      .content
+      .firstElementChild
+      .cloneNode(true);
+
+  el.dataset.id =
+    s.id || ('custom_' + Date.now());
+
+  el.querySelector('.section-title').value =
+    s.title || '';
+
+  el.querySelector('.section-content').value =
+    s.content || '';
+
+
+  el.querySelector('.delete-section').onclick =
+    () => {
+      el.remove();
+    };
+
+
+  el.querySelector('.move-up').onclick =
+    () => {
+
+      const prev = el.previousElementSibling;
+
+      if (prev) {
+        el.parentElement.insertBefore(el, prev);
+      }
+
+    };
+
+
+  el.querySelector('.move-down').onclick =
+    () => {
+
+      const next = el.nextElementSibling;
+
+      if (next) {
+        el.parentElement.insertBefore(next, el);
+      }
+
+    };
+
+
+  return el;
+
+}
+
+
+function renderSections() {
+
+  const box =
+    document.getElementById('sections');
+
+  box.innerHTML = '';
+
+  state.sections.forEach(
+    s => box.appendChild(sectionTemplate(s))
+  );
+
+}
+
+
+function collect() {
+
+  const patient = {};
+
+  document
+    .querySelectorAll('[data-patient]')
+    .forEach(
+      x => patient[x.dataset.patient] = x.value
+    );
+
+
+  const sections =
+    [...document.querySelectorAll('.summary-section')]
+    .map(
+      (el,i) => ({
+
+        id:
+          el.dataset.id ||
+          `custom_${i+1}`,
+
+        title:
+          el.querySelector('.section-title').value,
+
+        content:
+          el.querySelector('.section-content').value
+
+      })
+    );
+
+
+  return {
+
+    patient,
+
+    sections,
+
+    type_of_discharge:
+      document.getElementById('typeOfDischarge').value,
+
+    final_diagnosis:
+      document.getElementById('finalDiagnosis').value
+
+  };
+
+}
+
+
+async function api(url,opts={}) {
+
+  const r =
+    await fetch(url,opts);
+
+  const data =
+    await r.json();
+
+  if (!r.ok)
+    throw new Error(
+      data.error || 'Request failed'
+    );
+
+  return data;
+
+}
+
+
+async function load() {
+
+  state =
+    (await api('/api/state')).state;
+
+  renderPatient();
+
+  renderDischargeInfo();
+
+  renderSections();
+
+}
+
+
+async function save() {
+
+  try {
+
+    state = collect();
+
+    const result =
+      await api(
+        '/api/state',
+        {
+          method:'POST',
+
+          headers:{
+            'Content-Type':'application/json'
+          },
+
+          body:JSON.stringify(state)
+        }
+      );
+
+    state = result.state;
+
+    alert(
+      'Saved in current session. No database was used.'
+    );
+
+  }
+
+  catch(e) {
+
+    alert(
+      'Save failed: ' + e.message
+    );
+
+  }
+
+}
+
+
+async function randomize() {
+
+  state =
+    await api(
+      '/api/random',
+      {method:'POST'}
+    );
+
+  renderPatient();
+
+  renderDischargeInfo();
+
+  renderSections();
+
+}
+
+
+async function reset() {
+
+  state =
+    await api(
+      '/api/reset',
+      {method:'POST'}
+    );
+
+  state.patient = {};
+
+  state.type_of_discharge = '';
+
+  state.final_diagnosis = '';
+
+  renderPatient();
+
+  renderDischargeInfo();
+
+  renderSections();
+
+}
+
+
+function addSection() {
+
+  const box =
+    document.getElementById('sections');
+
+  const el =
+    document
+      .getElementById('sectionTemplate')
+      .content
+      .firstElementChild
+      .cloneNode(true);
+
+  el.dataset.id =
+    'custom_' + Date.now();
+
+  el.querySelector('.section-title').value =
+    'New Section';
+
+  el.querySelector('.section-content').value =
+    '';
+
+
+  el.querySelector('.delete-section').onclick =
+    () => el.remove();
+
+
+  el.querySelector('.move-up').onclick =
+    () => {
+
+      const prev =
+        el.previousElementSibling;
+
+      if (prev)
+        el.parentElement.insertBefore(el,prev);
+
+    };
+
+
+  el.querySelector('.move-down').onclick =
+    () => {
+
+      const next =
+        el.nextElementSibling;
+
+      if (next)
+        el.parentElement.insertBefore(next,el);
+
+    };
+
+
+  box.appendChild(el);
+
+  el.querySelector('.section-title').focus();
+
+}
+
+
+document.getElementById('addSectionBtn').onclick =
+  addSection;
+
+document.getElementById('addSectionBtn2').onclick =
+  addSection;
+
+document.getElementById('saveBtn').onclick =
+  save;
+
+document.getElementById('saveBtn2').onclick =
+  save;
+
+document.getElementById('randomBtn').onclick =
+  randomize;
+
+document.getElementById('resetBtn').onclick =
+  reset;
+
+document.getElementById('printBtn').onclick =
+  () => window.print();
+
+document.getElementById('printBtn2').onclick =
+  () => window.print();
+
+
 load();
+
 </script>
+
 </body>
 </html>
