@@ -130,7 +130,6 @@
                 </h2>
 
 
-                <!-- JavaScript creates patient fields -->
                 <div
                     id="patientFields"
                     class="grid"
@@ -142,8 +141,6 @@
 
             <!-- =================================================
                  TYPE OF DISCHARGE
-
-                 This is separate from clinical sections.
             ================================================== -->
 
             <section class="discharge-type-section">
@@ -200,9 +197,7 @@
 
 
 
-                <!-- =================================================
-                     ADD SECTION AT TOP
-                ================================================== -->
+                <!-- ADD SECTION AT TOP -->
 
                 <div class="no-print add-section-area">
 
@@ -219,20 +214,14 @@
 
 
                 <!-- =================================================
-                     IMPORTANT
-
-                     THIS MUST STAY EMPTY.
-
-                     JavaScript creates the sections.
+                     JAVASCRIPT CREATES SECTIONS HERE
                 ================================================== -->
 
                 <div id="sections"></div>
 
 
 
-                <!-- =================================================
-                     ADD SECTION AT BOTTOM
-                ================================================== -->
+                <!-- ADD SECTION AT BOTTOM -->
 
                 <div class="no-print add-section-area">
 
@@ -287,6 +276,7 @@
 
 
             <!-- PRINT FOOTER SPACE -->
+
             <div class="print-footer"></div>
 
         </div>
@@ -370,11 +360,7 @@ const patientFields = [
 
 
 /* ============================================================
-   DEFAULT SECTIONS
-
-   EXACTLY 9.
-   
-   DO NOT ADD ANY SECTION HERE.
+   DEFAULT CLINICAL SECTIONS
 ============================================================ */
 
 const defaultClinicalSections = [
@@ -439,8 +425,6 @@ const defaultClinicalSections = [
 
 /* ============================================================
    GET FRESH COPY OF DEFAULT SECTIONS
-
-   A completely new array is created every time.
 ============================================================ */
 
 function getDefaultSections() {
@@ -473,7 +457,7 @@ let state = {
 
     type_of_discharge: "",
 
-    sections: []
+    sections: getDefaultSections()
 
 };
 
@@ -603,7 +587,9 @@ function renderPatient() {
 
 
     if (!container) {
+
         return;
+
     }
 
 
@@ -629,9 +615,11 @@ function renderPatient() {
         const input =
             document.createElement("input");
 
-        input.type = "text";
+        input.type =
+            "text";
 
-        input.autocomplete = "off";
+        input.autocomplete =
+            "off";
 
         input.dataset.patientKey =
             field.key;
@@ -671,14 +659,22 @@ function renderPatient() {
         );
 
 
-        wrapper.appendChild(label);
+        wrapper.appendChild(
+            label
+        );
 
-        wrapper.appendChild(input);
+        wrapper.appendChild(
+            input
+        );
 
-        wrapper.appendChild(printValue);
+        wrapper.appendChild(
+            printValue
+        );
 
 
-        container.appendChild(wrapper);
+        container.appendChild(
+            wrapper
+        );
 
     });
 
@@ -705,7 +701,9 @@ function renderDischargeType() {
 
 
     if (!input) {
+
         return;
+
     }
 
 
@@ -743,8 +741,6 @@ function renderDischargeType() {
 
 /* ============================================================
    CREATE SECTION
-
-   ONLY renderSections() calls this.
 ============================================================ */
 
 function createSection(
@@ -777,16 +773,17 @@ function createSection(
         "section-controls no-print";
 
 
-
     /* UP */
 
     const upButton =
         document.createElement("button");
 
 
-    upButton.type = "button";
+    upButton.type =
+        "button";
 
-    upButton.textContent = "↑";
+    upButton.textContent =
+        "↑";
 
     upButton.title =
         "Move section up";
@@ -812,9 +809,11 @@ function createSection(
         document.createElement("button");
 
 
-    downButton.type = "button";
+    downButton.type =
+        "button";
 
-    downButton.textContent = "↓";
+    downButton.textContent =
+        "↓";
 
     downButton.title =
         "Move section down";
@@ -840,7 +839,8 @@ function createSection(
         document.createElement("button");
 
 
-    deleteButton.type = "button";
+    deleteButton.type =
+        "button";
 
     deleteButton.className =
         "danger";
@@ -982,7 +982,7 @@ function createSection(
 
 
     /* ========================================================
-       ADD TO SECTION
+       APPEND ELEMENTS
     ======================================================== */
 
     article.appendChild(
@@ -1014,11 +1014,6 @@ function createSection(
 
 /* ============================================================
    RENDER SECTIONS
-
-   IMPORTANT:
-   1. Clear container.
-   2. Render state.sections ONLY.
-   3. Never append default sections here.
 ============================================================ */
 
 function renderSections() {
@@ -1041,18 +1036,14 @@ function renderSections() {
 
 
     /*
-     * REMOVE EVERYTHING FIRST.
-     *
-     * This is what prevents duplicate
-     * Final Diagnosis sections.
+     * Completely clear the old DOM.
      */
 
     container.innerHTML = "";
 
 
     /*
-     * Only render the sections already
-     * present in state.
+     * Make sure sections is an array.
      */
 
     if (
@@ -1065,6 +1056,10 @@ function renderSections() {
 
     }
 
+
+    /*
+     * Render ONLY the current state.
+     */
 
     state.sections.forEach(
         function(section, index) {
@@ -1201,10 +1196,6 @@ function addSection(
     };
 
 
-    /*
-     * Add at bottom.
-     */
-
     if (
         position === null
     ) {
@@ -1214,10 +1205,6 @@ function addSection(
         );
 
     }
-
-    /*
-     * Add at a specific position.
-     */
 
     else {
 
@@ -1450,16 +1437,6 @@ async function saveState(
 
 /* ============================================================
    NEW BLANK SUMMARY
-
-   THIS IS THE IMPORTANT FIX.
-
-   It ALWAYS creates exactly 9 sections.
-
-   It DOES NOT load old sections.
-
-   It DOES NOT append sections.
-
-   It REPLACES the entire state.
 ============================================================ */
 
 async function newBlankSummary() {
@@ -1475,9 +1452,9 @@ async function newBlankSummary() {
     }
 
 
-    /* ========================================================
-       COMPLETELY REPLACE STATE
-    ======================================================== */
+    /*
+     * Completely replace the current state.
+     */
 
     state = {
 
@@ -1492,37 +1469,8 @@ async function newBlankSummary() {
 
 
     /*
-     * At this point state.sections contains
-     * EXACTLY 9 sections.
+     * Render fresh blank summary.
      */
-
-
-    console.log(
-        "NEW BLANK SUMMARY:",
-        state.sections
-    );
-
-
-    /* ========================================================
-       CLEAR OLD DOM
-    ======================================================== */
-
-    const container =
-        document.getElementById(
-            "sections"
-        );
-
-
-    if (container) {
-
-        container.innerHTML = "";
-
-    }
-
-
-    /* ========================================================
-       RENDER NEW STATE ONLY
-    ======================================================== */
 
     renderPatient();
 
@@ -1532,17 +1480,8 @@ async function newBlankSummary() {
 
 
     /*
-     * IMPORTANT:
-     * Do NOT call loadState() here.
-     *
-     * Do NOT call renderSections() with default
-     * sections again.
+     * Save blank state to session.
      */
-
-
-    /* ========================================================
-       SAVE NEW BLANK STATE
-    ======================================================== */
 
     try {
 
@@ -1585,9 +1524,9 @@ async function newBlankSummary() {
     }
 
 
-    /* ========================================================
-       SCROLL
-    ======================================================== */
+    /*
+     * Scroll to clinical summary.
+     */
 
     const clinical =
         document.getElementById(
@@ -1608,9 +1547,9 @@ async function newBlankSummary() {
     }
 
 
-    /* ========================================================
-       FOCUS FIRST CONTENT
-    ======================================================== */
+    /*
+     * Focus first section.
+     */
 
     setTimeout(
         function() {
@@ -1670,8 +1609,8 @@ async function randomize() {
 
 
         /*
-         * Random data should not accidentally
-         * produce zero sections.
+         * If random API returns no sections,
+         * use the standard 9 sections.
          */
 
         if (
@@ -1713,95 +1652,70 @@ async function randomize() {
 
 
 /* ============================================================
-   LOAD SAVED STATE
-
-   ONLY USED ON INITIAL PAGE LOAD.
+   INITIAL PAGE LOAD
 ============================================================ */
 
-async function loadState() {
+/*
+ * IMPORTANT
+ *
+ * We DO NOT call:
+ *
+ *     /api/state
+ *
+ * here.
+ *
+ * Every page load starts completely blank.
+ *
+ * Exactly 9 default clinical sections are created.
+ */
 
-    try {
+function loadState() {
 
-        const response =
-            await fetch(
-                "/api/state"
-            );
+    /*
+     * ALWAYS CREATE A NEW BLANK SUMMARY.
+     */
 
+    state = {
 
-        if (!response.ok) {
+        patient: {},
 
-            throw new Error(
-                "Could not load saved state."
-            );
+        type_of_discharge: "",
 
-        }
+        sections:
+            getDefaultSections()
 
-
-        const data =
-            await response.json();
-
-
-        state =
-            normalizeState(data);
-
-
-        /*
-         * If there is no saved summary,
-         * create exactly the 9 standard sections.
-         */
-
-        if (
-            !Array.isArray(
-                state.sections
-            ) ||
-            state.sections.length === 0
-        ) {
-
-            state.sections =
-                getDefaultSections();
-
-        }
+    };
 
 
-        renderPatient();
+    /*
+     * Render blank patient fields.
+     */
 
-        renderDischargeType();
-
-        renderSections();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Could not load state:",
-            error
-        );
+    renderPatient();
 
 
-        /*
-         * First page load with no saved data.
-         */
+    /*
+     * Render blank discharge type.
+     */
 
-        state = {
-
-            patient: {},
-
-            type_of_discharge: "",
-
-            sections:
-                getDefaultSections()
-
-        };
+    renderDischargeType();
 
 
-        renderPatient();
+    /*
+     * Render exactly 9 default sections.
+     */
 
-        renderDischargeType();
+    renderSections();
 
-        renderSections();
 
-    }
+    /*
+     * Start at top of page.
+     */
+
+    window.scrollTo({
+        top: 0,
+        behavior: "instant"
+    });
 
 }
 
@@ -1956,15 +1870,14 @@ function printSummary() {
 
 
     /*
-     * Put values into real HTML text elements.
+     * Update print-only elements.
      */
 
     updatePrintValues();
 
 
     /*
-     * Small delay allows DOM to update before
-     * browser print preview opens.
+     * Wait briefly for DOM update.
      */
 
     setTimeout(
@@ -1985,7 +1898,7 @@ function printSummary() {
 ============================================================ */
 
 
-/* Top New Blank */
+/* TOP NEW BLANK */
 
 document
     .getElementById(
@@ -1997,7 +1910,7 @@ document
     );
 
 
-/* Bottom New Blank */
+/* BOTTOM NEW BLANK */
 
 document
     .getElementById(
@@ -2009,7 +1922,7 @@ document
     );
 
 
-/* Random */
+/* RANDOM DATA */
 
 document
     .getElementById(
@@ -2021,7 +1934,7 @@ document
     );
 
 
-/* Top Save */
+/* TOP SAVE */
 
 document
     .getElementById(
@@ -2037,7 +1950,7 @@ document
     );
 
 
-/* Bottom Save */
+/* BOTTOM SAVE */
 
 document
     .getElementById(
@@ -2053,7 +1966,7 @@ document
     );
 
 
-/* Top Print */
+/* TOP PRINT */
 
 document
     .getElementById(
@@ -2065,7 +1978,7 @@ document
     );
 
 
-/* Bottom Print */
+/* BOTTOM PRINT */
 
 document
     .getElementById(
@@ -2077,7 +1990,7 @@ document
     );
 
 
-/* Add at TOP */
+/* ADD SECTION AT TOP */
 
 document
     .getElementById(
@@ -2093,7 +2006,7 @@ document
     );
 
 
-/* Add at BOTTOM */
+/* ADD SECTION AT BOTTOM */
 
 document
     .getElementById(
@@ -2111,10 +2024,12 @@ document
 
 
 /* ============================================================
-   INITIAL PAGE LOAD
-
-   ONLY HERE do we call loadState().
+   START APPLICATION
 ============================================================ */
+
+/*
+ * Every page load starts with a fresh blank summary.
+ */
 
 loadState();
 
