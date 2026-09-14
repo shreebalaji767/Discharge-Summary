@@ -46,3 +46,9 @@ Open `http://127.0.0.1:5000`.
 ## Training notice
 
 Use fictional training data only. This application is not a clinical record system and should not be used as a substitute for a production hospital information system.
+
+## 🚀 Live Demo
+
+🌐 **[Open Discharge Summary Editor Online](https://discharge-summary-yatl.onrender.com/)**
+
+> Use the online Discharge Summary Editor directly from your browser.
