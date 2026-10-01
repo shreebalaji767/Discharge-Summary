@@ -1,4 +1,4 @@
-const CACHE = "blssnvj21-discharge-v7";
+const CACHE = "blssnvj21-discharge-v8";
 const CORE_ASSETS = [
   "/",
   "/static/style.css",
