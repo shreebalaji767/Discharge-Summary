@@ -267,6 +267,11 @@
         return;
       }
 
+      if (!window.isSecureContext &&
+          location.hostname !== "localhost" &&
+          location.hostname !== "127.0.0.1") {
+        toast("PWA installation requires HTTPS or localhost");
+      }
       showHelp();
     });
 
@@ -369,6 +374,22 @@
     enhanceSections();
   }
 
+  function setupSectionObserver() {
+    const container = document.getElementById("sections");
+    if (!container || container.dataset.observerReady === "1") return;
+
+    container.dataset.observerReady = "1";
+
+    const refresh = () => {
+      enhanceSections();
+      updateSectionCount();
+    };
+
+    const observer = new MutationObserver(refresh);
+    observer.observe(container, {childList: true, subtree: true});
+    refresh();
+  }
+
   function setupOfflineStatus() {
     const brand = document.querySelector(".brand");
     if (!brand || document.getElementById("networkStatus")) return;
@@ -444,6 +465,7 @@
     });
 
     setupSectionEnhancements();
+    setupSectionObserver();
     setupBulkSectionControls();
     updateSectionCount();
 
@@ -459,10 +481,6 @@
     // The install handler must be initialized explicitly.
     // Without this call the visible Install App button has no click listener.
     setupInstallPrompt();
-
-    document.getElementById("saveBtn")?.addEventListener("click", () => {
-      updateSaveStatus("Saved manually in this browser");
-    }, {once: false});
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/static/sw.js", {
