@@ -19,7 +19,7 @@ A modern, browser-first discharge summary editor for training and administrative
 - Blank summary reset
 - Fictional random-data generator
 - Print / PDF with A4 print CSS
-- Automatic browser autosave
+- Manual browser save only (no automatic saving)
 - Restore last browser draft
 - Named draft save/open
 - JSON import/export backup
@@ -49,7 +49,7 @@ For PWA installation and service-worker features, use a secure HTTPS deployment 
 
 ## JSON backup workflow
 1. Enter or edit the summary.
-2. The editor automatically saves the current draft to browser storage.
+2. Use **Save** when you explicitly want to store the current draft in browser storage.
 3. Use **Export JSON** for a portable backup.
 4. Use **Import JSON** to restore a backup on another browser/device.
 5. Use **Save Draft** / **Open Draft** for named local drafts.
