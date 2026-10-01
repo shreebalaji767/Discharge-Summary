@@ -183,36 +183,46 @@
       return;
     }
 
-    button.disabled = true;
-    button.title = "Waiting for browser install support";
+    // Keep the button clickable even when the browser does not expose
+    // beforeinstallprompt. In that case we provide the browser's manual
+    // installation path instead of leaving the user with a dead button.
+    button.disabled = false;
+    button.title = "Install BLSSNVJ21 as an app";
 
     button.addEventListener("click", async function () {
-      if (!deferredInstallPrompt) {
-        toast("Install is not available yet. Use your browser's Install App option if shown.");
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+
+        try {
+          const choice = await deferredInstallPrompt.userChoice;
+          toast(
+            choice.outcome === "accepted"
+              ? "App installation started"
+              : "App installation cancelled"
+          );
+        } catch (_) {
+          toast("Install prompt could not be opened");
+        }
+
+        deferredInstallPrompt = null;
         return;
       }
 
-      deferredInstallPrompt.prompt();
-      const choice = await deferredInstallPrompt.userChoice;
+      const secure = window.isSecureContext ||
+        location.hostname === "localhost" ||
+        location.hostname === "127.0.0.1";
 
-      if (choice.outcome === "accepted") {
-        toast("App installation started");
-      } else {
-        toast("App installation cancelled");
+      if (!secure) {
+        toast("PWA install requires HTTPS or localhost");
+        return;
       }
 
-      deferredInstallPrompt = null;
-      button.disabled = true;
-      button.textContent = "Install App";
-      button.title = "Install prompt will appear when supported";
+      toast("Open your browser menu and choose Install BLSSNVJ21 / Install App");
     });
 
     window.addEventListener("beforeinstallprompt", function (event) {
       event.preventDefault();
       deferredInstallPrompt = event;
-
-      if (isStandalone()) return;
-
       button.disabled = false;
       button.textContent = "Install App";
       button.title = "Install BLSSNVJ21 as an app";
