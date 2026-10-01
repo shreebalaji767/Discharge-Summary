@@ -456,6 +456,10 @@
     setupOfflineStatus();
     handlePwaShortcut();
 
+    // The install handler must be initialized explicitly.
+    // Without this call the visible Install App button has no click listener.
+    setupInstallPrompt();
+
     document.getElementById("saveBtn")?.addEventListener("click", () => {
       updateSaveStatus("Saved manually in this browser");
     }, {once: false});
