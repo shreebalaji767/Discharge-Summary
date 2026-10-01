@@ -2,17 +2,25 @@
   "id": "/",
   "name": "BLSSNVJ21 Discharge Summary",
   "short_name": "BLSSNVJ21",
-  "description": "Browser-only discharge summary editor with manual local drafts and offline support.",
+  "description": "BLSSNVJ21 browser-only discharge summary editor with manual local drafts, offline support, PWA installation and print-ready output.",
   "lang": "en-IN",
   "dir": "ltr",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "display_override": [
+    "window-controls-overlay",
+    "standalone",
+    "minimal-ui"
+  ],
   "orientation": "portrait-primary",
   "background_color": "#f4f6f8",
   "theme_color": "#17212b",
-  "categories": ["medical", "productivity", "utilities"],
+  "categories": [
+    "medical",
+    "productivity",
+    "utilities"
+  ],
   "prefer_related_applications": false,
   "icons": [
     {
@@ -33,7 +41,8 @@
           "sizes": "any",
           "type": "image/svg+xml"
         }
-      ]
+      ],
+      "description": "Open a new blank discharge summary"
     },
     {
       "name": "Print Summary",
@@ -45,7 +54,11 @@
           "sizes": "any",
           "type": "image/svg+xml"
         }
-      ]
+      ],
+      "description": "Open the print-ready summary view"
     }
-  ]
+  ],
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  }
 }
