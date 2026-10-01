@@ -40,6 +40,12 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/health")
+def health():
+    """Lightweight Render health-check endpoint."""
+    return {"status": "ok", "app": "BLSSNVJ21 Discharge Summary"}, 200
+
+
 if __name__ == "__main__":
     host = environ.get("HOST", "127.0.0.1")
     port = int(environ.get("PORT", "5000"))
