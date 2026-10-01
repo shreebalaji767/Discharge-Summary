@@ -3,7 +3,7 @@
 A modern, browser-first discharge summary editor for training and administrative drafting.
 
 ## Current version
-**v3.1 — BLSSNVJ21 SEO, PWA identity and metadata upgrade (2026-10)**
+**v3.2 — Render deployment and production hardening (2026-10)**
 
 ## Features
 - Responsive desktop, tablet and mobile interface
@@ -99,4 +99,6 @@ README.md
 - Browser-only persistence is explicit.
 - PWA assets are versioned; the service worker supports in-app update activation and only removes caches belonging to this application.
 - Security-related response headers remain enabled in Flask.
+- Render/Gunicorn binds explicitly to `0.0.0.0:$PORT` through `gunicorn.conf.py` so the platform can detect the web service.
+- `/health` provides a lightweight service health endpoint.
 - The UI is designed to degrade gracefully if browser storage or service workers are unavailable.
