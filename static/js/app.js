@@ -2,15 +2,24 @@
 (function () {
   "use strict";
 
-  const KEY = "blssnvj21.discharge-summary.v2";
-  const DRAFTS = "blssnvj21.discharge-summary.drafts.v1";
+  const KEY = "blssnvj21.discharge-summary.v3";
+  const LEGACY_KEYS = ["blssnvj21.discharge-summary.v2"];
+  const DRAFTS = "blssnvj21.discharge-summary.drafts.v2";
+  const LEGACY_DRAFT_KEYS = ["blssnvj21.discharge-summary.drafts.v1"];
 
   function readSaved() {
     try {
-      return JSON.parse(localStorage.getItem(KEY) || "null");
+      const current = localStorage.getItem(KEY);
+      if (current) return JSON.parse(current);
+
+      for (const legacyKey of LEGACY_KEYS) {
+        const legacy = localStorage.getItem(legacyKey);
+        if (legacy) return JSON.parse(legacy);
+      }
     } catch (_) {
       return null;
     }
+    return null;
   }
 
   function toast(message) {
@@ -44,7 +53,7 @@
     try {
       localStorage.setItem(KEY, JSON.stringify({
         app: "BLSSNVJ21 Discharge Summary",
-        version: 2,
+        version: 3,
         savedAt: new Date().toISOString(),
         data
       }));
@@ -115,6 +124,15 @@
 
     try {
       all = JSON.parse(localStorage.getItem(DRAFTS) || "{}");
+      if (!Object.keys(all).length) {
+        for (const legacyKey of LEGACY_DRAFT_KEYS) {
+          const legacy = JSON.parse(localStorage.getItem(legacyKey) || "{}");
+          if (legacy && typeof legacy === "object") {
+            all = legacy;
+            break;
+          }
+        }
+      }
     } catch (_) {
       all = {};
     }
