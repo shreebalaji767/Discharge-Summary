@@ -382,3 +382,33 @@ button.danger:hover{background:#fff5f4;border-color:#d99a92}
   .print-section-title{break-after:avoid;page-break-after:avoid}
   .storage-center{display:none!important}
 }
+
+/* v2.1 editor polish */
+.section-count{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:26px;
+  height:22px;
+  margin-left:6px;
+  padding:0 7px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--surface-soft);
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+  vertical-align:2px;
+}
+.save-status{
+  padding:3px 8px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background:var(--surface-soft);
+}
+@media (max-width:760px){
+  .save-status{display:inline-flex;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
+@media (max-width:480px){
+  .section-count{height:21px}
+}
