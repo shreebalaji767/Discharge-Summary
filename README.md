@@ -3,7 +3,7 @@
 A modern, browser-first discharge summary editor for training and administrative drafting.
 
 ## Current version
-**v2 — Browser-only PWA upgrade (2026)**
+**v2 — Browser-only PWA upgrade (2026) — manual-save architecture**
 
 ## Features
 - Responsive desktop, tablet and mobile interface
@@ -22,8 +22,6 @@ A modern, browser-first discharge summary editor for training and administrative
 - Manual browser save only (no automatic saving)
 - Restore last browser draft
 - Named draft save/open
-- JSON import/export backup
-- Clear browser storage
 - No database
 - No server-side patient-data API
 - No clinical data is intentionally sent to a server by the editor
@@ -47,12 +45,13 @@ Open `http://127.0.0.1:5000`.
 
 For PWA installation and service-worker features, use a secure HTTPS deployment or localhost.
 
-## JSON backup workflow
+## Manual storage workflow
 1. Enter or edit the summary.
-2. Use **Save** when you explicitly want to store the current draft in browser storage.
-3. Use **Export JSON** for a portable backup.
-4. Use **Import JSON** to restore a backup on another browser/device.
-5. Use **Save Draft** / **Open Draft** for named local drafts.
+2. Nothing is saved automatically while typing, printing, restoring, loading random data, leaving the page, or switching tabs.
+3. Use **Save** when you explicitly want to store the current summary in browser storage.
+4. Use **Save Draft** to create a named local draft.
+5. Use **Open Draft** or **Restore Draft** to load an existing local draft. Opening/restoring a draft does not automatically save it again.
+6. JSON Export, JSON Import and Clear Storage controls are intentionally not provided by the UI.
 
 ## Print / PDF
 Use **Print / PDF** and select the browser's PDF printer when a PDF file is required. The application provides dedicated A4 print CSS and hides editing controls during printing.
