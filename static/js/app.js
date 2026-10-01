@@ -173,8 +173,39 @@
   }
 
   function setupInstallPrompt() {
-    const host = document.querySelector(".top-actions");
-    if (!host || document.getElementById("installAppBtn")) return;
+    const button = document.getElementById("installAppBtn");
+    if (!button) return;
+
+    if (isStandalone()) {
+      button.textContent = "App Installed";
+      button.disabled = true;
+      button.title = "BLSSNVJ21 is already installed";
+      return;
+    }
+
+    button.disabled = true;
+    button.title = "Waiting for browser install support";
+
+    button.addEventListener("click", async function () {
+      if (!deferredInstallPrompt) {
+        toast("Install is not available yet. Use your browser's Install App option if shown.");
+        return;
+      }
+
+      deferredInstallPrompt.prompt();
+      const choice = await deferredInstallPrompt.userChoice;
+
+      if (choice.outcome === "accepted") {
+        toast("App installation started");
+      } else {
+        toast("App installation cancelled");
+      }
+
+      deferredInstallPrompt = null;
+      button.disabled = true;
+      button.textContent = "Install App";
+      button.title = "Install prompt will appear when supported";
+    });
 
     window.addEventListener("beforeinstallprompt", function (event) {
       event.preventDefault();
@@ -182,38 +213,18 @@
 
       if (isStandalone()) return;
 
-      const button = document.createElement("button");
-      button.id = "installAppBtn";
-      button.type = "button";
-      button.className = "secondary";
+      button.disabled = false;
       button.textContent = "Install App";
       button.title = "Install BLSSNVJ21 as an app";
-      button.addEventListener("click", async function () {
-        if (!deferredInstallPrompt) return;
-
-        deferredInstallPrompt.prompt();
-        const choice = await deferredInstallPrompt.userChoice;
-
-        if (choice.outcome === "accepted") {
-          toast("App installation started");
-        }
-
-        deferredInstallPrompt = null;
-        button.remove();
-      });
-
-      host.appendChild(button);
     });
 
     window.addEventListener("appinstalled", function () {
       deferredInstallPrompt = null;
-      document.getElementById("installAppBtn")?.remove();
+      button.disabled = true;
+      button.textContent = "App Installed";
+      button.title = "BLSSNVJ21 is already installed";
       toast("BLSSNVJ21 installed");
     });
-
-    if (isStandalone()) {
-      document.getElementById("installAppBtn")?.remove();
-    }
   }
 
   let originalRenderSections = null;
