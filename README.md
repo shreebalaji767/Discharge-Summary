@@ -79,6 +79,7 @@ templates/
 static/
   style.css
   js/
+    core.js
     app.js
   sw.js
   manifest.webmanifest
