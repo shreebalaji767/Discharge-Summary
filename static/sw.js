@@ -1,4 +1,4 @@
-const CACHE = "blssnvj21-discharge-v9";
+const CACHE = "blssnvj21-discharge-v10";
 const CACHE_PREFIX = "blssnvj21-discharge-";
 const CORE_ASSETS = [
   "/",
