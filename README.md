@@ -3,7 +3,7 @@
 A modern, browser-first discharge summary editor for training and administrative drafting.
 
 ## Current version
-**v2.5 — Stability + PWA install upgrade (2026) — manual-save architecture**
+**v3.0 — Modern security, PWA and browser-storage upgrade (2026-10)**
 
 ## Features
 - Responsive desktop, tablet and mobile interface
@@ -23,7 +23,7 @@ A modern, browser-first discharge summary editor for training and administrative
 - Visible PWA Install App button with native prompt + browser-specific install guidance
 - Dedicated install guidance dialog for Chrome, Edge, Android and iOS
 - PWA launch handling for existing app windows
-- PWA cache v8 with explicit update activation
+- PWA cache v9 with safe versioned cleanup and explicit update activation
 - Section DOM observer keeps reorder/add/delete/collapse controls synchronized after every render
 - PWA update notification when a new service-worker version is available
 - Expand All / Collapse All clinical sections
@@ -36,7 +36,7 @@ A modern, browser-first discharge summary editor for training and administrative
 - No clinical data is intentionally sent to a server by the editor
 
 ## Storage model
-This version uses browser storage only (`localStorage`).
+This version uses browser storage only (`localStorage`) with an explicit manual-save model. Version 3 can read the previous v2 saved draft format without automatically writing it.
 
 Drafts are stored in the browser profile on the device being used. Browser storage is not encrypted medical-record storage. Anyone with access to the same browser profile/device may potentially access saved data.
 
@@ -90,7 +90,11 @@ README.md
 ## Production cleanup
 - No database files are required.
 - No patient-data API routes are required.
+- Strict Content Security Policy with no inline JavaScript.
+- Security headers for framing, MIME sniffing, referrer policy and cross-origin isolation.
+- Externalized application JavaScript for easier maintenance and CSP compatibility.
+- Storage schema v3 with compatibility reads for previous browser drafts.
 - Browser-only persistence is explicit.
-- PWA assets are versioned; the service worker supports in-app update activation.
+- PWA assets are versioned; the service worker supports in-app update activation and only removes caches belonging to this application.
 - Security-related response headers remain enabled in Flask.
 - The UI is designed to degrade gracefully if browser storage or service workers are unavailable.
