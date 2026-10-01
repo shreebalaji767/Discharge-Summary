@@ -29,7 +29,7 @@
 
   // Explicit user action only. There are no unload, input, timer, visibility,
   // random-data, print, or restore handlers that write the current draft.
-  function saveLocal() {
+  function updateSaveStatus(message) {\n    const status = document.querySelector(".save-status");\n    if (status) status.textContent = message;\n  }\n\n  function saveLocal() {
     const data = collect();
     if (!data) return;
     try {
@@ -39,7 +39,7 @@
         savedAt: new Date().toISOString(),
         data
       }));
-      toast("Saved in this browser");
+      updateSaveStatus("Last saved manually • " + new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"}));\n      toast("Saved in this browser");
     } catch (_) {
       alert("Browser storage is unavailable.");
     }
@@ -56,7 +56,7 @@
     renderPatient();
     renderDischargeType();
     renderSections();
-    toast("Draft restored");
+    updateSaveStatus("Draft restored • not saved automatically");\n    toast("Draft restored");
   }
 
   function saveNamedDraft() {
@@ -94,7 +94,7 @@
     renderDischargeType();
     renderSections();
     // Deliberately do NOT call saveLocal(): opening a draft is not a save action.
-    toast("Draft opened: " + name);
+    updateSaveStatus("Draft opened • not saved automatically");\n    toast("Draft opened: " + name);
   }
 
   function addUtilityButtons() {
@@ -134,7 +134,7 @@
       document.querySelector(".bottom-actions")?.prepend(restore);
     }
 
-    if ("serviceWorker" in navigator) {
+    document.addEventListener("keydown", function(event) {\n      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "s") {\n        event.preventDefault();\n        saveLocal();\n      }\n      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "p") {\n        event.preventDefault();\n        document.getElementById("printBtn")?.click();\n      }\n    });\n\n    if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/static/sw.js").catch(() => {});
     }
   }
