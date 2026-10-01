@@ -1,7 +1,9 @@
-const CACHE = "blssnvj21-discharge-v8";
+const CACHE = "blssnvj21-discharge-v9";
+const CACHE_PREFIX = "blssnvj21-discharge-";
 const CORE_ASSETS = [
   "/",
   "/static/style.css",
+  "/static/js/core.js",
   "/static/js/app.js",
   "/static/manifest.webmanifest",
   "/static/icons/icon.svg"
@@ -21,7 +23,7 @@ self.addEventListener("activate", (event) => {
       .then((keys) =>
         Promise.all(
           keys
-            .filter((key) => key !== CACHE)
+            .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE)
             .map((key) => caches.delete(key))
         )
       )
@@ -38,8 +40,10 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put("/", copy));
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE).then((cache) => cache.put("/", copy));
+          }
           return response;
         })
         .catch(() => caches.match("/"))
@@ -47,12 +51,10 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Network-first for application assets so online users receive upgrades
-  // promptly; cached assets remain available when offline.
   event.respondWith(
     fetch(request)
       .then((response) => {
-        if (response && response.ok) {
+        if (response.ok) {
           const copy = response.clone();
           caches.open(CACHE).then((cache) => cache.put(request, copy));
         }
@@ -61,7 +63,6 @@ self.addEventListener("fetch", (event) => {
       .catch(() => caches.match(request))
   );
 });
-
 
 self.addEventListener("message", (event) => {
   if (event.data?.type === "SKIP_WAITING") {
