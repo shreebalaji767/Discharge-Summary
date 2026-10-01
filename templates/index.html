@@ -8,23 +8,65 @@
     
     <meta name="format-detection" content="telephone=no">
     <meta name="referrer" content="strict-origin-when-cross-origin">
-    <meta property="og:url" content="{{ request.url }}">
-    <meta property="og:site_name" content="BLSSNVJ21">
-    <meta name="twitter:url" content="{{ request.url }}">
+    <meta name="color-scheme" content="light">
     <meta name="theme-color" content="#17212b">
-    <meta name="description" content="BLSSNVJ21 browser-only discharge summary editor with manual local drafts, offline support and print-ready output.">
     <meta name="application-name" content="BLSSNVJ21">
-    <meta name="robots" content="index,follow">
+    <meta name="apple-mobile-web-app-title" content="BLSSNVJ21">
     <meta name="author" content="BLSSNVJ21">
+    <meta name="creator" content="BLSSNVJ21">
+    <meta name="publisher" content="BLSSNVJ21">
+    <meta name="description" content="BLSSNVJ21 Discharge Summary is a responsive browser-based discharge summary editor with manual local drafts, offline PWA support, editable clinical sections, and print-ready PDF output.">
+    <meta name="keywords" content="BLSSNVJ21, discharge summary, discharge summary editor, medical documentation, hospital discharge summary, clinical summary, patient discharge, printable discharge summary, PWA, offline discharge summary">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="bingbot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="{{ request.base_url }}">
+    <link rel="alternate" hreflang="en-IN" href="{{ request.base_url }}">
+    <link rel="alternate" hreflang="x-default" href="{{ request.base_url }}">
+    <meta property="og:url" content="{{ request.base_url }}">
+    <meta property="og:site_name" content="BLSSNVJ21">
+    <meta property="og:locale" content="en_IN">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="BLSSNVJ21 Discharge Summary">
-    <meta property="og:description" content="Browser-only discharge summary editor with manual local drafts and offline support.">
+    <meta property="og:title" content="BLSSNVJ21 Discharge Summary Editor">
+    <meta property="og:description" content="Responsive browser-based discharge summary editor with manual local drafts, offline PWA support, and print-ready output.">
+    <meta property="og:image" content="{{ request.url_root.rstrip('/') }}{{ url_for('static', filename='icons/icon.svg') }}">
+    <meta property="og:image:alt" content="BLSSNVJ21 Discharge Summary">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="BLSSNVJ21 Discharge Summary">
-    <meta name="twitter:description" content="Browser-only discharge summary editor.">
+    <meta name="twitter:site" content="BLSSNVJ21">
+    <meta name="twitter:creator" content="BLSSNVJ21">
+    <meta name="twitter:title" content="BLSSNVJ21 Discharge Summary Editor">
+    <meta name="twitter:description" content="Responsive browser-based discharge summary editor with offline PWA support and print-ready output.">
+    <meta name="twitter:image" content="{{ request.url_root.rstrip('/') }}{{ url_for('static', filename='icons/icon.svg') }}">
+    <meta name="twitter:image:alt" content="BLSSNVJ21 Discharge Summary">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+    <title>BLSSNVJ21 Discharge Summary Editor | Offline PWA</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BLSSNVJ21 Discharge Summary",
+      "alternateName": "BLSSNVJ21 Discharge Summary Editor",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Web Browser",
+      "description": "BLSSNVJ21 browser-based discharge summary editor with manual browser storage, offline PWA support, editable clinical sections and print-ready output.",
+      "url": "{{ request.base_url }}",
+      "inLanguage": "en-IN",
+      "isAccessibleForFree": true,
+      "author": {"@type": "Organization", "name": "BLSSNVJ21"},
+      "publisher": {"@type": "Organization", "name": "BLSSNVJ21"},
+      "featureList": [
+        "Manual browser-only saving",
+        "Offline PWA support",
+        "Editable discharge summary sections",
+        "Print and PDF output",
+        "Responsive desktop tablet and mobile interface"
+      ]
+    }
+    </script>
 
-    <title>BLSSNVJ21 Discharge Summary</title>
     <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
     <link rel="icon" href="{{ url_for('static', filename='icons/icon.svg') }}" type="image/svg+xml">
     <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon.svg') }}">
