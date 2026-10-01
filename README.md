@@ -3,7 +3,7 @@
 A modern, browser-first discharge summary editor for training and administrative drafting.
 
 ## Current version
-**v2.4 — Browser-only PWA install + productivity upgrade (2026) — manual-save architecture**
+**v2.5 — Stability + PWA install upgrade (2026) — manual-save architecture**
 
 ## Features
 - Responsive desktop, tablet and mobile interface
@@ -16,13 +16,15 @@ A modern, browser-first discharge summary editor for training and administrative
 - Add unlimited custom sections
 - Move sections up/down
 - Delete sections
-- Blank summary reset
+- Blank summary reset without deleting the previously saved browser draft
 - Fictional random-data generator
 - Print / PDF with A4 print CSS
 - Manual browser save only (no automatic saving)
 - Visible PWA Install App button with native prompt + browser-specific install guidance
 - Dedicated install guidance dialog for Chrome, Edge, Android and iOS
 - PWA launch handling for existing app windows
+- PWA cache v8 with explicit update activation
+- Section DOM observer keeps reorder/add/delete/collapse controls synchronized after every render
 - PWA update notification when a new service-worker version is available
 - Expand All / Collapse All clinical sections
 - Live clinical section count
