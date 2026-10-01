@@ -1,39 +1,41 @@
-# Discharge Summary Editor - HMS Training Tool
+# BLSSNVJ21 Discharge Summary
 
-A clean, single-purpose Flask training application containing **only the Discharge Summary module**.
+A modern, browser-first discharge summary editor for training and administrative drafting.
 
-## Included sections
+## Current version
+**v2 — Browser-only PWA upgrade (2026)**
 
-1. Final Diagnosis
-2. Condition on Admission
-3. Symptoms / Complaints during treatment
-4. General & Systemic Examinations
-5. Course in the Hospital
-6. Condition at Discharge
-7. Diet Plan
-8. Followup
-9. Advice on Discharge
-10. Type of Discharge
+## Features
+- Responsive desktop, tablet and mobile interface
+- Progressive Web App (PWA) manifest and service worker
+- Offline shell/cache support after the first successful load
+- Browser tab favicon/logo using BLSSNVJ21 branding
+- SEO metadata, Open Graph and Twitter metadata
+- Editable patient/admission fields
+- Editable clinical section titles and content
+- Add unlimited custom sections
+- Move sections up/down
+- Delete sections
+- Blank summary reset
+- Fictional random-data generator
+- Print / PDF with A4 print CSS
+- Automatic browser autosave
+- Restore last browser draft
+- Named draft save/open
+- JSON import/export backup
+- Clear browser storage
+- No database
+- No server-side patient-data API
+- No clinical data is intentionally sent to a server by the editor
 
-## Editing
+## Storage model
+This version uses browser storage only (`localStorage`).
 
-- Every patient/admission field is editable.
-- Every section title is editable.
-- Every section's content is editable.
-- Add unlimited custom sections.
-- Delete any section.
-- Move sections up/down.
-- Generate a random fictional discharge summary.
-- Start a blank discharge summary.
-- Save to the current Python session only.
-- Save / Print PDF using the browser print dialog.
+Drafts are stored in the browser profile on the device being used. Browser storage is not encrypted medical-record storage. Anyone with access to the same browser profile/device may potentially access saved data.
 
-## Storage
+The Flask application serves the editor page and static assets; it does not provide a database or clinical-data persistence API.
 
-There is **no database and no permanent file storage**. Data exists only in Python RAM while the server is running.
-
-## Run on Windows
-
+## Run locally on Windows
 ```text
 python -m venv venv
 venv\Scripts\activate
@@ -43,12 +45,44 @@ python app.py
 
 Open `http://127.0.0.1:5000`.
 
-## Training notice
+For PWA installation and service-worker features, use a secure HTTPS deployment or localhost.
 
-Use fictional training data only. This application is not a clinical record system and should not be used as a substitute for a production hospital information system.
+## JSON backup workflow
+1. Enter or edit the summary.
+2. The editor automatically saves the current draft to browser storage.
+3. Use **Export JSON** for a portable backup.
+4. Use **Import JSON** to restore a backup on another browser/device.
+5. Use **Save Draft** / **Open Draft** for named local drafts.
 
-## 🚀 Live Demo
+## Print / PDF
+Use **Print / PDF** and select the browser's PDF printer when a PDF file is required. The application provides dedicated A4 print CSS and hides editing controls during printing.
 
-🌐 **[Open Discharge Summary Editor Online](https://discharge-summary-yatl.onrender.com/)**
+Browser print headers/footers are controlled by the browser's print settings.
 
-> Use the online Discharge Summary Editor directly from your browser.
+## Training and data notice
+Use fictional or appropriately authorized data only. This project is a drafting/training utility, not a replacement for a production hospital information system, EMR, or secure medical-record platform.
+
+## Project structure
+```text
+app.py
+requirements.txt
+templates/
+  index.html
+static/
+  style.css
+  js/
+    app.js
+  sw.js
+  manifest.webmanifest
+  icons/
+    icon.svg
+README.md
+```
+
+## Production cleanup
+- No database files are required.
+- No patient-data API routes are required.
+- Browser-only persistence is explicit.
+- PWA assets are versioned.
+- Security-related response headers remain enabled in Flask.
+- The UI is designed to degrade gracefully if browser storage or service workers are unavailable.
