@@ -1,11 +1,51 @@
 {
-  "name":"BLSSNVJ21 Discharge Summary",
-  "short_name":"BLSSNVJ21",
-  "description":"Browser-only discharge summary editor with offline support and local drafts.",
-  "start_url":"/",
-  "scope":"/",
-  "display":"standalone",
-  "background_color":"#f4f6f8",
-  "theme_color":"#17212b",
-  "icons":[{"src":"/static/icons/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+  "id": "/",
+  "name": "BLSSNVJ21 Discharge Summary",
+  "short_name": "BLSSNVJ21",
+  "description": "Browser-only discharge summary editor with manual local drafts and offline support.",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#f4f6f8",
+  "theme_color": "#17212b",
+  "categories": ["medical", "productivity", "utilities"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/static/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Blank Summary",
+      "short_name": "New Summary",
+      "url": "/#new",
+      "icons": [
+        {
+          "src": "/static/icons/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    },
+    {
+      "name": "Print Summary",
+      "short_name": "Print",
+      "url": "/#print",
+      "icons": [
+        {
+          "src": "/static/icons/icon.svg",
+          "sizes": "any",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ]
 }
