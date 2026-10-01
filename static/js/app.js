@@ -233,6 +233,36 @@
     updateSaveStatus("Unsaved changes • use Save to persist");
   }
 
+  function updateSectionCount() {
+    const count = document.getElementById("sectionCount");
+    if (count) {
+      const total = document.querySelectorAll("#sections .summary-section").length;
+      count.textContent = total;
+      count.title = total + " clinical sections";
+    }
+  }
+
+  function setAllSectionsCollapsed(collapsed) {
+    document.querySelectorAll("#sections .summary-section").forEach((article) => {
+      const title = article.querySelector(".section-title");
+      const content = article.querySelector(".section-content");
+      const toggle = article.querySelector(".section-toggle");
+      article.classList.toggle("is-collapsed", collapsed);
+      if (title) title.hidden = collapsed;
+      if (content) content.hidden = collapsed;
+      if (toggle) {
+        toggle.textContent = collapsed ? "Expand" : "Collapse";
+        toggle.setAttribute("aria-expanded", String(!collapsed));
+      }
+    });
+  }
+
+  function setupBulkSectionControls() {
+    document.getElementById("expandAllBtn")?.addEventListener("click", () => setAllSectionsCollapsed(false));
+    document.getElementById("collapseAllBtn")?.addEventListener("click", () => setAllSectionsCollapsed(true));
+  }
+
+
   function enhanceSections() {
     document.querySelectorAll("#sections .summary-section").forEach((article, index) => {
       if (article.dataset.enhanced === "1") return;
@@ -354,6 +384,15 @@
     });
 
     setupSectionEnhancements();
+    setupBulkSectionControls();
+    updateSectionCount();
+
+    document.addEventListener("input", function (event) {
+      if (event.target.matches("#patientFields input, #typeOfDischarge, #sections .section-title, #sections .section-content")) {
+        markDirty();
+      }
+    }, {passive: true});
+
     setupOfflineStatus();
     handlePwaShortcut();
 
@@ -367,8 +406,51 @@
         updateViaCache: "none"
       }).then((registration) => {
         registration.update().catch(() => {});
+        registration.addEventListener("updatefound", () => {
+          const worker = registration.installing;
+          if (!worker) return;
+          worker.addEventListener("statechange", () => {
+            if (worker.state === "installed" && navigator.serviceWorker.controller) {
+              showPwaNotice("A new BLSSNVJ21 version is ready.", "update");
+            }
+          });
+        });
       }).catch(() => {});
     }
+
+    setupPwaNotice();
+  }
+
+  function showPwaNotice(message, action) {
+    const notice = document.getElementById("pwaNotice");
+    const text = document.getElementById("pwaNoticeText");
+    const actionButton = document.getElementById("pwaNoticeAction");
+    if (!notice || !text || !actionButton) return;
+
+    text.textContent = message;
+    notice.hidden = false;
+    actionButton.hidden = action !== "update";
+  }
+
+  function setupPwaNotice() {
+    const close = document.getElementById("pwaNoticeClose");
+    const action = document.getElementById("pwaNoticeAction");
+
+    close?.addEventListener("click", () => {
+      const notice = document.getElementById("pwaNotice");
+      if (notice) notice.hidden = true;
+    });
+
+    action?.addEventListener("click", () => {
+      if (!navigator.serviceWorker?.controller) {
+        window.location.reload();
+        return;
+      }
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
+        window.location.reload();
+      }, {once: true});
+      navigator.serviceWorker.controller.postMessage({type: "SKIP_WAITING"});
+    });
   }
 
   if (document.readyState === "loading") {
