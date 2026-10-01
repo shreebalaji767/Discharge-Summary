@@ -44,6 +44,8 @@
     }catch(e){alert("Invalid JSON backup.");}};
     input.click();
   }
+  function saveNamedDraft() { const data=collect(); if(!data)return; const name=prompt("Draft name:","Discharge Summary"); if(!name)return; let all={}; try{all=JSON.parse(localStorage.getItem(DRAFTS)||"{}")}catch(_){} all[name]={savedAt:new Date().toISOString(),data}; localStorage.setItem(DRAFTS,JSON.stringify(all)); toast("Draft saved: "+name); }
+  function openDraft() { let all={}; try{all=JSON.parse(localStorage.getItem(DRAFTS)||"{}")}catch(_){} const names=Object.keys(all); if(!names.length){alert("No named drafts found.");return;} const name=prompt("Enter draft name:\n\n"+names.join("\n"),names[0]); if(!name||!all[name])return; state=normalizeState(all[name].data); renderPatient();renderDischargeType();renderSections();saveLocal(true);toast("Draft opened: "+name); }
   function clearLocal() {
     if(!confirm("Clear this browser's saved draft?")) return;
     localStorage.removeItem(KEY); localStorage.removeItem(DRAFTS); toast("Browser draft cleared");
@@ -51,7 +53,7 @@
   function addUtilityButtons() {
     const host=document.querySelector(".top-actions"); if(!host)return;
     const make=(id,label,fn,cls="secondary")=>{if(document.getElementById(id))return;const b=document.createElement("button");b.id=id;b.type="button";b.className=cls;b.textContent=label;b.addEventListener("click",fn);host.appendChild(b);};
-    make("restoreBtn","Restore Draft",restoreLocal);
+    make("restoreBtn","Restore Draft",restoreLocal); make("saveDraftBtn","Save Draft",saveNamedDraft); make("openDraftBtn","Open Draft",openDraft);
     make("exportBtn","Export JSON",downloadJSON);
     make("importBtn","Import JSON",importJSON);
     make("clearStorageBtn","Clear Storage",clearLocal,"danger");
