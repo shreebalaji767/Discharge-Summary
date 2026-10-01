@@ -216,6 +216,92 @@
     }
   }
 
+  let originalRenderSections = null;
+
+  function markDirty() {
+    updateSaveStatus("Unsaved changes • use Save to persist");
+  }
+
+  function enhanceSections() {
+    document.querySelectorAll("#sections .summary-section").forEach((article, index) => {
+      if (article.dataset.enhanced === "1") return;
+      article.dataset.enhanced = "1";
+
+      const controls = article.querySelector(".section-controls");
+      const title = article.querySelector(".section-title");
+      const content = article.querySelector(".section-content");
+      if (!controls || !title || !content) return;
+
+      const toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "section-toggle";
+      toggle.textContent = "Collapse";
+      toggle.setAttribute("aria-expanded", "true");
+      toggle.title = "Collapse or expand this section";
+      toggle.addEventListener("click", function () {
+        const collapsed = article.classList.toggle("is-collapsed");
+        title.hidden = collapsed;
+        content.hidden = collapsed;
+        toggle.textContent = collapsed ? "Expand" : "Collapse";
+        toggle.setAttribute("aria-expanded", String(!collapsed));
+      });
+      controls.insertBefore(toggle, controls.firstChild);
+
+      [title, content].forEach((field) => {
+        field.addEventListener("input", markDirty, {passive: true});
+      });
+
+      article.querySelectorAll(".section-controls button").forEach((button) => {
+        button.setAttribute("aria-label", button.title || button.textContent.trim());
+      });
+    });
+  }
+
+  function setupSectionEnhancements() {
+    if (typeof renderSections === "function" && !originalRenderSections) {
+      originalRenderSections = renderSections;
+      window.renderSections = function () {
+        originalRenderSections.apply(this, arguments);
+        enhanceSections();
+      };
+    }
+    enhanceSections();
+  }
+
+  function setupOfflineStatus() {
+    const brand = document.querySelector(".brand");
+    if (!brand || document.getElementById("networkStatus")) return;
+
+    const status = document.createElement("span");
+    status.id = "networkStatus";
+    status.className = "network-status";
+    brand.appendChild(status);
+
+    const update = () => {
+      const offline = !navigator.onLine;
+      status.textContent = offline ? "Offline • PWA cache available" : "Online • PWA ready";
+      status.dataset.state = offline ? "offline" : "online";
+    };
+
+    window.addEventListener("online", update);
+    window.addEventListener("offline", update);
+    update();
+  }
+
+  function handlePwaShortcut() {
+    const run = () => {
+      if (location.hash === "#new") {
+        history.replaceState(null, "", location.pathname);
+        document.getElementById("newBlankBtn")?.click();
+      } else if (location.hash === "#print") {
+        history.replaceState(null, "", location.pathname);
+        document.getElementById("printBtn")?.click();
+      }
+    };
+    window.addEventListener("hashchange", run);
+    run();
+  }
+
   function init() {
     addUtilityButtons();
 
@@ -256,7 +342,13 @@
       }
     });
 
-    setupInstallPrompt();
+    setupSectionEnhancements();
+    setupOfflineStatus();
+    handlePwaShortcut();
+
+    document.getElementById("saveBtn")?.addEventListener("click", () => {
+      updateSaveStatus("Saved manually in this browser");
+    }, {once: false});
 
     if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/static/sw.js", {
