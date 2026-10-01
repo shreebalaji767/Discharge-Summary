@@ -54,9 +54,6 @@
     const host=document.querySelector(".top-actions"); if(!host)return;
     const make=(id,label,fn,cls="secondary")=>{if(document.getElementById(id))return;const b=document.createElement("button");b.id=id;b.type="button";b.className=cls;b.textContent=label;b.addEventListener("click",fn);host.appendChild(b);};
     make("restoreBtn","Restore Draft",restoreLocal); make("saveDraftBtn","Save Draft",saveNamedDraft); make("openDraftBtn","Open Draft",openDraft);
-    make("exportBtn","Export JSON",downloadJSON);
-    make("importBtn","Import JSON",importJSON);
-    make("clearStorageBtn","Clear Storage",clearLocal,"danger");
   }
   function init() {
     addUtilityButtons();
