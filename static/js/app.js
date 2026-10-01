@@ -60,11 +60,8 @@
   }
   function init() {
     addUtilityButtons();
-    const status=document.createElement("span"); status.className="save-status"; status.textContent="Browser-only • Auto-save on";
+    const status=document.createElement("span"); status.className="save-status"; status.textContent="Browser-only • Manual save only";
     document.querySelector(".brand")?.appendChild(status);
-    document.addEventListener("input",()=>{clearTimeout(window.__blAuto);window.__blAuto=setTimeout(()=>saveLocal(true),700);},{passive:true});
-    document.addEventListener("change",()=>saveLocal(true),{passive:true});
-    window.addEventListener("beforeunload",()=>saveLocal(true));
     if(read()) {
       const restore=document.createElement("button"); restore.type="button"; restore.className="secondary no-print"; restore.textContent="Restore last draft";
       restore.addEventListener("click",restoreLocal);
