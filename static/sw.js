@@ -1,4 +1,4 @@
-const CACHE = "blssnvj21-discharge-v5";
+const CACHE = "blssnvj21-discharge-v6";
 const CORE_ASSETS = [
   "/",
   "/static/style.css",
@@ -60,4 +60,11 @@ self.addEventListener("fetch", (event) => {
       })
       .catch(() => caches.match(request))
   );
+});
+
+
+self.addEventListener("message", (event) => {
+  if (event.data?.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
