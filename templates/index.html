@@ -12,21 +12,17 @@
     <meta property="og:site_name" content="BLSSNVJ21">
     <meta name="twitter:url" content="{{ request.url }}">
     <meta name="theme-color" content="#17212b">
-    <meta name="description" content="BLSSNVJ21 browser-only discharge summary editor with local drafts, JSON backup, offline support and print-ready output.">
+    <meta name="description" content="BLSSNVJ21 browser-only discharge summary editor with manual local drafts, offline support and print-ready output.">
     <meta name="application-name" content="BLSSNVJ21">
     <meta name="robots" content="index,follow">
     <meta name="author" content="BLSSNVJ21">
     <meta property="og:type" content="website">
     <meta property="og:title" content="BLSSNVJ21 Discharge Summary">
-    <meta property="og:description" content="Browser-only discharge summary editor with local drafts and offline support.">
+    <meta property="og:description" content="Browser-only discharge summary editor with manual local drafts and offline support.">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="BLSSNVJ21 Discharge Summary">
     <meta name="twitter:description" content="Browser-only discharge summary editor.">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
 
     <title>BLSSNVJ21 Discharge Summary</title>
     <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
@@ -1568,7 +1564,7 @@ function randomize() {
     const name=names[Math.floor(Math.random()*names.length)];
     const diagnosis=diagnoses[Math.floor(Math.random()*diagnoses.length)];
     state=normalizeState({patient:{patient_name:name,uhid:"UHID-"+Math.floor(100000+Math.random()*900000),ipd_no:"IPD-"+Math.floor(1000+Math.random()*9000),age:String(20+Math.floor(Math.random()*55)),gender:"",address:"",consultant:"",department:"",ward:"",bed_no:"",admission_date:new Date().toLocaleDateString("en-IN"),discharge_date:""},type_of_discharge:"Stable",sections:getDefaultSections().map((x,i)=>i===0?{...x,content:diagnosis}:x)});
-    renderPatient(); renderDischargeType(); renderSections(); saveState(false);
+    renderPatient(); renderDischargeType(); renderSections();
 }
 
 
