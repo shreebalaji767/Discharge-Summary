@@ -176,23 +176,83 @@
     const button = document.getElementById("installAppBtn");
     if (!button) return;
 
-    if (isStandalone()) {
-      button.textContent = "App Installed";
-      button.disabled = true;
-      button.title = "BLSSNVJ21 is already installed";
-      return;
-    }
+    const showHelp = () => {
+      const modal = document.getElementById("installHelp");
+      const steps = document.getElementById("installHelpSteps");
+      if (!modal || !steps) return;
 
-    // Keep the button clickable even when the browser does not expose
-    // beforeinstallprompt. In that case we provide the browser's manual
-    // installation path instead of leaving the user with a dead button.
+      const ua = navigator.userAgent || "";
+      const isIOS = /iPhone|iPad|iPod/i.test(ua);
+      const isEdge = /Edg\//i.test(ua);
+      const isChrome = /Chrome\//i.test(ua) && !isEdge;
+      const isAndroid = /Android/i.test(ua);
+
+      let items;
+      if (isIOS) {
+        items = [
+          "Open this page in Safari.",
+          "Tap the Share button.",
+          "Choose “Add to Home Screen”.",
+          "Tap Add to place BLSSNVJ21 on your Home Screen."
+        ];
+      } else if (isAndroid && (isChrome || isEdge)) {
+        items = [
+          "Open the browser menu (⋮).",
+          "Choose “Install app” or “Add to Home screen”.",
+          "Confirm the installation."
+        ];
+      } else if (isEdge) {
+        items = [
+          "Open the Edge menu (⋯).",
+          "Choose Apps → Install BLSSNVJ21.",
+          "Confirm the installation."
+        ];
+      } else if (isChrome) {
+        items = [
+          "Open the Chrome menu (⋮).",
+          "Choose “Install BLSSNVJ21” or use the install icon in the address bar.",
+          "Confirm the installation."
+        ];
+      } else {
+        items = [
+          "Open your browser's menu.",
+          "Look for “Install app”, “Install site as app”, or “Add to Home screen”.",
+          "Confirm the installation."
+        ];
+      }
+
+      steps.innerHTML = "";
+      items.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "install-step";
+        row.innerHTML = "<strong>" + (index + 1) + "</strong><span></span>";
+        row.querySelector("span").textContent = item;
+        steps.appendChild(row);
+      });
+
+      modal.hidden = false;
+      modal.setAttribute("aria-hidden", "false");
+      document.getElementById("installHelpDone")?.focus();
+    };
+
+    const closeHelp = () => {
+      const modal = document.getElementById("installHelp");
+      if (!modal) return;
+      modal.hidden = true;
+      modal.setAttribute("aria-hidden", "true");
+      button.focus();
+    };
+
+    document.getElementById("installHelpClose")?.addEventListener("click", closeHelp);
+    document.getElementById("installHelpDone")?.addEventListener("click", closeHelp);
+    document.querySelector("[data-install-close]")?.addEventListener("click", closeHelp);
+
     button.disabled = false;
     button.title = "Install BLSSNVJ21 as an app";
 
     button.addEventListener("click", async function () {
       if (deferredInstallPrompt) {
         deferredInstallPrompt.prompt();
-
         try {
           const choice = await deferredInstallPrompt.userChoice;
           toast(
@@ -203,21 +263,11 @@
         } catch (_) {
           toast("Install prompt could not be opened");
         }
-
         deferredInstallPrompt = null;
         return;
       }
 
-      const secure = window.isSecureContext ||
-        location.hostname === "localhost" ||
-        location.hostname === "127.0.0.1";
-
-      if (!secure) {
-        toast("PWA install requires HTTPS or localhost");
-        return;
-      }
-
-      toast("Open your browser menu and choose Install BLSSNVJ21 / Install App");
+      showHelp();
     });
 
     window.addEventListener("beforeinstallprompt", function (event) {
