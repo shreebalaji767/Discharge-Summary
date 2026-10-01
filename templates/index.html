@@ -119,6 +119,12 @@
 
     </header>
 
+    <div id="pwaNotice" class="pwa-notice no-print" role="status" aria-live="polite" hidden>
+        <span id="pwaNoticeText"></span>
+        <button type="button" id="pwaNoticeAction" class="secondary">Update</button>
+        <button type="button" id="pwaNoticeClose" class="secondary">Dismiss</button>
+    </div>
+
 
 
     <!-- =========================================================
@@ -214,12 +220,18 @@
 
                         <h2>
                             Clinical Summary Sections
+                            <span class="section-count" id="sectionCount" aria-live="polite"></span>
                         </h2>
 
                         <p>
                             Add, edit, reorder or delete sections.
                         </p>
 
+                    </div>
+
+                    <div class="section-bulk-actions no-print">
+                        <button type="button" id="expandAllBtn" class="secondary">Expand All</button>
+                        <button type="button" id="collapseAllBtn" class="secondary">Collapse All</button>
                     </div>
 
                 </div>
