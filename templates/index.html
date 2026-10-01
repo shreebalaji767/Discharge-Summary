@@ -1607,6 +1607,7 @@ function randomize() {
     const diagnosis=diagnoses[Math.floor(Math.random()*diagnoses.length)];
     state=normalizeState({patient:{patient_name:name,uhid:"UHID-"+Math.floor(100000+Math.random()*900000),ipd_no:"IPD-"+Math.floor(1000+Math.random()*9000),age:String(20+Math.floor(Math.random()*55)),gender:"",address:"",consultant:"",department:"",ward:"",bed_no:"",admission_date:new Date().toLocaleDateString("en-IN"),discharge_date:""},type_of_discharge:"Stable",sections:getDefaultSections().map((x,i)=>i===0?{...x,content:diagnosis}:x)});
     renderPatient(); renderDischargeType(); renderSections();
+    if (typeof markDirty === "function") markDirty();
 }
 
 
