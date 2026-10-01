@@ -74,3 +74,151 @@
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
 })();
+/* ============================================================
+   STORAGE CENTER
+   Browser-only: no patient data is sent to Flask.
+============================================================ */
+(function () {
+  const STORAGE_KEY = "blssnvj21.discharge-summary.v2";
+  const DRAFTS_KEY = "blssnvj21.discharge-summary.drafts.v1";
+
+  function storageAvailable() {
+    try {
+      const k = "__blssnvj21_storage_test__";
+      localStorage.setItem(k, "1");
+      localStorage.removeItem(k);
+      return true;
+    } catch (_) { return false; }
+  }
+
+  function currentData() {
+    return typeof collectState === "function" ? collectState() : null;
+  }
+
+  function saveCurrent() {
+    const data = currentData();
+    if (!data) return false;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        app: "BLSSNVJ21 Discharge Summary",
+        schemaVersion: 3,
+        savedAt: new Date().toISOString(),
+        data
+      }));
+      return true;
+    } catch (_) { return false; }
+  }
+
+  function refreshStorageCenter(message) {
+    const status = document.getElementById("storageStatus");
+    const summary = document.getElementById("storageSummary");
+    const available = storageAvailable();
+    if (status) {
+      status.textContent = available ? "Local Only" : "Storage Unavailable";
+      status.dataset.state = available ? "ready" : "error";
+    }
+    if (summary) {
+      let named = 0;
+      try { named = Object.keys(JSON.parse(localStorage.getItem(DRAFTS_KEY) || "{}")).length; } catch (_) {}
+      const draft = !!localStorage.getItem(STORAGE_KEY);
+      summary.textContent = message ||
+        (available
+          ? "Current draft: " + (draft ? "saved" : "not saved") + " · Named drafts: " + named
+          : "Browser storage is unavailable. Changes cannot be persisted locally.");
+    }
+  }
+
+  function exportCurrent() {
+    const data = currentData();
+    if (!data) return;
+    const payload = {
+      app: "BLSSNVJ21 Discharge Summary",
+      schemaVersion: 3,
+      exportedAt: new Date().toISOString(),
+      data
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "BLSSNVJ21-discharge-summary.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    refreshStorageCenter("JSON backup exported.");
+  }
+
+  function importCurrent(fileInput) {
+    const file = fileInput.files && fileInput.files[0];
+    if (!file) return;
+    file.text().then(function (text) {
+      const obj = JSON.parse(text);
+      const data = obj && obj.data ? obj.data : obj;
+      if (!data || typeof data !== "object" || !Array.isArray(data.sections)) {
+        throw new Error("Invalid discharge summary.");
+      }
+      state = normalizeState(data);
+      renderPatient();
+      renderDischargeType();
+      renderSections();
+      saveCurrent();
+      refreshStorageCenter("JSON backup imported and saved locally.");
+    }).catch(function () {
+      alert("Invalid BLSSNVJ21 discharge-summary JSON file.");
+    }).finally(function () {
+      fileInput.value = "";
+    });
+  }
+
+  function saveNamed() {
+    const data = currentData();
+    if (!data) return;
+    const name = prompt("Draft name:", "Discharge Summary");
+    if (!name || !name.trim()) return;
+    let all = {};
+    try { all = JSON.parse(localStorage.getItem(DRAFTS_KEY) || "{}"); } catch (_) {}
+    all[name.trim()] = {savedAt:new Date().toISOString(), data};
+    localStorage.setItem(DRAFTS_KEY, JSON.stringify(all));
+    refreshStorageCenter("Named draft saved: " + name.trim());
+  }
+
+  function openNamed() {
+    let all = {};
+    try { all = JSON.parse(localStorage.getItem(DRAFTS_KEY) || "{}"); } catch (_) {}
+    const names = Object.keys(all);
+    if (!names.length) { alert("No named drafts found in this browser."); return; }
+    const name = prompt("Enter draft name:\n\n" + names.join("\n"), names[0]);
+    if (!name || !all[name]) return;
+    state = normalizeState(all[name].data);
+    renderPatient();
+    renderDischargeType();
+    renderSections();
+    saveCurrent();
+    refreshStorageCenter("Named draft opened: " + name);
+  }
+
+  function clearAll() {
+    if (!confirm("Clear the current draft and all named drafts from this browser? This cannot be undone.")) return;
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(DRAFTS_KEY);
+    refreshStorageCenter("Browser discharge-summary data cleared.");
+  }
+
+  function bindStorageCenter() {
+    const file = document.getElementById("storageFileInput");
+    document.getElementById("exportStorageBtn")?.addEventListener("click", exportCurrent);
+    document.getElementById("importStorageBtn")?.addEventListener("click", () => file?.click());
+    file?.addEventListener("change", () => importCurrent(file));
+    document.getElementById("saveNamedStorageBtn")?.addEventListener("click", saveNamed);
+    document.getElementById("openNamedStorageBtn")?.addEventListener("click", openNamed);
+    document.getElementById("clearStorageCenterBtn")?.addEventListener("click", clearAll);
+    refreshStorageCenter();
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindStorageCenter);
+  } else {
+    bindStorageCenter();
+  }
+})();
