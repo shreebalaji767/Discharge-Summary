@@ -3,7 +3,7 @@
 A modern, browser-first discharge summary editor for training and administrative drafting.
 
 ## Current version
-**v2 — Browser-only PWA upgrade (2026) — manual-save architecture**
+**v2.3 — Browser-only PWA + productivity upgrade (2026) — manual-save architecture**
 
 ## Features
 - Responsive desktop, tablet and mobile interface
@@ -20,6 +20,11 @@ A modern, browser-first discharge summary editor for training and administrative
 - Fictional random-data generator
 - Print / PDF with A4 print CSS
 - Manual browser save only (no automatic saving)
+- Visible PWA Install App button
+- PWA update notification when a new service-worker version is available
+- Expand All / Collapse All clinical sections
+- Live clinical section count
+- Unsaved-change status across patient, discharge and clinical fields
 - Restore last browser draft
 - Named draft save/open
 - No database
@@ -82,6 +87,6 @@ README.md
 - No database files are required.
 - No patient-data API routes are required.
 - Browser-only persistence is explicit.
-- PWA assets are versioned.
+- PWA assets are versioned; the service worker supports in-app update activation.
 - Security-related response headers remain enabled in Flask.
 - The UI is designed to degrade gracefully if browser storage or service workers are unavailable.
