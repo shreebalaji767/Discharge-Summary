@@ -1226,6 +1226,12 @@ function renderSections() {
         }
     );
 
+    const count = document.getElementById("sectionCount");
+    if (count) {
+        count.textContent = state.sections.length;
+        count.title = state.sections.length + " clinical sections";
+    }
+
 }
 
 
