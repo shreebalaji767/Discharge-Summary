@@ -4,13 +4,29 @@
 <head>
 
     <meta charset="UTF-8">
+    <meta name="theme-color" content="#17212b">
+    <meta name="description" content="BLSSNVJ21 browser-only discharge summary editor with local drafts, JSON backup, offline support and print-ready output.">
+    <meta name="application-name" content="BLSSNVJ21">
+    <meta name="robots" content="index,follow">
+    <meta name="author" content="BLSSNVJ21">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="BLSSNVJ21 Discharge Summary">
+    <meta property="og:description" content="Browser-only discharge summary editor with local drafts and offline support.">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="BLSSNVJ21 Discharge Summary">
+    <meta name="twitter:description" content="Browser-only discharge summary editor.">
 
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Discharge Summary Editor</title>
+    <title>BLSSNVJ21 Discharge Summary</title>
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.webmanifest') }}">
+    <link rel="icon" href="{{ url_for('static', filename='icons/icon.svg') }}" type="image/svg+xml">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="BLSSNVJ21">
 
     <link
         rel="stylesheet"
@@ -34,7 +50,7 @@
         <div class="brand">
 
             <div class="eyebrow">
-                SHREE BALAJI HOSPITAL
+                BLSSNVJ21
             </div>
 
             <h1>
@@ -42,7 +58,7 @@
             </h1>
 
             <p>
-                Create, edit, reorder and print discharge summaries.
+                Create, edit, reorder and print discharge summaries — stored in this browser only.
             </p>
 
         </div>
@@ -109,7 +125,7 @@
             <div class="print-header no-print">
 
                 <div class="hospital-name">
-                    SHREE BALAJI HOSPITAL
+                    BLSSNVJ21
                 </div>
 
                 <div class="document-title">
@@ -1513,240 +1529,40 @@ function collectState() {
    SAVE
 ============================================================ */
 
-async function saveState(
-    showMessage = true
-) {
-
-    state =
-        normalizeState(
-            collectState()
-        );
-
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/state",
-                {
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type":
-                            "application/json"
-                    },
-
-                    body:
-                        JSON.stringify(
-                            state
-                        )
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Save failed"
-            );
-
-        }
-
-
-        if (showMessage) {
-
-            alert(
-                "Discharge summary saved."
-            );
-
-        }
-
-    }
-
-    catch (error) {
-
-        console.error(
-            error
-        );
-
-
-        alert(
-            "Could not save the discharge summary."
-        );
-
-    }
-
+function saveState(showMessage = true) {
+    state = normalizeState(collectState());
+    try { localStorage.setItem("blssnvj21.discharge-summary.v2", JSON.stringify({version:2,savedAt:new Date().toISOString(),data:state})); }
+    catch (error) { console.error(error); if(showMessage) alert("Browser storage is unavailable."); return; }
+    if (showMessage) alert("Discharge summary saved in this browser.");
 }
-
 
 
 /* ============================================================
    NEW BLANK SUMMARY
 ============================================================ */
 
-async function newBlankSummary() {
-
-    if (
-        !confirm(
-            "Create a new blank discharge summary?"
-        )
-    ) {
-
-        return;
-
-    }
-
-
-    /*
-     * Completely blank everything.
-     */
-
-    state = {
-
-        patient:
-            getBlankPatient(),
-
-        type_of_discharge:
-            "",
-
-        sections:
-            getDefaultSections()
-
-    };
-
-
-    renderPatient();
-
-    renderDischargeType();
-
-    renderSections();
-
-
-    /*
-     * Do NOT load anything from server.
-     *
-     * Save the blank state only if desired.
-     */
-
-    try {
-
-        await fetch(
-            "/api/state",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type":
-                        "application/json"
-                },
-
-                body:
-                    JSON.stringify(
-                        state
-                    )
-            }
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            error
-        );
-
-    }
-
-
-    window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-    });
-
-
-    setTimeout(
-        function() {
-
-            const firstField =
-                document.querySelector(
-                    "#patientFields input"
-                );
-
-
-            if (firstField) {
-
-                firstField.focus();
-
-            }
-
-        },
-        100
-    );
-
+function newBlankSummary() {
+    if (!confirm("Create a new blank discharge summary?")) return;
+    state={patient:getBlankPatient(),type_of_discharge:"",sections:getDefaultSections()};
+    renderPatient(); renderDischargeType(); renderSections();
+    try { localStorage.removeItem("blssnvj21.discharge-summary.v2"); } catch (_) {}
+    window.scrollTo({top:0,behavior:"smooth"});
+    setTimeout(()=>document.querySelector("#patientFields input")?.focus(),100);
 }
-
 
 
 /* ============================================================
    RANDOM DATA
 ============================================================ */
 
-async function randomize() {
-
-    try {
-
-        const response =
-            await fetch(
-                "/api/random",
-                {
-                    method: "POST"
-                }
-            );
-
-
-        if (!response.ok) {
-
-            throw new Error(
-                "Random data failed."
-            );
-
-        }
-
-
-        const data =
-            await response.json();
-
-
-        state =
-            normalizeState(data);
-
-
-        renderPatient();
-
-        renderDischargeType();
-
-        renderSections();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            error
-        );
-
-
-        alert(
-            "Could not generate random data."
-        );
-
-    }
-
+function randomize() {
+    const names=["Aarav Sharma","Riya Verma","Mohit Kumar","Neha Singh","Rahul Mehta"];
+    const diagnoses=["Acute gastroenteritis","Viral fever","Community acquired pneumonia","Renal calculus","Acute gastritis"];
+    const name=names[Math.floor(Math.random()*names.length)];
+    const diagnosis=diagnoses[Math.floor(Math.random()*diagnoses.length)];
+    state=normalizeState({patient:{patient_name:name,uhid:"UHID-"+Math.floor(100000+Math.random()*900000),ipd_no:"IPD-"+Math.floor(1000+Math.random()*9000),age:String(20+Math.floor(Math.random()*55)),gender:"",address:"",consultant:"",department:"",ward:"",bed_no:"",admission_date:new Date().toLocaleDateString("en-IN"),discharge_date:""},type_of_discharge:"Stable",sections:getDefaultSections().map((x,i)=>i===0?{...x,content:diagnosis}:x)});
+    renderPatient(); renderDischargeType(); renderSections(); saveState(false);
 }
-
 
 
 /* ============================================================
@@ -2209,8 +2025,7 @@ function loadBlankSummary() {
 loadBlankSummary();
 
 </script>
-
-
+<script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
 </body>
 
 </html>
