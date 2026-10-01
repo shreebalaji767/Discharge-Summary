@@ -1,11 +1,11 @@
 {
-  "id": "/",
-  "name": "BLSSNVJ21 Discharge Summary",
+  "id": "BLSSNVJ21-discharge-summary",
+  "name": "BLSSNVJ21 — Discharge Summary Editor",
   "short_name": "BLSSNVJ21",
-  "description": "BLSSNVJ21 browser-only discharge summary editor with manual local drafts, offline support, PWA installation and print-ready output.",
+  "description": "BLSSNVJ21 responsive discharge summary editor with manual browser storage, offline PWA support and print-ready output.",
   "lang": "en-IN",
   "dir": "ltr",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "display_override": [
