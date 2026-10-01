@@ -127,7 +127,7 @@
 
     <div id="installHelp" class="install-help no-print" hidden aria-hidden="true">
         <div class="install-help-backdrop" data-install-close></div>
-        <section class="install-help-card" role="dialog" aria-modal="true" aria-labelledby="installHelpTitle">
+        <section class="install-help-card" role="dialog" aria-modal="true" aria-labelledby="installHelpTitle" aria-describedby="installHelpIntro">
             <button type="button" class="install-help-close" id="installHelpClose" aria-label="Close install instructions">×</button>
             <div class="eyebrow">BLSSNVJ21</div>
             <h2 id="installHelpTitle">Install BLSSNVJ21</h2>
@@ -1590,7 +1590,7 @@ function newBlankSummary() {
     if (!confirm("Create a new blank discharge summary?")) return;
     state={patient:getBlankPatient(),type_of_discharge:"",sections:getDefaultSections()};
     renderPatient(); renderDischargeType(); renderSections();
-    try { localStorage.removeItem("blssnvj21.discharge-summary.v2"); } catch (_) {}
+    if (typeof markDirty === "function") markDirty();
     window.scrollTo({top:0,behavior:"smooth"});
     setTimeout(()=>document.querySelector("#patientFields input")?.focus(),100);
 }
