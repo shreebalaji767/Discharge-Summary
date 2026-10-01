@@ -165,6 +165,57 @@
     make("openDraftBtn", "Open Draft", openDraft);
   }
 
+  let deferredInstallPrompt = null;
+
+  function isStandalone() {
+    return window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true;
+  }
+
+  function setupInstallPrompt() {
+    const host = document.querySelector(".top-actions");
+    if (!host || document.getElementById("installAppBtn")) return;
+
+    window.addEventListener("beforeinstallprompt", function (event) {
+      event.preventDefault();
+      deferredInstallPrompt = event;
+
+      if (isStandalone()) return;
+
+      const button = document.createElement("button");
+      button.id = "installAppBtn";
+      button.type = "button";
+      button.className = "secondary";
+      button.textContent = "Install App";
+      button.title = "Install BLSSNVJ21 as an app";
+      button.addEventListener("click", async function () {
+        if (!deferredInstallPrompt) return;
+
+        deferredInstallPrompt.prompt();
+        const choice = await deferredInstallPrompt.userChoice;
+
+        if (choice.outcome === "accepted") {
+          toast("App installation started");
+        }
+
+        deferredInstallPrompt = null;
+        button.remove();
+      });
+
+      host.appendChild(button);
+    });
+
+    window.addEventListener("appinstalled", function () {
+      deferredInstallPrompt = null;
+      document.getElementById("installAppBtn")?.remove();
+      toast("BLSSNVJ21 installed");
+    });
+
+    if (isStandalone()) {
+      document.getElementById("installAppBtn")?.remove();
+    }
+  }
+
   function init() {
     addUtilityButtons();
 
@@ -205,8 +256,15 @@
       }
     });
 
+    setupInstallPrompt();
+
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/static/sw.js").catch(() => {});
+      navigator.serviceWorker.register("/static/sw.js", {
+        scope: "/",
+        updateViaCache: "none"
+      }).then((registration) => {
+        registration.update().catch(() => {});
+      }).catch(() => {});
     }
   }
 
