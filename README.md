@@ -3,14 +3,15 @@
 A modern, browser-first discharge summary editor for training and administrative drafting.
 
 ## Current version
-**v3.0 — Modern security, PWA and browser-storage upgrade (2026-10)**
+**v3.1 — BLSSNVJ21 SEO, PWA identity and metadata upgrade (2026-10)**
 
 ## Features
 - Responsive desktop, tablet and mobile interface
 - Progressive Web App (PWA) manifest and service worker
 - Offline shell/cache support after the first successful load
 - Browser tab favicon/logo using BLSSNVJ21 branding
-- SEO metadata, Open Graph and Twitter metadata
+- Comprehensive SEO metadata, canonical URL, hreflang, Open Graph, Twitter/X metadata and Schema.org structured data
+- BLSSNVJ21 branding consistently exposed in title, metadata, manifest and structured data
 - Editable patient/admission fields
 - Editable clinical section titles and content
 - Add unlimited custom sections
@@ -23,7 +24,7 @@ A modern, browser-first discharge summary editor for training and administrative
 - Visible PWA Install App button with native prompt + browser-specific install guidance
 - Dedicated install guidance dialog for Chrome, Edge, Android and iOS
 - PWA launch handling for existing app windows
-- PWA cache v9 with safe versioned cleanup and explicit update activation
+- PWA cache v10 with safe versioned cleanup and explicit update activation
 - Section DOM observer keeps reorder/add/delete/collapse controls synchronized after every render
 - PWA update notification when a new service-worker version is available
 - Expand All / Collapse All clinical sections
