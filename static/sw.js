@@ -1,4 +1,4 @@
-const CACHE = "blssnvj21-discharge-v4";
+const CACHE = "blssnvj21-discharge-v5";
 const CORE_ASSETS = [
   "/",
   "/static/style.css",
@@ -34,7 +34,6 @@ self.addEventListener("fetch", (event) => {
 
   const request = event.request;
 
-  // App navigation: serve the cached shell when offline.
   if (request.mode === "navigate") {
     event.respondWith(
       fetch(request)
@@ -48,20 +47,17 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  // Static assets: cache-first, then refresh the cache from network.
+  // Network-first for application assets so online users receive upgrades
+  // promptly; cached assets remain available when offline.
   event.respondWith(
-    caches.match(request).then((cached) => {
-      const network = fetch(request)
-        .then((response) => {
-          if (response && response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE).then((cache) => cache.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() => cached);
-
-      return cached || network;
-    })
+    fetch(request)
+      .then((response) => {
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(request))
   );
 });
