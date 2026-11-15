@@ -1,5 +1,5 @@
 /* BLSSNVJ21 static GitHub Pages service worker */
-const CACHE = "blssnvj21-discharge-v11";
+const CACHE = "blssnvj21-discharge-v12";
 const CACHE_PREFIX = "blssnvj21-discharge-";
 const APP_ROOT = new URL("./", self.registration.scope);
 const CORE_ASSETS = [

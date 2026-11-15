@@ -183,8 +183,6 @@
     make("openDraftBtn", "Open Draft", openDraft);
   }
 
-  let deferredInstallPrompt = null;
-
   function isStandalone() {
     return window.matchMedia("(display-mode: standalone)").matches ||
       window.navigator.standalone === true;
@@ -268,23 +266,11 @@
     button.disabled = false;
     button.title = "Install BLSSNVJ21 as an app";
 
-    button.addEventListener("click", async function () {
-      if (deferredInstallPrompt) {
-        deferredInstallPrompt.prompt();
-        try {
-          const choice = await deferredInstallPrompt.userChoice;
-          toast(
-            choice.outcome === "accepted"
-              ? "App installation started"
-              : "App installation cancelled"
-          );
-        } catch (_) {
-          toast("Install prompt could not be opened");
-        }
-        deferredInstallPrompt = null;
-        return;
-      }
-
+    // Let the browser handle its own install banner. Calling preventDefault()
+    // suppresses that banner and produces a console warning unless the deferred
+    // event is later prompted from a user gesture. This app uses browser-native
+    // installation UI plus the help dialog as a cross-browser fallback.
+    button.addEventListener("click", function () {
       if (!window.isSecureContext &&
           location.hostname !== "localhost" &&
           location.hostname !== "127.0.0.1") {
@@ -293,16 +279,7 @@
       showHelp();
     });
 
-    window.addEventListener("beforeinstallprompt", function (event) {
-      event.preventDefault();
-      deferredInstallPrompt = event;
-      button.disabled = false;
-      button.textContent = "Install App";
-      button.title = "Install BLSSNVJ21 as an app";
-    });
-
     window.addEventListener("appinstalled", function () {
-      deferredInstallPrompt = null;
       button.disabled = true;
       button.textContent = "App Installed";
       button.title = "BLSSNVJ21 is already installed";
