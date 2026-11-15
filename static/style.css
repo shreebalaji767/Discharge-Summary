@@ -568,3 +568,302 @@ button:disabled{cursor:default;opacity:.65}
 @media print{
   .install-help{display:none!important}
 }
+
+
+/* v2.5 responsive layout hardening — small phones through ultrawide displays */
+html,
+body {
+  width: 100%;
+  min-width: 320px;
+  max-width: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.app,
+main,
+.paper,
+.topbar,
+.brand,
+.top-actions,
+.patient-section,
+.clinical-summary,
+#patientFields,
+#sections,
+.summary-section {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.brand,
+.brand h1,
+.brand p,
+.field,
+.field > span,
+.section-heading > div {
+  overflow-wrap: anywhere;
+}
+
+input,
+textarea,
+button {
+  max-width: 100%;
+}
+
+textarea {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+button {
+  min-width: 0;
+  min-height: 44px;
+}
+
+.top-actions button,
+.bottom-actions button,
+.section-bulk-actions button,
+.storage-center-actions button {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 1440px) {
+  .app {
+    max-width: 1440px;
+    padding-right: 28px;
+    padding-left: 28px;
+  }
+
+  .paper {
+    padding: 36px clamp(28px, 3vw, 48px);
+  }
+
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 24px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .topbar {
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .top-actions {
+    flex: 1 1 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    justify-content: stretch;
+  }
+
+  .top-actions button {
+    width: 100%;
+  }
+
+  .storage-center-actions {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .app {
+    padding-right: max(10px, env(safe-area-inset-right));
+    padding-left: max(10px, env(safe-area-inset-left));
+    padding-bottom: max(22px, env(safe-area-inset-bottom));
+  }
+
+  .top-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .top-actions button {
+    min-height: 46px;
+    padding: 10px 8px;
+    white-space: normal;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .section-heading {
+    align-items: stretch;
+  }
+
+  .section-bulk-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .section-bulk-actions button {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .section-controls {
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  .section-controls button {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 42px;
+  }
+
+  .storage-center-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pwa-notice {
+    align-items: center;
+  }
+}
+
+@media (max-width: 560px) {
+  .app {
+    padding-right: max(7px, env(safe-area-inset-right));
+    padding-left: max(7px, env(safe-area-inset-left));
+  }
+
+  .topbar {
+    padding-top: 14px;
+  }
+
+  .brand h1 {
+    font-size: clamp(19px, 5.6vw, 24px);
+  }
+
+  .paper {
+    padding: 14px 11px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section-heading {
+    gap: 10px;
+  }
+
+  .section-bulk-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pwa-notice {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pwa-notice span {
+    grid-column: 1 / -1;
+  }
+
+  .pwa-notice button {
+    width: 100%;
+  }
+
+  .storage-center {
+    padding: 12px;
+  }
+
+  .storage-center-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .install-help {
+    padding: max(8px, env(safe-area-inset-top))
+      max(8px, env(safe-area-inset-right))
+      max(8px, env(safe-area-inset-bottom))
+      max(8px, env(safe-area-inset-left));
+  }
+
+  .install-help-card {
+    width: 100%;
+    max-height: calc(100dvh - 16px);
+    padding: 20px 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .app {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+
+  .paper {
+    padding: 12px 8px;
+  }
+
+  .top-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .section-controls {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .section-controls button {
+    padding-right: 5px;
+    padding-left: 5px;
+    font-size: 11px;
+  }
+
+  .section-title,
+  .section-content,
+  .field input,
+  .discharge-type-field input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .pwa-notice {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pwa-notice span {
+    grid-column: auto;
+  }
+}
+
+/* Short landscape phones: keep the editor usable without clipping dialogs. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .topbar {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .install-help-card {
+    max-height: calc(100dvh - 12px);
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .install-help {
+    padding: 6px;
+  }
+}
+
+/* Prefer native viewport sizing on browsers that support dynamic viewport units. */
+@supports (height: 100dvh) {
+  .install-help-card {
+    max-height: min(90dvh, 680px);
+  }
+}
+
+/* Keep the document's print layout independent from screen breakpoints. */
+@media print {
+  html,
+  body {
+    min-width: 0;
+    overflow: visible;
+  }
+}
