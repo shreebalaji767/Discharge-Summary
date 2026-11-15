@@ -112,53 +112,19 @@
         </div>
 
 
-        <div class="top-actions">
-
-            <button
-                type="button"
-                id="newBlankBtn"
-                class="secondary"
-            >
-                New Blank Summary
-            </button>
-
-
-            <button
-                type="button"
-                id="randomBtn"
-                class="secondary"
-            >
-                Random Data
-            </button>
-
-
-            <button
-                type="button"
-                id="saveBtn"
-                class="primary"
-            >
-                Save
-            </button>
-
-
-            <button
-                type="button"
-                id="printBtn"
-                class="pdf"
-            >
-                Print / PDF
-            </button>
-
-            <button
-                type="button"
-                id="installAppBtn"
-                class="secondary"
-                title="Install BLSSNVJ21 as an app"
-            >
-                Install App
-            </button>
-
-        </div>
+        <details class="action-menu no-print">
+            <summary aria-label="Open actions menu" aria-haspopup="true">
+                <span class="action-menu-label">Actions</span>
+                <span class="action-menu-chevron" aria-hidden="true">▾</span>
+            </summary>
+            <div class="top-actions" aria-label="Summary actions">
+                <button type="button" id="newBlankBtn" class="secondary">New Blank Summary</button>
+                <button type="button" id="randomBtn" class="secondary">Random Data</button>
+                <button type="button" id="saveBtn" class="primary">Save</button>
+                <button type="button" id="printBtn" class="pdf">Print / PDF</button>
+                <button type="button" id="installAppBtn" class="secondary" title="Install BLSSNVJ21 as an app">Install App</button>
+            </div>
+        </details>
 
     </header>
 
