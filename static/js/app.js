@@ -501,8 +501,8 @@
     setupInstallPrompt();
 
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("/static/sw.js", {
-        scope: "/",
+      navigator.serviceWorker.register("./sw.js", {
+        scope: "./",
         updateViaCache: "none"
       }).then((registration) => {
         registration.update().catch(() => {});
