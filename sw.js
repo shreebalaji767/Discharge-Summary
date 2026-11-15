@@ -12,7 +12,25 @@ const CORE_ASSETS = [
 ];
 
 self.addEventListener("install", event => {
-  event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(CORE_ASSETS)).then(() => self.skipWaiting()));
+  event.waitUntil((async () => {
+    const cache = await caches.open(CACHE);
+
+    // Cache each resource independently. Cache.addAll() is all-or-nothing:
+    // one unavailable URL (often a temporary Pages navigation failure) rejects
+    // the entire install and leaves the previous worker active.
+    await Promise.allSettled(CORE_ASSETS.map(async assetUrl => {
+      try {
+        const response = await fetch(assetUrl, {cache: "no-store"});
+        if (response && response.ok) {
+          await cache.put(assetUrl, response);
+        }
+      } catch (_) {
+        // A single missing/offline asset must not prevent SW installation.
+      }
+    }));
+
+    await self.skipWaiting();
+  })());
 });
 
 self.addEventListener("activate", event => {
