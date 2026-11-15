@@ -1198,3 +1198,145 @@ button:disabled{
 @media print{
   button{box-shadow:none!important}
 }
+
+
+/* Monochrome retro theme — warm grey, paper white and charcoal only */
+:root{
+  --bg:#e8e8e5;
+  --surface:#ffffff;
+  --surface-soft:#f3f3f1;
+  --border:#c8c8c4;
+  --border-strong:#999995;
+  --text:#242424;
+  --muted:#686864;
+  --primary:#454545;
+  --primary-dark:#292929;
+  --success:#555550;
+  --danger:#343434;
+  --arcade-ink:#292929;
+  --arcade-blue:#666663;
+  --arcade-blue-hover:#4c4c49;
+  --arcade-red:#343434;
+  --arcade-red-hover:#1f1f1f;
+  --arcade-gold:#e5e5e1;
+  --arcade-gold-hover:#d5d5d1;
+  --arcade-green:#555550;
+  --arcade-green-hover:#3e3e3a;
+  --arcade-cream:#f7f7f4;
+  --shadow:0 3px 14px rgba(0,0,0,.07);
+}
+body{background:var(--bg);color:var(--text)}
+.paper,.storage-center,.summary-section{background:#fff;border-color:#c9c9c5}
+button{
+  color:#242424;
+  background:#e5e5e1;
+  border:1px solid #777773;
+  border-radius:7px;
+  box-shadow:0 2px 0 #777773,0 3px 7px rgba(0,0,0,.07);
+}
+button:hover{background:#d5d5d1;border-color:#555551}
+button:focus-visible,.action-menu>summary:focus-visible{
+  outline:3px solid rgba(55,55,55,.25);
+  outline-offset:2px;
+}
+button.secondary,
+.section-bulk-actions button,
+.section-controls button:not(.danger):not(.section-toggle),
+.add-section-area button{
+  background:#777773;
+  border-color:#4d4d49;
+  color:#fff;
+  box-shadow:0 2px 0 #4d4d49,0 3px 7px rgba(0,0,0,.08);
+}
+button.secondary:hover,
+.section-bulk-actions button:hover,
+.section-controls button:not(.danger):not(.section-toggle):hover,
+.add-section-area button:hover{background:#5b5b57;border-color:#3d3d39;color:#fff}
+button.primary{
+  background:#383838;
+  border-color:#202020;
+  color:#fff;
+  box-shadow:0 2px 0 #202020,0 3px 8px rgba(0,0,0,.12);
+}
+button.primary:hover{background:#202020;border-color:#111}
+button.pdf{
+  background:#5d5d59;
+  border-color:#3e3e3a;
+  color:#fff;
+  box-shadow:0 2px 0 #3e3e3a,0 3px 8px rgba(0,0,0,.1);
+}
+button.pdf:hover{background:#444440;border-color:#2d2d29}
+button.danger{
+  background:#f0f0ed;
+  border-color:#858580;
+  color:#333;
+  box-shadow:0 2px 0 #aaa;
+}
+button.danger:hover{background:#deded9;border-color:#5c5c57}
+.action-menu>summary{
+  background:#e5e5e1;
+  border:1px solid #777773;
+  color:#242424;
+  box-shadow:0 2px 0 #777773,0 3px 8px rgba(0,0,0,.08);
+}
+.action-menu>summary:hover{background:#d5d5d1;border-color:#555551}
+.action-menu[open]>summary{border-color:#444;box-shadow:0 0 0 3px rgba(0,0,0,.08),0 2px 0 #777}
+.action-menu>.top-actions{
+  background:#f7f7f4;
+  border-color:#c2c2bd;
+  box-shadow:0 14px 34px rgba(0,0,0,.16);
+}
+.section-toggle{
+  background:#d8d8d3;
+  border-color:#92928c;
+  color:#292929;
+  box-shadow:0 2px 0 #92928c;
+}
+.section-toggle:hover{background:#c8c8c2;border-color:#686862}
+.field input,.discharge-type-field input,.section-title,.section-content{
+  border-color:#b7b7b1;
+  background:#fff;
+  color:#242424;
+}
+.field input:focus,.discharge-type-field input:focus,.section-title:focus,.section-content:focus{
+  border-color:#686864;
+  box-shadow:0 0 0 3px rgba(60,60,60,.09);
+}
+.network-status,.storage-badge{
+  border-color:#bcbcb6;
+  background:#f1f1ee;
+  color:#41413d;
+}
+.network-status[data-state="offline"]{
+  border-color:#aaa9a2;
+  background:#e8e8e3;
+  color:#42423d;
+}
+.storage-badge[data-state="error"]{
+  border-color:#999;
+  background:#ededeb;
+  color:#333;
+}
+.pwa-notice{
+  border-color:#c4c4bf;
+  background:#f4f4f1;
+  color:#292929;
+}
+.install-step{background:#f3f3f0;border-color:#cecec9}
+.install-step strong{background:#555;color:#fff}
+.install-help-note{border-color:#bdbdb7}
+.install-help-close{color:#333}
+.install-help-close:hover{background:#e7e7e3}
+#appToast{background:#292929;color:#fff}
+.section-count,.save-status,.storage-summary{
+  border-color:#c9c9c4;
+  background:#f4f4f1;
+  color:#555550;
+}
+@media(prefers-reduced-motion:reduce){
+  button,.action-menu>summary{transition:none}
+}
+@media print{
+  :root{--bg:#fff;--surface:#fff}
+  body,.paper{background:#fff}
+}
