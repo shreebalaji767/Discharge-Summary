@@ -351,9 +351,10 @@ button.danger:hover{background:#fff5f4;border-color:#d99a92}
 }
 
 @media print{
-  @page{size:A4 portrait;margin:35mm 15mm 30mm}
+  @page{size:A4 portrait;margin:0}
   html,body{width:100%;margin:0;padding:0;background:#fff;color:#000;font-size:10pt;line-height:1.35}
-  .app{width:100%;max-width:none;margin:0;padding:0}
+  /* Zero page margin suppresses browser-generated date, time, title and URL headers/footers. Keep equivalent document margins inside the page. */
+  .app{width:100%;max-width:none;margin:0;padding:35mm 15mm 30mm}
   .paper{width:100%;min-height:0;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;background:#fff}
   .no-print{display:none!important}
   .print-header,.print-footer{display:none!important}
