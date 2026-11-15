@@ -938,3 +938,109 @@ button {
 @media(hover:none){
   .action-menu>summary:hover{background:var(--surface)}
 }
+
+
+/* Classic 8-bit arcade button palette */
+:root{
+  --primary:#bd3b36;
+  --primary-dark:#922d2a;
+  --success:#347b45;
+  --danger:#a92f35;
+}
+button{
+  border:2px solid #263653;
+  border-radius:4px;
+  background:#f3d77b;
+  color:#202c43;
+  font-weight:800;
+  box-shadow:2px 2px 0 #263653;
+  transition:background .12s ease,color .12s ease,transform .06s ease,box-shadow .06s ease;
+}
+button:hover{
+  background:#ffe69a;
+  border-color:#17243a;
+}
+button:active{
+  transform:translate(2px,2px);
+  box-shadow:0 0 0 #263653;
+}
+button:focus-visible{
+  outline:3px solid #e49b32;
+  outline-offset:3px;
+}
+button.secondary{
+  background:#315d9b;
+  border-color:#1c3459;
+  color:#fff;
+  box-shadow:2px 2px 0 #1c3459;
+}
+button.secondary:hover{background:#244879;color:#fff;border-color:#142844}
+button.primary{
+  background:#c6403b;
+  border-color:#772a2a;
+  color:#fff;
+  box-shadow:2px 2px 0 #772a2a;
+}
+button.primary:hover{background:#a83230;border-color:#642222}
+button.pdf{
+  background:#39834b;
+  border-color:#20552e;
+  color:#fff;
+  box-shadow:2px 2px 0 #20552e;
+}
+button.pdf:hover{background:#286a39;border-color:#194526}
+button.danger{
+  background:#fff0e8;
+  border-color:#8e2929;
+  color:#9e2929;
+  box-shadow:2px 2px 0 #8e2929;
+}
+button.danger:hover{background:#f8d5c9;border-color:#702020}
+button:disabled{box-shadow:none;opacity:.55}
+.action-menu>summary{
+  border:2px solid #263653;
+  border-radius:4px;
+  background:#f3d77b;
+  color:#202c43;
+  box-shadow:3px 3px 0 #263653;
+  font-weight:900;
+}
+.action-menu>summary:hover{background:#ffe69a;border-color:#17243a}
+.action-menu[open]>summary{border-color:#bd3b36;box-shadow:3px 3px 0 #bd3b36}
+.action-menu>.top-actions{
+  border:2px solid #263653;
+  border-radius:5px;
+  background:#f8edca;
+  box-shadow:5px 5px 0 rgba(38,54,83,.22);
+}
+.section-toggle{
+  background:#e7b84d;
+  border-color:#76551b;
+  color:#34280f;
+  box-shadow:2px 2px 0 #76551b;
+}
+.section-toggle:hover{background:#f3ce70;border-color:#5c4112}
+.section-bulk-actions button,
+.section-controls button:not(.danger):not(.section-toggle),
+.add-section-area button{
+  background:#315d9b;
+  border-color:#1c3459;
+  color:#fff;
+  box-shadow:2px 2px 0 #1c3459;
+}
+.section-bulk-actions button:hover,
+.section-controls button:not(.danger):not(.section-toggle):hover,
+.add-section-area button:hover{background:#244879;color:#fff}
+.install-help-close{
+  background:transparent;
+  box-shadow:none;
+  border:0;
+  color:#263653;
+}
+.install-help-close:hover{background:#f3d77b}
+@media(prefers-reduced-motion:reduce){
+  button{transition:none}
+}
+@media print{
+  button{box-shadow:none!important}
+}
