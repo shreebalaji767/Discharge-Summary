@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+
+<head>
+
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    
+    <meta name="format-detection" content="telephone=no">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <meta name="color-scheme" content="light">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="theme-color" content="#17212b">
+    <meta name="application-name" content="BLSSNVJ21">
+    <meta name="apple-mobile-web-app-title" content="BLSSNVJ21">
+    <meta name="author" content="BLSSNVJ21">
+    <meta name="creator" content="BLSSNVJ21">
+    <meta name="publisher" content="BLSSNVJ21">
+    <meta name="description" content="BLSSNVJ21 Discharge Summary is a responsive browser-based discharge summary editor with manual local drafts, offline PWA support, editable clinical sections, and print-ready PDF output.">
+    <meta name="keywords" content="BLSSNVJ21, BLSSNVJ21 Discharge Summary, discharge summary editor, discharge summary generator, hospital discharge summary, medical documentation, clinical documentation, printable discharge summary, offline PWA, browser discharge summary">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta name="bingbot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://shreebalaji767.github.io/Discharge-Summary/">
+    <link rel="alternate" hreflang="en-IN" href="https://shreebalaji767.github.io/Discharge-Summary/">
+    <link rel="alternate" hreflang="x-default" href="https://shreebalaji767.github.io/Discharge-Summary/">
+    <meta property="og:url" content="https://shreebalaji767.github.io/Discharge-Summary/">
+    <meta property="og:site_name" content="BLSSNVJ21">
+    <meta property="og:locale" content="en_IN">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="BLSSNVJ21 Discharge Summary Editor">
+    <meta property="og:description" content="Responsive browser-based discharge summary editor with manual local drafts, offline PWA support, and print-ready output.">
+    <meta property="og:image" content="https://shreebalaji767.github.io/Discharge-Summary/static/icons/icon.svg">
+    <meta property="og:image:alt" content="BLSSNVJ21 Discharge Summary">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="BLSSNVJ21">
+    <meta name="twitter:creator" content="BLSSNVJ21">
+    <meta name="twitter:title" content="BLSSNVJ21 Discharge Summary Editor">
+    <meta name="twitter:description" content="Responsive browser-based discharge summary editor with offline PWA support and print-ready output.">
+    <meta name="twitter:image" content="https://shreebalaji767.github.io/Discharge-Summary/static/icons/icon.svg">
+    <meta name="twitter:image:alt" content="BLSSNVJ21 Discharge Summary Editor">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <title>BLSSNVJ21 Discharge Summary Editor | Offline PWA</title>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "BLSSNVJ21 Discharge Summary",
+      "alternateName": "BLSSNVJ21 Discharge Summary Editor",
+      "applicationCategory": "HealthApplication",
+      "operatingSystem": "Web Browser",
+      "description": "BLSSNVJ21 browser-based discharge summary editor with manual browser storage, offline PWA support, editable clinical sections and print-ready output.",
+      "url": "https://shreebalaji767.github.io/Discharge-Summary/",
+      "inLanguage": "en-IN",
+      "isAccessibleForFree": true,
+      "author": {"@type": "Organization", "name": "BLSSNVJ21"},
+      "publisher": {"@type": "Organization", "name": "BLSSNVJ21"},
+      "featureList": [
+        "Manual browser-only saving",
+        "Offline PWA support",
+        "Editable discharge summary sections",
+        "Print and PDF output",
+        "Responsive desktop tablet and mobile interface"
+      ]
+    }
+    </script>
+
+    <link rel="manifest" href="./static/manifest.webmanifest">
+    <link rel="icon" href="./static/icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="./static/icons/icon.svg">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="BLSSNVJ21">
+
+    <link
+        rel="stylesheet"
+        href="./static/style.css"
+    >
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- =========================================================
+         TOP BAR
+    ========================================================== -->
+
+    <header class="topbar no-print">
+
+        <div class="brand">
+
+            <div class="eyebrow">
+                BLSSNVJ21
+            </div>
+
+            <h1>
+                Discharge Summary Editor
+            </h1>
+
+            <p>
+                Create, edit, reorder and print discharge summaries — stored in this browser only. Use Save when you want to persist your work.
+            </p>
+
+        </div>
+
+
+        <div class="top-actions">
+
+            <button
+                type="button"
+                id="newBlankBtn"
+                class="secondary"
+            >
+                New Blank Summary
+            </button>
+
+
+            <button
+                type="button"
+                id="randomBtn"
+                class="secondary"
+            >
+                Random Data
+            </button>
+
+
+            <button
+                type="button"
+                id="saveBtn"
+                class="primary"
+            >
+                Save
+            </button>
+
+
+            <button
+                type="button"
+                id="printBtn"
+                class="pdf"
+            >
+                Print / PDF
+            </button>
+
+            <button
+                type="button"
+                id="installAppBtn"
+                class="secondary"
+                title="Install BLSSNVJ21 as an app"
+            >
+                Install App
+            </button>
+
+        </div>
+
+    </header>
+
+    <div id="pwaNotice" class="pwa-notice no-print" role="status" aria-live="polite" hidden>
+        <span id="pwaNoticeText"></span>
+        <button type="button" id="pwaNoticeAction" class="secondary">Update</button>
+        <button type="button" id="pwaNoticeClose" class="secondary">Dismiss</button>
+    </div>
+
+    <div id="installHelp" class="install-help no-print" hidden aria-hidden="true">
+        <div class="install-help-backdrop" data-install-close></div>
+        <section class="install-help-card" role="dialog" aria-modal="true" aria-labelledby="installHelpTitle" aria-describedby="installHelpIntro">
+            <button type="button" class="install-help-close" id="installHelpClose" aria-label="Close install instructions">×</button>
+            <div class="eyebrow">BLSSNVJ21</div>
+            <h2 id="installHelpTitle">Install BLSSNVJ21</h2>
+            <p id="installHelpIntro">Install this browser-based discharge summary editor as an app for faster access and offline use.</p>
+            <div id="installHelpSteps" class="install-help-steps"></div>
+            <div class="install-help-note">Your summaries remain in this browser only. Installation does not create a server-side database.</div>
+            <button type="button" id="installHelpDone" class="primary">Done</button>
+        </section>
+    </div>
+
+
+
+    <!-- =========================================================
+         MAIN
+    ========================================================== -->
+
+    <main>
+
+        <div class="paper">
+
+
+            <!-- =================================================
+                 SCREEN-ONLY HEADER
+
+                 Hidden when printing.
+            ================================================== -->
+
+            <div class="print-header no-print">
+
+                <div class="hospital-name">
+                    BLSSNVJ21
+                </div>
+
+                <div class="document-title">
+                    DISCHARGE SUMMARY
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 PATIENT / ADMISSION DETAILS
+            ================================================== -->
+
+            <section class="patient-section">
+
+                <h2>
+                    Patient / Admission Details
+                </h2>
+
+                <div
+                    id="patientFields"
+                    class="grid"
+                ></div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 TYPE OF DISCHARGE
+            ================================================== -->
+
+            <section class="discharge-type-section">
+
+                <div class="discharge-type-field">
+
+                    <span>
+                        Type of Discharge
+                    </span>
+
+                    <input
+                        type="text"
+                        id="typeOfDischarge"
+                        autocomplete="off"
+                        value=""
+                    >
+
+                    <div
+                        id="printTypeOfDischarge"
+                        class="print-only-text print-field-value"
+                    ></div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 CLINICAL SUMMARY
+            ================================================== -->
+
+            <section
+                id="clinical-summary"
+                class="clinical-summary"
+            >
+
+                <div class="section-heading">
+
+                    <div>
+
+                        <h2>
+                            Clinical Summary Sections
+                            <span class="section-count" id="sectionCount" aria-live="polite"></span>
+                        </h2>
+
+                        <p>
+                            Add, edit, reorder or delete sections.
+                        </p>
+
+                    </div>
+
+                    <div class="section-bulk-actions no-print">
+                        <button type="button" id="expandAllBtn" class="secondary">Expand All</button>
+                        <button type="button" id="collapseAllBtn" class="secondary">Collapse All</button>
+                    </div>
+
+                </div>
+
+
+
+                <!-- ADD SECTION - TOP -->
+
+                <div class="no-print add-section-area">
+
+                    <button
+                        type="button"
+                        id="addSectionTop"
+                        class="secondary"
+                    >
+                        + Add Section
+                    </button>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     SECTIONS CREATED BY JAVASCRIPT
+                ================================================== -->
+
+                <div id="sections"></div>
+
+
+
+                <!-- ADD SECTION - BOTTOM -->
+
+                <div class="no-print add-section-area">
+
+                    <button
+                        type="button"
+                        id="addSectionBottom"
+                        class="secondary"
+                    >
+                        + Add Section
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =================================================
+                 BOTTOM ACTIONS
+            ================================================== -->
+
+            <div class="bottom-actions no-print">
+
+                <button
+                    type="button"
+                    id="newBlankBottom"
+                    class="secondary"
+                >
+                    New Blank Summary
+                </button>
+
+
+                <button
+                    type="button"
+                    id="saveBottom"
+                    class="primary"
+                >
+                    Save
+                </button>
+
+
+                <button
+                    type="button"
+                    id="printBottom"
+                    class="pdf"
+                >
+                    Print / PDF
+                </button>
+
+            </div>
+
+
+
+            <!-- PRINT FOOTER -->
+
+            <div class="print-footer"></div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+
+<script src="./static/js/core.js" defer></script>
+<script src="./static/js/app.js" defer></script>
+</body>
+
+</html>

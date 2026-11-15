@@ -1,0 +1,1727 @@
+/* ============================================================
+   PATIENT FIELDS
+============================================================ */
+
+const patientFields = [
+
+    {
+        key: "patient_name",
+        label: "Patient Name"
+    },
+
+    {
+        key: "uhid",
+        label: "UHID / Patient ID"
+    },
+
+    {
+        key: "ipd_no",
+        label: "IPD No."
+    },
+
+    {
+        key: "age",
+        label: "Age"
+    },
+
+    {
+        key: "gender",
+        label: "Gender"
+    },
+
+    {
+        key: "address",
+        label: "Address"
+    },
+
+    {
+        key: "consultant",
+        label: "Consultant"
+    },
+
+    {
+        key: "department",
+        label: "Department"
+    },
+
+    {
+        key: "ward",
+        label: "Ward"
+    },
+
+    {
+        key: "bed_no",
+        label: "Bed No."
+    },
+
+    {
+        key: "admission_date",
+        label: "Admission Date"
+    },
+
+    {
+        key: "discharge_date",
+        label: "Discharge Date"
+    }
+
+];
+
+
+
+/* ============================================================
+   DEFAULT CLINICAL SECTIONS
+============================================================ */
+
+const defaultClinicalSections = [
+
+    {
+        id: "section_final_diagnosis",
+        title: "Final Diagnosis",
+        content: ""
+    },
+
+    {
+        id: "section_condition_admission",
+        title: "Condition on Admission",
+        content: ""
+    },
+
+    {
+        id: "section_symptoms",
+        title: "Symptoms / Complaints during treatment",
+        content: ""
+    },
+
+    {
+        id: "section_examination",
+        title: "General & Systemic Examinations",
+        content: ""
+    },
+
+    {
+        id: "section_course",
+        title: "Course in the Hospital",
+        content: ""
+    },
+
+    {
+        id: "section_condition_discharge",
+        title: "Condition at Discharge",
+        content: ""
+    },
+
+    {
+        id: "section_diet",
+        title: "Diet Plan",
+        content: ""
+    },
+
+    {
+        id: "section_followup",
+        title: "Followup",
+        content: ""
+    },
+
+    {
+        id: "section_advice",
+        title: "Advice on Discharge",
+        content: ""
+    }
+
+];
+
+
+
+/* ============================================================
+   CREATE FRESH DEFAULT SECTIONS
+============================================================ */
+
+function getDefaultSections() {
+
+    return defaultClinicalSections.map(function(section) {
+
+        return {
+
+            id: section.id,
+
+            title: section.title,
+
+            content: ""
+
+        };
+
+    });
+
+}
+
+
+
+/* ============================================================
+   CREATE COMPLETELY BLANK PATIENT OBJECT
+============================================================ */
+
+function getBlankPatient() {
+
+    const patient = {};
+
+    patientFields.forEach(function(field) {
+
+        patient[field.key] = "";
+
+    });
+
+    return patient;
+
+}
+
+
+
+/* ============================================================
+   APPLICATION STATE
+============================================================ */
+
+/*
+ * IMPORTANT:
+ *
+ * The application starts BLANK.
+ *
+ * No saved patient data is loaded here.
+ */
+
+let state = {
+
+    patient: getBlankPatient(),
+
+    type_of_discharge: "",
+
+    sections: getDefaultSections()
+
+};
+
+
+
+/* ============================================================
+   NORMALIZE STATE
+============================================================ */
+
+function normalizeState(data) {
+
+    const blankPatient =
+        getBlankPatient();
+
+
+    if (
+        !data ||
+        typeof data !== "object"
+    ) {
+
+        return {
+
+            patient: blankPatient,
+
+            type_of_discharge: "",
+
+            sections: getDefaultSections()
+
+        };
+
+    }
+
+
+    /*
+     * Patient
+     *
+     * Even when data comes from the server,
+     * missing fields remain blank.
+     */
+
+    const patient = {};
+
+
+    patientFields.forEach(function(field) {
+
+        if (
+            data.patient &&
+            typeof data.patient === "object" &&
+            typeof data.patient[field.key] === "string"
+        ) {
+
+            patient[field.key] =
+                data.patient[field.key];
+
+        }
+
+        else {
+
+            patient[field.key] = "";
+
+        }
+
+    });
+
+
+    /*
+     * Type of discharge
+     */
+
+    let typeOfDischarge = "";
+
+    if (
+        typeof data.type_of_discharge === "string"
+    ) {
+
+        typeOfDischarge =
+            data.type_of_discharge;
+
+    }
+
+
+    /*
+     * Sections
+     */
+
+    let sections = [];
+
+
+    if (
+        Array.isArray(data.sections)
+    ) {
+
+        sections =
+            data.sections
+                .filter(function(section) {
+
+                    return (
+                        section &&
+                        typeof section === "object"
+                    );
+
+                })
+                .map(function(section, index) {
+
+                    return {
+
+                        id:
+                            section.id ||
+                            (
+                                "section_" +
+                                Date.now() +
+                                "_" +
+                                index
+                            ),
+
+                        title:
+                            typeof section.title === "string"
+                                ? section.title
+                                : "",
+
+                        content:
+                            typeof section.content === "string"
+                                ? section.content
+                                : ""
+
+                    };
+
+                });
+
+    }
+
+
+    /*
+     * If no sections exist,
+     * restore the 9 standard sections.
+     */
+
+    if (sections.length === 0) {
+
+        sections =
+            getDefaultSections();
+
+    }
+
+
+    return {
+
+        patient: patient,
+
+        type_of_discharge:
+            typeOfDischarge,
+
+        sections: sections
+
+    };
+
+}
+
+
+
+/* ============================================================
+   RENDER PATIENT FIELDS
+============================================================ */
+
+function renderPatient() {
+
+    const container =
+        document.getElementById(
+            "patientFields"
+        );
+
+
+    if (!container) {
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    patientFields.forEach(function(field) {
+
+        const wrapper =
+            document.createElement("div");
+
+
+        wrapper.className =
+            "field";
+
+
+        /*
+         * LABEL
+         */
+
+        const label =
+            document.createElement("span");
+
+
+        label.textContent =
+            field.label;
+
+
+
+        /*
+         * INPUT
+         */
+
+        const input =
+            document.createElement("input");
+
+
+        input.type =
+            "text";
+
+
+        input.autocomplete =
+            "off";
+
+
+        input.dataset.patientKey =
+            field.key;
+
+
+        /*
+         * ALWAYS use current state.
+         *
+         * On first page load this is "".
+         */
+
+        input.value =
+            state.patient[field.key] || "";
+
+
+
+        /*
+         * PRINT VALUE
+         */
+
+        const printValue =
+            document.createElement("div");
+
+
+        printValue.className =
+            "print-only-text print-field-value";
+
+
+        printValue.dataset.printPatient =
+            field.key;
+
+
+        printValue.textContent =
+            input.value;
+
+
+
+        /*
+         * INPUT EVENT
+         */
+
+        input.addEventListener(
+            "input",
+            function() {
+
+                state.patient[field.key] =
+                    input.value;
+
+
+                printValue.textContent =
+                    input.value;
+
+            }
+        );
+
+
+
+        wrapper.appendChild(
+            label
+        );
+
+        wrapper.appendChild(
+            input
+        );
+
+        wrapper.appendChild(
+            printValue
+        );
+
+
+        container.appendChild(
+            wrapper
+        );
+
+    });
+
+}
+
+
+
+/* ============================================================
+   RENDER TYPE OF DISCHARGE
+============================================================ */
+
+function renderDischargeType() {
+
+    const input =
+        document.getElementById(
+            "typeOfDischarge"
+        );
+
+
+    const printValue =
+        document.getElementById(
+            "printTypeOfDischarge"
+        );
+
+
+    if (!input) {
+
+        return;
+
+    }
+
+
+    input.value =
+        state.type_of_discharge || "";
+
+
+    if (printValue) {
+
+        printValue.textContent =
+            input.value;
+
+    }
+
+
+    input.oninput =
+        function() {
+
+            state.type_of_discharge =
+                input.value;
+
+
+            if (printValue) {
+
+                printValue.textContent =
+                    input.value;
+
+            }
+
+        };
+
+}
+
+
+
+/* ============================================================
+   CREATE CLINICAL SECTION
+============================================================ */
+
+function createSection(
+    section,
+    index
+) {
+
+    const article =
+        document.createElement("article");
+
+
+    article.className =
+        "summary-section";
+
+
+    article.dataset.index =
+        index;
+
+
+
+    /* ========================================================
+       CONTROLS
+    ======================================================== */
+
+    const controls =
+        document.createElement("div");
+
+
+    controls.className =
+        "section-controls no-print";
+
+
+
+    /*
+     * UP
+     */
+
+    const upButton =
+        document.createElement("button");
+
+
+    upButton.type =
+        "button";
+
+
+    upButton.textContent =
+        "↑";
+
+
+    upButton.title =
+        "Move section up";
+
+
+    upButton.addEventListener(
+        "click",
+        function() {
+
+            moveSection(
+                index,
+                -1
+            );
+
+        }
+    );
+
+
+
+    /*
+     * DOWN
+     */
+
+    const downButton =
+        document.createElement("button");
+
+
+    downButton.type =
+        "button";
+
+
+    downButton.textContent =
+        "↓";
+
+
+    downButton.title =
+        "Move section down";
+
+
+    downButton.addEventListener(
+        "click",
+        function() {
+
+            moveSection(
+                index,
+                1
+            );
+
+        }
+    );
+
+
+
+    /*
+     * DELETE
+     */
+
+    const deleteButton =
+        document.createElement("button");
+
+
+    deleteButton.type =
+        "button";
+
+
+    deleteButton.className =
+        "danger";
+
+
+    deleteButton.textContent =
+        "Delete";
+
+
+    deleteButton.addEventListener(
+        "click",
+        function() {
+
+            deleteSection(index);
+
+        }
+    );
+
+
+    controls.appendChild(
+        upButton
+    );
+
+    controls.appendChild(
+        downButton
+    );
+
+    controls.appendChild(
+        deleteButton
+    );
+
+
+
+    /* ========================================================
+       SECTION TITLE
+    ======================================================== */
+
+    const titleInput =
+        document.createElement("input");
+
+
+    titleInput.type =
+        "text";
+
+
+    titleInput.className =
+        "section-title";
+
+
+    titleInput.value =
+        section.title || "";
+
+
+    titleInput.placeholder =
+        "Section title";
+
+
+
+    /*
+     * PRINT TITLE
+     */
+
+    const printTitle =
+        document.createElement("div");
+
+
+    printTitle.className =
+        "print-only-text print-section-title";
+
+
+    printTitle.textContent =
+        titleInput.value;
+
+
+
+    /*
+     * TITLE EVENT
+     */
+
+    titleInput.addEventListener(
+        "input",
+        function() {
+
+            if (
+                state.sections[index]
+            ) {
+
+                state.sections[index].title =
+                    titleInput.value;
+
+            }
+
+
+            printTitle.textContent =
+                titleInput.value;
+
+        }
+    );
+
+
+
+    /* ========================================================
+       SECTION CONTENT
+    ======================================================== */
+
+    const contentTextarea =
+        document.createElement("textarea");
+
+
+    contentTextarea.className =
+        "section-content";
+
+
+    contentTextarea.value =
+        section.content || "";
+
+
+    contentTextarea.placeholder =
+        "Enter details...";
+
+
+
+    /*
+     * PRINT CONTENT
+     */
+
+    const printContent =
+        document.createElement("div");
+
+
+    printContent.className =
+        "print-only-text print-section-content";
+
+
+    printContent.textContent =
+        contentTextarea.value;
+
+
+
+    /*
+     * CONTENT EVENT
+     */
+
+    contentTextarea.addEventListener(
+        "input",
+        function() {
+
+            if (
+                state.sections[index]
+            ) {
+
+                state.sections[index].content =
+                    contentTextarea.value;
+
+            }
+
+
+            printContent.textContent =
+                contentTextarea.value;
+
+        }
+    );
+
+
+
+    /* ========================================================
+       APPEND
+    ======================================================== */
+
+    article.appendChild(
+        controls
+    );
+
+
+    article.appendChild(
+        titleInput
+    );
+
+
+    article.appendChild(
+        printTitle
+    );
+
+
+    article.appendChild(
+        contentTextarea
+    );
+
+
+    article.appendChild(
+        printContent
+    );
+
+
+    return article;
+
+}
+
+
+
+/* ============================================================
+   RENDER ALL SECTIONS
+============================================================ */
+
+function renderSections() {
+
+    const container =
+        document.getElementById(
+            "sections"
+        );
+
+
+    if (!container) {
+
+        return;
+
+    }
+
+
+    container.innerHTML = "";
+
+
+    if (
+        !Array.isArray(
+            state.sections
+        )
+    ) {
+
+        state.sections =
+            getDefaultSections();
+
+    }
+
+
+    state.sections.forEach(
+        function(section, index) {
+
+            const element =
+                createSection(
+                    section,
+                    index
+                );
+
+
+            container.appendChild(
+                element
+            );
+
+        }
+    );
+
+    const count = document.getElementById("sectionCount");
+    if (count) {
+        count.textContent = state.sections.length;
+        count.title = state.sections.length + " clinical sections";
+    }
+
+}
+
+
+
+/* ============================================================
+   MOVE SECTION
+============================================================ */
+
+function moveSection(
+    index,
+    direction
+) {
+
+    const newIndex =
+        index + direction;
+
+
+    if (
+        newIndex < 0 ||
+        newIndex >= state.sections.length
+    ) {
+
+        return;
+
+    }
+
+
+    const temp =
+        state.sections[index];
+
+
+    state.sections[index] =
+        state.sections[newIndex];
+
+
+    state.sections[newIndex] =
+        temp;
+
+
+    renderSections();
+
+}
+
+
+
+/* ============================================================
+   DELETE SECTION
+============================================================ */
+
+function deleteSection(index) {
+
+    if (
+        index < 0 ||
+        index >= state.sections.length
+    ) {
+
+        return;
+
+    }
+
+
+    const title =
+        state.sections[index].title ||
+        "this section";
+
+
+    if (
+        !confirm(
+            'Delete "' +
+            title +
+            '"?'
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    state.sections.splice(
+        index,
+        1
+    );
+
+
+    renderSections();
+
+}
+
+
+
+/* ============================================================
+   ADD SECTION
+============================================================ */
+
+function addSection(
+    position = null
+) {
+
+    const newSection = {
+
+        id:
+            "section_" +
+            Date.now() +
+            "_" +
+            Math.random()
+                .toString(36)
+                .substring(2, 8),
+
+        title:
+            "New Section",
+
+        content:
+            ""
+
+    };
+
+
+    if (
+        position === null
+    ) {
+
+        state.sections.push(
+            newSection
+        );
+
+    }
+
+    else {
+
+        state.sections.splice(
+            position,
+            0,
+            newSection
+        );
+
+    }
+
+
+    renderSections();
+    if (typeof markDirty === "function") markDirty();
+
+
+    setTimeout(
+        function() {
+
+            const titles =
+                document.querySelectorAll(
+                    "#sections .section-title"
+                );
+
+
+            if (
+                position === null
+            ) {
+
+                const last =
+                    titles[
+                        titles.length - 1
+                    ];
+
+
+                if (last) {
+
+                    last.focus();
+
+                }
+
+            }
+
+            else {
+
+                if (
+                    titles[position]
+                ) {
+
+                    titles[position].focus();
+
+                }
+
+            }
+
+        },
+        50
+    );
+
+}
+
+
+
+/* ============================================================
+   COLLECT CURRENT FORM
+============================================================ */
+
+function collectState() {
+
+    const patient = {};
+
+
+    /*
+     * Patient fields
+     */
+
+    document
+        .querySelectorAll(
+            "[data-patient-key]"
+        )
+        .forEach(
+            function(input) {
+
+                patient[
+                    input.dataset.patientKey
+                ] =
+                    input.value;
+
+            }
+        );
+
+
+
+    /*
+     * Type of discharge
+     */
+
+    const dischargeInput =
+        document.getElementById(
+            "typeOfDischarge"
+        );
+
+
+
+    /*
+     * Sections
+     */
+
+    const sections = [];
+
+
+    document
+        .querySelectorAll(
+            "#sections .summary-section"
+        )
+        .forEach(
+            function(article, index) {
+
+                const title =
+                    article.querySelector(
+                        ".section-title"
+                    );
+
+
+                const content =
+                    article.querySelector(
+                        ".section-content"
+                    );
+
+
+                sections.push({
+
+                    id:
+                        state.sections[index]?.id ||
+                        (
+                            "section_" +
+                            Date.now() +
+                            "_" +
+                            index
+                        ),
+
+                    title:
+                        title
+                            ? title.value
+                            : "",
+
+                    content:
+                        content
+                            ? content.value
+                            : ""
+
+                });
+
+            }
+        );
+
+
+    return {
+
+        patient:
+            patient,
+
+        type_of_discharge:
+            dischargeInput
+                ? dischargeInput.value
+                : "",
+
+        sections:
+            sections
+
+    };
+
+}
+
+
+
+/* ============================================================
+   SAVE
+============================================================ */
+
+function saveState(showMessage = true) {
+    state = normalizeState(collectState());
+    try { localStorage.setItem("blssnvj21.discharge-summary.v2", JSON.stringify({version:2,savedAt:new Date().toISOString(),data:state})); }
+    catch (error) { console.error(error); if(showMessage) alert("Browser storage is unavailable."); return; }
+    if (showMessage) alert("Discharge summary saved in this browser.");
+}
+
+
+/* ============================================================
+   NEW BLANK SUMMARY
+============================================================ */
+
+function newBlankSummary() {
+    if (!confirm("Create a new blank discharge summary?")) return;
+    state={patient:getBlankPatient(),type_of_discharge:"",sections:getDefaultSections()};
+    renderPatient(); renderDischargeType(); renderSections();
+    if (typeof markDirty === "function") markDirty();
+    window.scrollTo({top:0,behavior:"smooth"});
+    setTimeout(()=>document.querySelector("#patientFields input")?.focus(),100);
+}
+
+
+/* ============================================================
+   RANDOM DATA
+============================================================ */
+
+function randomize() {
+    const names=["Aarav Sharma","Riya Verma","Mohit Kumar","Neha Singh","Rahul Mehta"];
+    const diagnoses=["Acute gastroenteritis","Viral fever","Community acquired pneumonia","Renal calculus","Acute gastritis"];
+    const name=names[Math.floor(Math.random()*names.length)];
+    const diagnosis=diagnoses[Math.floor(Math.random()*diagnoses.length)];
+    state=normalizeState({patient:{patient_name:name,uhid:"UHID-"+Math.floor(100000+Math.random()*900000),ipd_no:"IPD-"+Math.floor(1000+Math.random()*9000),age:String(20+Math.floor(Math.random()*55)),gender:"",address:"",consultant:"",department:"",ward:"",bed_no:"",admission_date:new Date().toLocaleDateString("en-IN"),discharge_date:""},type_of_discharge:"Stable",sections:getDefaultSections().map((x,i)=>i===0?{...x,content:diagnosis}:x)});
+    renderPatient(); renderDischargeType(); renderSections();
+    if (typeof markDirty === "function") markDirty();
+}
+
+
+/* ============================================================
+   UPDATE PRINT VALUES
+============================================================ */
+
+function updatePrintValues() {
+
+
+    /*
+     * Patient
+     */
+
+    document
+        .querySelectorAll(
+            "[data-patient-key]"
+        )
+        .forEach(
+            function(input) {
+
+                const key =
+                    input.dataset.patientKey;
+
+
+                const printElement =
+                    document.querySelector(
+                        '[data-print-patient="' +
+                        key +
+                        '"]'
+                    );
+
+
+                if (printElement) {
+
+                    printElement.textContent =
+                        input.value;
+
+                }
+
+            }
+        );
+
+
+
+    /*
+     * Type of discharge
+     */
+
+    const dischargeInput =
+        document.getElementById(
+            "typeOfDischarge"
+        );
+
+
+    const dischargePrint =
+        document.getElementById(
+            "printTypeOfDischarge"
+        );
+
+
+    if (
+        dischargeInput &&
+        dischargePrint
+    ) {
+
+        dischargePrint.textContent =
+            dischargeInput.value;
+
+    }
+
+
+
+    /*
+     * Sections
+     */
+
+    document
+        .querySelectorAll(
+            "#sections .summary-section"
+        )
+        .forEach(
+            function(section) {
+
+                const title =
+                    section.querySelector(
+                        ".section-title"
+                    );
+
+
+                const content =
+                    section.querySelector(
+                        ".section-content"
+                    );
+
+
+                const printTitle =
+                    section.querySelector(
+                        ".print-section-title"
+                    );
+
+
+                const printContent =
+                    section.querySelector(
+                        ".print-section-content"
+                    );
+
+
+                if (
+                    title &&
+                    printTitle
+                ) {
+
+                    printTitle.textContent =
+                        title.value;
+
+                }
+
+
+                if (
+                    content &&
+                    printContent
+                ) {
+
+                    printContent.textContent =
+                        content.value;
+
+                }
+
+            }
+        );
+
+}
+
+
+
+/* ============================================================
+   PRINT
+============================================================ */
+
+function printSummary() {
+
+    /*
+     * Collect the latest form values.
+     */
+
+    state =
+        normalizeState(
+            collectState()
+        );
+
+
+    /*
+     * Update print elements.
+     */
+
+    updatePrintValues();
+
+
+    /*
+     * Open browser print dialog.
+     */
+
+    setTimeout(
+        function() {
+
+            window.print();
+
+        },
+        50
+    );
+
+}
+
+
+
+/* ============================================================
+   BUTTON EVENTS
+============================================================ */
+
+
+/*
+ * TOP NEW BLANK
+ */
+
+document
+    .getElementById(
+        "newBlankBtn"
+    )
+    .addEventListener(
+        "click",
+        newBlankSummary
+    );
+
+
+
+/*
+ * BOTTOM NEW BLANK
+ */
+
+document
+    .getElementById(
+        "newBlankBottom"
+    )
+    .addEventListener(
+        "click",
+        newBlankSummary
+    );
+
+
+
+/*
+ * RANDOM
+ */
+
+document
+    .getElementById(
+        "randomBtn"
+    )
+    .addEventListener(
+        "click",
+        randomize
+    );
+
+
+
+/*
+ * TOP SAVE
+ */
+
+document
+    .getElementById(
+        "saveBtn"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            saveState(true);
+
+        }
+    );
+
+
+
+/*
+ * BOTTOM SAVE
+ */
+
+document
+    .getElementById(
+        "saveBottom"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            saveState(true);
+
+        }
+    );
+
+
+
+/*
+ * TOP PRINT
+ */
+
+document
+    .getElementById(
+        "printBtn"
+    )
+    .addEventListener(
+        "click",
+        printSummary
+    );
+
+
+
+/*
+ * BOTTOM PRINT
+ */
+
+document
+    .getElementById(
+        "printBottom"
+    )
+    .addEventListener(
+        "click",
+        printSummary
+    );
+
+
+
+/*
+ * ADD SECTION TOP
+ */
+
+document
+    .getElementById(
+        "addSectionTop"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            addSection(0);
+
+        }
+    );
+
+
+
+/*
+ * ADD SECTION BOTTOM
+ */
+
+document
+    .getElementById(
+        "addSectionBottom"
+    )
+    .addEventListener(
+        "click",
+        function() {
+
+            addSection(null);
+
+        }
+    );
+
+
+
+/* ============================================================
+   INITIAL PAGE LOAD
+============================================================ */
+
+/*
+ * IMPORTANT:
+ *
+ * DO NOT fetch /api/state here.
+ *
+ * Always start with:
+ *
+ *   Patient details = BLANK
+ *   Type of discharge = BLANK
+ *   Clinical section contents = BLANK
+ *
+ * The 9 section TITLES remain visible.
+ */
+
+function loadBlankSummary() {
+
+    state = {
+
+        patient:
+            getBlankPatient(),
+
+        type_of_discharge:
+            "",
+
+        sections:
+            getDefaultSections()
+
+    };
+
+
+    /*
+     * Render blank patient fields.
+     */
+
+    renderPatient();
+
+
+    /*
+     * Render blank discharge type.
+     */
+
+    renderDischargeType();
+
+
+    /*
+     * Render 9 blank clinical sections.
+     */
+
+    renderSections();
+
+
+    /*
+     * Force patient inputs blank.
+     *
+     * This is an extra safeguard against
+     * browser autofill / old DOM values.
+     */
+
+    document
+        .querySelectorAll(
+            "#patientFields input"
+        )
+        .forEach(
+            function(input) {
+
+                input.value = "";
+
+            }
+        );
+
+
+    /*
+     * Force type of discharge blank.
+     */
+
+    const dischargeInput =
+        document.getElementById(
+            "typeOfDischarge"
+        );
+
+
+    if (dischargeInput) {
+
+        dischargeInput.value = "";
+
+    }
+
+
+    /*
+     * Clear print values.
+     */
+
+    document
+        .querySelectorAll(
+            ".print-field-value"
+        )
+        .forEach(
+            function(element) {
+
+                element.textContent = "";
+
+            }
+        );
+
+
+    /*
+     * Start at top.
+     */
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "instant"
+
+    });
+
+}
+
+
+/*
+ * START
+ */
+
+loadBlankSummary();

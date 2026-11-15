@@ -1,0 +1,35 @@
+name: Static site checks
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate JavaScript syntax
+        run: |
+          node --check static/js/core.js
+          node --check static/js/app.js
+          node --check sw.js
+      - name: Validate static site assets
+        run: |
+          test -f index.html
+          test -f static/style.css
+          test -f static/manifest.webmanifest
+          test -f static/sw.js
+          test -f sw.js
+          test -f static/icons/icon.svg
+          ! grep -q '{{' index.html
+      - name: Validate manifest JSON
+        run: node -e "JSON.parse(require('fs').readFileSync('static/manifest.webmanifest','utf8'))"
